@@ -1,10 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 import numpy as np
 import sys
 from PyDynamixel import DxlComm, Joint
 from std_msgs.msg import Float64MultiArray
+
 
 face_center = [np.nan,np.nan]
 
@@ -32,7 +33,7 @@ def move_neck():
 	rospy.Subscriber("updateEyes", Float64MultiArray, callback_coordinates)
 
 	# Inicia comunicacao dos motores dynamixel pela porta serial /dev/ttyUSB0
-	port = DxlComm("/dev/ttyUSB2")
+	port = DxlComm("/dev/ttyUSB0")
 
 	# Inicia as juntas de rotacao com os respectivos IDs dos motores
 	neck_h = Joint(62)			# Junta responsavel pelo movimento horizontal da cabeca, motor ID 62
@@ -108,6 +109,7 @@ def move_neck():
 					# Move o rosto ate no minimo 2.617993 radianos
 					theta_v -= step
 					neck_v.sendGoalAngle(theta_v)
+		
 		
 		rate.sleep()
 

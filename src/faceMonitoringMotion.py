@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -61,21 +61,21 @@ class Env():
         changeEmotion.start()
 
     def changeEmotion(self):
-	global emotion
-	contador = 0
-	while True:
-	    contador = contador + 1
-	    if(contador == 5):
-		emotion = 0
-	    if (contador == 10):
-		emotion = 1
-	    if (contador == 15):
-		emotion = 2
-	    if (contador == 20):
-		emotion = 4
-	    if (contador == 25):
-		contador = 0
-	    time.sleep(1)
+        global emotion
+        contador = 0
+        while True:
+            contador = contador + 1
+            if(contador == 5):
+                emotion = 0
+            if (contador == 10):
+                emotion = 1
+            if (contador == 15):
+                emotion = 2
+            if (contador == 20):
+                emotion = 4
+            if (contador == 25):
+                contador = 0
+            time.sleep(1)
 
     def publishEmotion(self):
         pub = rospy.Publisher('updateEmotion', Int16, queue_size=10)

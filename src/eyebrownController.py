@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 from std_msgs.msg import (Int16, Int16MultiArray)
@@ -30,7 +30,7 @@ class eyebrownEnable():
             rate.sleep()
         
     def getOutput(self):
-        if(self.emotion == 0):
+        if(self.emotion):
             self.rightY = 20
             self.leftY = 20
             self.rightRotation = 50
@@ -64,4 +64,5 @@ if __name__ == '__main__':
     try:
         eyebrownEnable()
     except rospy.ROSInterruptException:
-        pass
+        print(f'****\n\n\n\n\n\n')
+        print('Error on eyebrownEnable()',end='\n\n\n\n\n\n\n\n\n\n')

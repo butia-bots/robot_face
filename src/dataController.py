@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 import time
@@ -14,7 +14,7 @@ class dataflowEnable():
         # Define the output vector
         self.motors = [50] * 13
 
-        self.port = DxlComm('/dev/ttyACM0')
+        self.port = DxlComm(commPort="/dev/ttyACM0")
         self.joint = Joint(128)
         self.port.attachJoint(self.joint)
 
@@ -38,10 +38,9 @@ class dataflowEnable():
         #self.sub_neck.data = []  
         #self.sub_neck = rospy.Subscriber('neck', Int16MultiArray, self.getNeck)
 
-
-        #updateLoop = threading.Thread(name = 'send2Arduino', target = dataflowEnable.sendArduino, args = (self,))
-        #updateLoop.setDaemon(True)
-        #updateLoop.start()
+        # updateLoop = threading.Thread(name = 'send2Arduino', target = dataflowEnable.sendArduino, args = (self,))
+        # updateLoop.setDaemon(True)
+        # updateLoop.start()
 
         while not rospy.is_shutdown():
             # 0 - EyebrowRightHeight
@@ -56,12 +55,12 @@ class dataflowEnable():
             # 9 - EyeVertical
             # 10 - Mouth
 
-            print (self.motors)
+            # print (self.motors)
             
-            #self.joint.writeValue(4, int(self.motors[4]))
-            #self.joint.writeValue(5, int(self.motors[5]))
-            #self.joint.writeValue(6, int(self.motors[6]))
-            #self.joint.writeValue(7, int(self.motors[7]))
+            self.joint.writeValue(4, int(self.motors[4]))
+            self.joint.writeValue(5, int(self.motors[5]))
+            self.joint.writeValue(6, int(self.motors[6]))
+            self.joint.writeValue(7, int(self.motors[7]))
             self.joint.writeValue(10, int(self.motors[10]))
             self.joint.writeValue(0, int(self.motors[0]))
             self.joint.writeValue(1, int(self.motors[1]))
@@ -72,14 +71,14 @@ class dataflowEnable():
             #self.joint.writeValue(10, int(self.motors[10]))
             self.joint.writeValue(11, int(self.motors[11]))
             self.joint.writeValue(12, int(self.motors[12]))
-            #rate.sleep()
+            rate.sleep()
 
     def getMouth(self, msg):
         data = msg.data
-        #motors[0] = int(0.3059*self.data[0])
+        #self.motors[0] = int(0.3059*self.data[0])
         #self.motors[10] = abs(100-data[0])
         self.motors[10] = data[1]
-        #motors[1] = data[1]
+        #self.motors[1] = data[1]
 
     def getEye(self, msg):
         data = msg.data
@@ -88,10 +87,10 @@ class dataflowEnable():
     
     def getEyelid(self, msg):
         data = msg.data
-        #self.motors[4] = data[0]
-        #self.motors[5] = data[1]
-        #self.motors[6] = data[2]
-        #self.motors[7] = data[3]
+        self.motors[4] = data[1]
+        self.motors[5] = data[1]
+        self.motors[6] = data[2]
+        self.motors[7] = data[3]
         self.motors[11] = data[2]
         self.motors[12] = data[0]
 
@@ -102,12 +101,10 @@ class dataflowEnable():
         self.motors[2] = data[2]
         self.motors[3] = data[3]
 
-        
-
-    #def getNeck(self, msg):
-    #    data = msg.data
-    #    motors[12] = data[0]
-    #    motors[13] = data[1]
+    def getNeck(self, msg):
+       data = msg.data
+       self.motors[12] = data[0]
+       self.motors[13] = data[1]
 
     def sendArduino(self):
         while(True):
@@ -129,7 +126,7 @@ class dataflowEnable():
             self.joint.writeValue(5, int(self.motors[5]))
             self.joint.writeValue(6, int(self.motors[6]))
             self.joint.writeValue(7, int(self.motors[7]))
-            self.joint.writeValue(10, self.motors[10])
+            self.joint.writeValue(10, int(self.motors[10]))
             self.joint.writeValue(0, int(self.motors[0]))
             self.joint.writeValue(1, int(self.motors[1]))
             self.joint.writeValue(2, int(self.motors[2]))

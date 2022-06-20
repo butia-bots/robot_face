@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 from PyDynamixel import DxlComm, Joint
 import alsaaudio, time, audioop
@@ -30,14 +30,14 @@ class mouthEnable():
     inp.setrate(8000)
     inp.setformat(alsaaudio.PCM_FORMAT_S16_LE)
     inp.setperiodsize(160)
-
+ 
     while not rospy.is_shutdown():
-        l,data = inp.read()
+        l, data = inp.read()
         if l:
-            vlr = (audioop.max(data,2) - 200) * 180 / 20000
+            vlr = (audioop.max(data, 2) - 200) * 180 / 20000
             #j.writeValue(4,vlr)
             #print(audioop.max(data, 2)/100)
-            value = audioop.max(data, 2)/100
+            value = audioop.max(data, 2) / 100
             value = int(0.3059*value)
             output.data = []
             output.data = [value, abs(100 - value)]

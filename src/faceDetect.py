@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # import the necessary packages
 from imutils.video import VideoStream
@@ -25,7 +25,7 @@ pub = rospy.Publisher("updateEyes", Float64MultiArray, queue_size = 10)
 
 # load our serialized model from disk
 print("[INFO] loading model...")
-net = cv2.dnn.readNetFromCaffe("/home/victor_kich/faceDoris/src/robotFace/src/deploy.prototxt.txt", "/home/victor_kich/faceDoris/src/robotFace/src/res10_300x300_ssd_iter_140000.caffemodel")
+net = cv2.dnn.readNetFromCaffe("/home/butiabots/faceDoris/src/robotFace/src/deploy.prototxt.txt", "/home/butiabots/faceDoris/src/robotFace/src/res10_300x300_ssd_iter_140000.caffemodel")
 
 # initialize the video stream and allow the cammera sensor to warmup
 print("[INFO] starting video stream...")
@@ -102,7 +102,7 @@ while not rospy.is_shutdown():
 	y = (bigger_center[3] - bigger_center[1])/2 + bigger_center[1]
 	msg.data = [x,y,tamanho[0], tamanho[1]]
 
-	print msg.data
+	print(msg.data)
 
 	if not np.isnan(big_area):
 		pub.publish(msg)
