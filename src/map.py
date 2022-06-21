@@ -1,6 +1,6 @@
 def map(initial_a, final_a, initial_b, final_b, value):
 	if value < initial_a or value > final_a:
-		print("Valor fora dos limites da escala.")
+		# print("Valor fora dos limites da escala.")
 		return
 
 	percent_a = (value - initial_a)*100/(final_a - initial_a)

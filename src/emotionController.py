@@ -13,7 +13,7 @@ class emotionEnable():
         self.emotion = 0
 
         while not rospy.is_shutdown():
-            rospy.loginfo(self.emotion)
+            # rospy.loginfo(self.emotion)
             pub.publish(self.emotion)
             rate.sleep()
 

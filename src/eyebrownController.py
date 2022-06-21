@@ -25,7 +25,7 @@ class eyebrownEnable():
             eyebrownEnable.getOutput(self)
             output.data = []
             output.data = [self.rightY, self.leftY, self.rightRotation, self.leftRotation]
-            rospy.loginfo(output)
+            # rospy.loginfo(output)
             pub.publish(output)
             rate.sleep()
         
@@ -64,5 +64,4 @@ if __name__ == '__main__':
     try:
         eyebrownEnable()
     except rospy.ROSInterruptException:
-        print(f'****\n\n\n\n\n\n')
-        print('Error on eyebrownEnable()',end='\n\n\n\n\n\n\n\n\n\n')
+        pass

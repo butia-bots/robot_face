@@ -42,7 +42,7 @@ class mouthEnable():
             output.data = []
             output.data = [value, abs(100 - value)]
             #joint.writeValue(10, int(abs(100-value)))
-            rospy.loginfo(output)
+            # rospy.loginfo(output)
             pub.publish(output)
             rate.sleep()
         #time.sleep(.001)

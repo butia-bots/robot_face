@@ -56,13 +56,14 @@ class eyelidEnable():
             eyelidEnable.getOutput(self)
             #output.data = []
             #output.data = [self.upper, self.upper, self.down, self.down]
-            rospy.loginfo(self.output)
+            # rospy.loginfo(self.output)
             pub.publish(self.output)
             rate.sleep()
         
     def getOutput(self):
         if (self.animation == 1):
-            print("Piscando...")
+            # print("Piscando...")
+            pass
         elif(self.animation == 0): 
             eyelidEnable.setValues(self)
 
@@ -86,7 +87,7 @@ class eyelidEnable():
     def getEyelid_dn(self, msg):
         self.data = msg.data
         self.y = self.data[1] #- 50
-        print(self.data)
+        # print(self.data)
 
     def getEyelid_st(self, msg):
         global h

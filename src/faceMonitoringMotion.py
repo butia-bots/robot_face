@@ -81,7 +81,7 @@ class Env():
         pub = rospy.Publisher('updateEmotion', Int16, queue_size=10)
         rate = rospy.Rate(50) # 50hz
         while not rospy.is_shutdown():
-            rospy.loginfo(emotion)
+            # rospy.loginfo(emotion)
             pub.publish(emotion)
             rate.sleep()
 
@@ -91,13 +91,13 @@ class Env():
         motors[0] = self.data[0]
         #motors[1] = int(0.3059*self.data[1])
         motors[1] = self.data[1]
-        print(self.data)
+        # print(self.data)
 
     def getEye(self, msg):
         self.data = msg.data
         motors[2] = self.data[0] #- 50
         motors[3] = self.data[1] #- 50
-        print(self.data)
+        # print(self.data)
     
     def getEyelid(self, msg):
         self.data = msg.data
@@ -105,7 +105,7 @@ class Env():
         motors[5] = self.data[1]
         motors[6] = self.data[2]
         motors[7] = self.data[3]
-        print(self.data)
+        # print(self.data)
 
     def getEyebrown(self, msg):
         self.data = msg.data
@@ -356,36 +356,37 @@ class CustomMainWindow(QtWidgets.QMainWindow):
         self.show()
 
     def buttonActionExit(self):
-        print("Exit")
+        # print("Exit")
         exit()
 
     def buttonActionForce(self):
-        print("Force Angles")
+        # print("Force Angles")
+        pass
 
     def buttonActionNormal(self):
         global emotion
         emotion = 0
-        print("Normal")
+        # print("Normal")
 
     def buttonActionHappy(self):
         global emotion
         emotion = 1
-        print("Happy")
+        # print("Happy")
 
     def buttonActionSad(self):
         global emotion
         emotion = 2
-        print("Sad")
+        # print("Sad")
 
     def buttonActionRage(self):
         global emotion
         emotion = 3
-        print("Rage")
+        # print("Rage")
 
     def buttonActionScared(self):
         global emotion
         emotion = 4
-        print("Scared")
+        # print("Scared")
 
     def addData_callbackFunc(self, value):
         self.Motor1.addData(value[0])
@@ -416,7 +417,7 @@ class CustomMainWindow(QtWidgets.QMainWindow):
 class CustomFigCanvas(FigureCanvas, TimedAnimation):
     def __init__(self):
         self.addedData = []
-        print(matplotlib.__version__)
+        # print(matplotlib.__version__)
 
         # The data
         self.xlim = 250
@@ -478,7 +479,7 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             TimedAnimation._step(self, *args)
         except Exception as e:
             self.abc += 1
-            print(str(self.abc))
+            # print(str(self.abc))
             TimedAnimation._stop(self)
             pass
 
