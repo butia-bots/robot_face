@@ -7,7 +7,7 @@ import os
 def getSound(msg):
     data = msg.data
     print (data)
-    data = 'mpv /home/victor_kich/faceDoris/src/robotFace/src/media/'+str(data)+'.mp3'
+    data = 'mpv /home/victor_kich/faceDoris/src/butia_face/src/media/'+str(data)+'.mp3'
     os.system(data)
     pub.publish(True)
 

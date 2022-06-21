@@ -25,7 +25,7 @@ pub = rospy.Publisher("updateEyes", Float64MultiArray, queue_size = 10)
 
 # load our serialized model from disk
 print("[INFO] loading model...")
-net = cv2.dnn.readNetFromCaffe("/home/butiabots/faceDoris/src/robotFace/src/deploy.prototxt.txt", "/home/butiabots/faceDoris/src/robotFace/src/res10_300x300_ssd_iter_140000.caffemodel")
+net = cv2.dnn.readNetFromCaffe("/home/butiabots/faceDoris/src/butia_face/src/deploy.prototxt.txt", "/home/butiabots/faceDoris/src/butia_face/src/res10_300x300_ssd_iter_140000.caffemodel")
 
 # initialize the video stream and allow the cammera sensor to warmup
 print("[INFO] starting video stream...")

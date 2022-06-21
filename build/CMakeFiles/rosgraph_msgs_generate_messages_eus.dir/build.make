@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/victor_kich/faceDoris/src/robotFace
+CMAKE_SOURCE_DIR = /home/victor_kich/faceDoris/src/butia_face
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/victor_kich/faceDoris/src/robotFace/build
+CMAKE_BINARY_DIR = /home/victor_kich/faceDoris/src/butia_face/build
 
 # Utility rule file for rosgraph_msgs_generate_messages_eus.
 
@@ -67,6 +67,6 @@ CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean:
 .PHONY : CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
 
 CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/depend:
-	cd /home/victor_kich/faceDoris/src/robotFace/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/victor_kich/faceDoris/src/robotFace /home/victor_kich/faceDoris/src/robotFace /home/victor_kich/faceDoris/src/robotFace/build /home/victor_kich/faceDoris/src/robotFace/build /home/victor_kich/faceDoris/src/robotFace/build/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/victor_kich/faceDoris/src/butia_face/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/victor_kich/faceDoris/src/butia_face /home/victor_kich/faceDoris/src/butia_face /home/victor_kich/faceDoris/src/butia_face/build /home/victor_kich/faceDoris/src/butia_face/build /home/victor_kich/faceDoris/src/butia_face/build/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/depend
 
