@@ -16,7 +16,7 @@ class mouthEnable():
     rospy.init_node('mouthEnable', anonymous=False)
     rate = rospy.Rate(30) # 100hz
     
-    #port = DxlComm('/dev/ttyACM0')
+    #port = DxlComm('/dev/ttyACM1')
     #joint = Joint(128)
     #port.attachJoint(joint)
 

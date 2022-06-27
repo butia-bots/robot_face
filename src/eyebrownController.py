@@ -30,31 +30,31 @@ class eyebrownEnable():
             rate.sleep()
         
     def getOutput(self):
-        if(self.emotion):
+        if(self.emotion == 0): #Poker face | OK
+            self.rightY = 65
+            self.leftY = 50
+            self.rightRotation = 85
+            self.leftRotation = 130
+        elif(self.emotion == 1): #Happy | Ok
+            self.rightY = 130
+            self.leftY = 105
+            self.rightRotation = 80
+            self.leftRotation = 125
+        elif(self.emotion == 2): #Sad | Ok
+            self.rightY = 65
+            self.leftY = 50
+            self.rightRotation = 45
+            self.leftRotation = 20
+        elif(self.emotion == 3): #Rage
             self.rightY = 20
             self.leftY = 20
-            self.rightRotation = 50
-            self.leftRotation = 50
-        elif(self.emotion == 1):
-            self.rightY = 80
-            self.leftY = 80
-            self.rightRotation = 40
-            self.leftRotation = 40
-        elif(self.emotion == 2):
-            self.rightY = 15
-            self.leftY = 15
-            self.rightRotation = 0
-            self.leftRotation = 0
-        elif(self.emotion == 3):
-            self.rightY = 20
-            self.leftY = 20
-            self.rightRotation = 100
-            self.leftRotation = 100
-        elif(self.emotion == 4):
-            self.rightY = 70
-            self.leftY = 70
-            self.rightRotation = 30
-            self.leftRotation = 30
+            self.rightRotation = 140
+            self.leftRotation = 160
+        elif(self.emotion == 4): #Scared
+            self.rightY = 130
+            self.leftY = 105
+            self.rightRotation = 75
+            self.leftRotation = 120
 
     def getEyebrown_st(self, msg):
         self.data = msg.data

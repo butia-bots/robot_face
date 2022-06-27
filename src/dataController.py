@@ -14,7 +14,7 @@ class dataflowEnable():
         # Define the output vector
         self.motors = [50] * 13
 
-        self.port = DxlComm(commPort="/dev/ttyACM0")
+        self.port = DxlComm(commPort="/dev/ttyACM1")
         self.joint = Joint(128)
         self.port.attachJoint(self.joint)
 
@@ -87,7 +87,7 @@ class dataflowEnable():
     
     def getEyelid(self, msg):
         data = msg.data
-        self.motors[4] = data[1]
+        self.motors[4] = data[0]
         self.motors[5] = data[1]
         self.motors[6] = data[2]
         self.motors[7] = data[3]
@@ -121,12 +121,12 @@ class dataflowEnable():
             # 10 - Mouth
 
             print (self.motors)
+
             
             self.joint.writeValue(4, int(self.motors[4]))
             self.joint.writeValue(5, int(self.motors[5]))
             self.joint.writeValue(6, int(self.motors[6]))
             self.joint.writeValue(7, int(self.motors[7]))
-            self.joint.writeValue(10, int(self.motors[10]))
             self.joint.writeValue(0, int(self.motors[0]))
             self.joint.writeValue(1, int(self.motors[1]))
             self.joint.writeValue(2, int(self.motors[2]))
