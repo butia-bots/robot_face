@@ -25,7 +25,6 @@ class eyebrownEnable():
             eyebrownEnable.getOutput(self)
             output.data = []
             output.data = [self.rightY, self.leftY, self.rightRotation, self.leftRotation]
-            # rospy.loginfo(output)
             pub.publish(output)
             rate.sleep()
         

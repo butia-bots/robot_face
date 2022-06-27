@@ -54,9 +54,6 @@ class eyelidEnable():
 
         while not rospy.is_shutdown():
             eyelidEnable.getOutput(self)
-            #output.data = []
-            #output.data = [self.upper, self.upper, self.down, self.down]
-            # rospy.loginfo(self.output)
             pub.publish(self.output)
             rate.sleep()
         
@@ -66,7 +63,6 @@ class eyelidEnable():
             pass
         elif(self.animation == 0): 
             eyelidEnable.setValues(self)
-
     
     def setValues(self):
         if(self.y > 50):
@@ -87,7 +83,6 @@ class eyelidEnable():
     def getEyelid_dn(self, msg):
         self.data = msg.data
         self.y = self.data[1] #- 50
-        # print(self.data)
 
     def getEyelid_st(self, msg):
         global h
@@ -108,7 +103,6 @@ class eyelidEnable():
         elif(self.data == 4):
             h = 80
             frequency = 8
-        #print(self.data)
     
     def blink(self):
         while(True):
