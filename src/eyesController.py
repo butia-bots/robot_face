@@ -21,7 +21,6 @@ class eyesEnable():
 
         while not rospy.is_shutdown():
             output.data = [self.xPosition , self.yPosition]
-            rospy.loginfo(output)
             pub.publish(output)
             rate.sleep()
 
