@@ -34,7 +34,7 @@ void setup() {
   motor[EYELID_DOWN_LEFT].setMotorDefinitions(60, 20, 95); // Setado - 60
   motor[EYE_HORIZONTAL].setMotorDefinitions(55, 0, 125); //Fora
   motor[EYE_VERTICAL].setMotorDefinitions(85, 0, 130);  //Fora
-  motor[JAW_CLOCKWISE].setMotorDefinitions(180, 0, 150);
+  motor[JAW_CLOCKWISE].setMotorDefinitions(35, 10, 35);
   motor[JAW_ANTICLOCKWISE].setMotorDefinitions(0, 0, 150);
 }
 
@@ -46,7 +46,7 @@ void loop()
     angles2 = Serial.parseInt();
     Serial.print("Input: ");
     Serial.println(angles2);
-    motor[EYELID_UP_LEFT].goTo(angles2);
+    motor[JAW_CLOCKWISE].goTo(angles2);
   }
 //  dxl.checkMessages();
 //  

@@ -104,30 +104,30 @@ class eyelidEnable():
         if(self.data == 0):     #Standard
             # h = 60
             rightU_h = 60
-            leftU_h = 100
+            leftU_h = 90
             rightD_h = 60
             leftD_h = 70
             frequency = 2
         elif(self.data == 1):   #Happy
             # h = 70
             rightU_h = 60
-            leftU_h = 60
+            leftU_h = 90
             rightD_h = 60
-            leftD_h = 60
+            leftD_h = 70
             frequency = 3
         elif(self.data == 2):   #Sad
             # h = 50
-            rightU_h = 45
-            leftU_h = 60
+            rightU_h = 60
+            leftU_h = 90
             rightD_h = 60
-            leftD_h = 60
+            leftD_h = 70
             frequency = 4
         elif(self.data == 3):   #Rage
             # h = 45
-            rrightU_h = 45
-            leftU_h = 60
+            rightU_h = 60
+            leftU_h = 90
             rightD_h = 60
-            leftD_h = 60
+            leftD_h = 70
             frequency = 3
         elif(self.data == 4):   #Scared
             # h = 80

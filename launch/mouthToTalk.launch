@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <launch>
 
-    <node name="dataController" pkg="robotFace" type="dataController.py"/>
+    <node name="dataController" pkg="butia_face" type="dataController.py"/>
     
     <include file="$(find butia_speech)/butia_speech_launchfiles/mouth.launch"/>
 
