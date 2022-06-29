@@ -1,10 +1,11 @@
 <launch>
+
+  <rosparam file="$(find butia_face)/config/butia_emotions_controllers.yaml" command="load"/>
+
   <node pkg="butia_face" type="eyesController.py" name="eyesController" output="screen" />
-  <node pkg="butia_face" type="mouthController.py" name="mouthController" output="screen" />
   <node pkg="butia_face" type="eyelidController.py" name="eyelidController" output="screen" />
   <node pkg="butia_face" type="eyebrownController.py" name="eyebrowController" output="screen" />
   <node pkg="butia_face" type="emotionController.py" name="emotionController" output="screen" />
   <node pkg="butia_face" type="faceDetect.py" name="faceDetect" output="screen" />
   <node pkg="butia_face" type="dataController.py" name="dataController" output="screen" />
-  <node pkg="butia_face" type="soundController.py" name="soundController" output="screen" />
 </launch>

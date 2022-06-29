@@ -6,6 +6,20 @@ import threading
 from std_msgs.msg import (Int16MultiArray, Int16)
 from PyDynamixel import DxlComm, Joint
 
+MOTORS_IDX = {
+    "EyebrowRightHeight": 0,
+    "EyebrowLeftHeight": 1,
+    "EyebrowRightAngle": 2,
+    "EyebrowLeftAngle": 3,
+    "EyelidRightUp": 4,
+    "EyelidLeftUp": 5,
+    "EyelidRightDown": 6,
+    "EyelidLeftDown": 7,
+    "EyeHorizontal": 8,
+    "EyeVertical": 9,
+    "Mouth": 10,
+}
+
 class dataflowEnable():
     def __init__(self):
         rospy.init_node('dataController', anonymous=False)
@@ -57,49 +71,46 @@ class dataflowEnable():
 
             # print (self.motors)
             
-            self.joint.writeValue(4, int(self.motors[4]))
-            self.joint.writeValue(5, int(self.motors[5]))
-            self.joint.writeValue(6, int(self.motors[6]))
-            self.joint.writeValue(7, int(self.motors[7]))
-            self.joint.writeValue(10, int(self.motors[10]))
-            self.joint.writeValue(0, int(self.motors[0]))
-            self.joint.writeValue(1, int(self.motors[1]))
-            self.joint.writeValue(2, int(self.motors[2]))
-            self.joint.writeValue(3, int(self.motors[3]))
-            self.joint.writeValue(8, int(self.motors[8]))
-            self.joint.writeValue(9, int(self.motors[9]))
-            #self.joint.writeValue(10, int(self.motors[10]))
-            self.joint.writeValue(11, int(self.motors[11]))
-            self.joint.writeValue(12, int(self.motors[12]))
+            self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
+            self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
+            self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
+            self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
+            self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
+            self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
+            self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
+            self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
+            self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
+            self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
+            self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
             rate.sleep()
 
     def getMouth(self, msg):
         data = msg.data
         #self.motors[0] = int(0.3059*self.data[0])
         #self.motors[10] = abs(100-data[0])
-        self.motors[10] = data[1]
+        self.motors[MOTORS_IDX["Mouth"]] = data[1]
         #self.motors[1] = data[1]
 
     def getEye(self, msg):
         data = msg.data
-        self.motors[8] = data[0]
-        self.motors[9] = data[1]
+        self.motors[MOTORS_IDX["EyeHorizontal"]] = data[0]
+        self.motors[MOTORS_IDX["EyeVertical"]] = data[1]
     
     def getEyelid(self, msg):
         data = msg.data
-        self.motors[4] = data[0]
-        self.motors[5] = data[1]
-        self.motors[6] = data[2]
-        self.motors[7] = data[3]
+        self.motors[MOTORS_IDX["EyelidRightUp"]] = data[0]
+        self.motors[MOTORS_IDX["EyelidLeftUp"]] = data[1]
+        self.motors[MOTORS_IDX["EyelidRightDown"]] = data[2]
+        self.motors[MOTORS_IDX["EyelidLeftDown"]] = data[3]
         self.motors[11] = data[2]
         self.motors[12] = data[0]
 
     def getEyebrown(self, msg):
         data = msg.data
-        self.motors[0] = data[0]
-        self.motors[1] = data[1]
-        self.motors[2] = data[2]
-        self.motors[3] = data[3]
+        self.motors[MOTORS_IDX["EyebrowRightHeight"]] = data[0]
+        self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = data[1]
+        self.motors[MOTORS_IDX["EyebrowRightAngle"]] = data[2]
+        self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = data[3]
 
     def getNeck(self, msg):
        data = msg.data
@@ -123,17 +134,17 @@ class dataflowEnable():
             print (self.motors)
 
             
-            self.joint.writeValue(4, int(self.motors[4]))
-            self.joint.writeValue(5, int(self.motors[5]))
-            self.joint.writeValue(6, int(self.motors[6]))
-            self.joint.writeValue(7, int(self.motors[7]))
-            self.joint.writeValue(0, int(self.motors[0]))
-            self.joint.writeValue(1, int(self.motors[1]))
-            self.joint.writeValue(2, int(self.motors[2]))
-            self.joint.writeValue(3, int(self.motors[3]))
-            self.joint.writeValue(8, int(self.motors[8]))
-            self.joint.writeValue(9, int(self.motors[9]))
-            #self.joint.writeValue(10, int(self.motors[10]))
+            self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
+            self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
+            self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
+            self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
+            #self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
+            self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
+            self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
+            self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
+            self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
+            self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
+            self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
             
             time.sleep(0.001)
 

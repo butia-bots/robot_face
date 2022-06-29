@@ -16,6 +16,14 @@ animationUpper = 0
 #animationDown = float (3)
 animationDown = 0
 
+EMOTIONS = {
+    "standard": 0,
+    "happy": 1,
+    "sad": 2,
+    "rage": 3,
+    "scared": 4,
+}
+
 class eyelidEnable():
     def __init__(self):
         pub = rospy.Publisher('eyelid', Int16MultiArray, queue_size=10)
@@ -34,6 +42,8 @@ class eyelidEnable():
         self.animation = 0
         self.upper = 0
         self.down = 0
+
+        self._readParameters()
 
         # Start blink thread
         blinkLoop = threading.Thread(name = 'blink', target = eyelidEnable.blink, args = (self,))
@@ -73,21 +83,37 @@ class eyelidEnable():
         global h
         global frequency
         self.data = msg.data
-        if(self.data == 0):     #Standard
-            h = 60 # 60
-            frequency = 2
-        elif(self.data == 1):   #Happy
-            h = 80 # 70
-            frequency = 3
-        elif(self.data == 2):   #Sad
-            h = 20 # 50
-            frequency = 4
-        elif(self.data == 3):   #Rage
-            h = 10 # 45
-            frequency = 3
-        elif(self.data == 4):   #Scared
-            h = 90 # 80
-            frequency = 1
+        if(self.data == EMOTIONS["standard"]):
+            h = self.h_standard_params
+            frequency = self.frequency_standard_params
+        elif(self.data == EMOTIONS["happy"]):
+            h = self.h_happy_params 
+            frequency = self.frequency_happy_params 
+        elif(self.data == EMOTIONS["sad"]):   
+            h = self.h_sad_params
+            frequency = self.frequency_sad_params
+        elif(self.data == EMOTIONS["rage"]):
+            h = self.h_rage_params
+            frequency = self.frequency_rage_params
+        elif(self.data == EMOTIONS["scared"]):  
+            h = self.h_scared_params
+            frequency = self.frequency_scared_params
+
+    def _readParameters(self):
+        self.h_standard_params = rospy.get_param("butia_emotions/eyelid/standard/h")
+        self.frequency_standard_params = rospy.get_param("butia_emotions/eyelid/standard/frequency")
+
+        self.h_happy_params = rospy.get_param("butia_emotions/eyelid/happy/h")
+        self.frequency_happy_params = rospy.get_param("butia_emotions/eyelid/happy/frequency")
+
+        self.h_sad_params = rospy.get_param("butia_emotions/eyelid/sad/h")
+        self.frequency_sad_params = rospy.get_param("butia_emotions/eyelid/sad/frequency")
+
+        self.h_rage_params = rospy.get_param("butia_emotions/eyelid/rage/h")
+        self.frequency_rage_params = rospy.get_param("butia_emotions/eyelid/rage/frequency")
+
+        self.h_scared_params = rospy.get_param("butia_emotions/eyelid/scared/h")
+        self.frequency_scared_params = rospy.get_param("butia_emotions/eyelid/scared/frequency")
     
     def blink(self):
         while(True):
