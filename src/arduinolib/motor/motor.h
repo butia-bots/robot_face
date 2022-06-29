@@ -16,7 +16,6 @@ class Motor{
     unsigned char checkRange(unsigned char targetPos);
     unsigned char limitAngle[2] = {5,175};
     Servo servo;
-    
 };
 
 #endif
