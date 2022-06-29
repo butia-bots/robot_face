@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <rosparam file="$(find butia_face)/config/butia_emotions_controllers.yaml" command="load"/>
+
+    <node name="dataController" pkg="butia_face" type="dataController.py"/>
+    
+    <include file="$(find butia_speech)/butia_speech_launchfiles/mouth.launch"/>
+
+</launch>
