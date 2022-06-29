@@ -9,10 +9,10 @@ import map as mp
 
 # Define normal statics parameters
 h = 50
-rightU_h = 50
-leftU_h = 50
-rightD_h = 50
-leftD_h = 50
+# rightU_h = 50
+# leftU_h = 50
+# rightD_h = 50
+# leftD_h = 50
 frequency = 3.5
 
 #animationUpper = float(3)
@@ -38,10 +38,10 @@ class eyelidEnable():
         self.animation = 0
         self.upper = 0
         self.down = 0
-        self.upper_right = 0
-        self.upper_left = 0
-        self.down_right = 0
-        self.down_left = 0
+        # self.upper_right = 0
+        # self.upper_left = 0
+        # self.down_right = 0
+        # self.down_left = 0
 
         # Start blink thread
         blinkLoop = threading.Thread(name = 'blink', target = eyelidEnable.blink, args = (self,))
@@ -66,75 +66,82 @@ class eyelidEnable():
         # 6 - EyelidRightDown [2] 
         # 7 - EyelidLeftDown [3]
         if(self.y > 50):
-            self.upper_right = (rightU_h + self.y*2 - 140)
-            self.upper_left = (leftU_h + self.y*2 - 140)
-            self.down_right = 140
-            self.down_left = 140
-            self.output.data = [self.upper_right, self.upper_left, self.down_right, self.down_left]
+            self.upper = h + self.y*2 - 140
+            self.down = 140
+            # self.upper_right = (rightU_h + self.y*2 - 140)
+            # self.upper_left = (leftU_h + self.y*2 - 140)
+            # self.down_right = 140
+            # self.down_left = 140
+            # self.output.data = [self.upper_right, self.upper_left, self.down_right, self.down_left]
+            self.output.data = [self.upper, self.upper, self.down, self.down]
         elif(self.y < 50):
-            self.upper_right = rightU_h
-            self.upper_left = leftU_h
-            self.down_right = (140-(rightD_h + self.y))
-            self.down_left = (140-(leftD_h + self.y))
+            self.upper = h
+            # self.upper_right = rightU_h
+            # self.upper_left = leftU_h
+            self.down = 140 - (h + self.y)
+            # self.down_right = (140-(rightD_h + self.y))
+            # self.down_left = (140-(leftD_h + self.y))
             #self.down = 100 - (h + self.y)
-            self.output.data = [self.upper_right, self.upper_left, self.down_right, self.down_left]
+            # self.output.data = [self.upper_right, self.upper_left, self.down_right, self.down_left]
+            self.output.data = [self.upper, self.upper, self.down, self.down]
         elif(self.y == 50):
-            # self.upper = h
-            self.upper_right = rightU_h
-            self.upper_left = leftU_h
-            # self.down = h
-            self.down_right = rightD_h
-            self.down_left = leftD_h
-            self.output.data = [self.upper_right, self.upper_left, self.down_right, self.down_left]
+            self.upper = h
+            # self.upper_right = rightU_h
+            # self.upper_left = leftU_h
+            self.down = h
+            # self.down_right = rightD_h
+            # self.down_left = leftD_h
+            # self.output.data = [self.upper_right, self.upper_left, self.down_right, self.down_left]
+            self.output.data = [self.upper, self.upper, self.down, self.down]
 
     def getEyelid_dn(self, msg):
         self.data = msg.data
-        self.y = 50 #- 50
+        self.y = self.data #- 50
 
     def getEyelid_st(self, msg):
         global h
 
-        global rightU_h
-        global leftU_h
-        global rightD_h
-        global leftD_h
+        # global rightU_h
+        # global leftU_h
+        # global rightD_h
+        # global leftD_h
 
         global frequency
         self.data = msg.data
         if(self.data == 0):     #Standard
-            # h = 60
-            rightU_h = 60
-            leftU_h = 90
-            rightD_h = 60
-            leftD_h = 70
+            h = 60
+            # rightU_h = 60
+            # leftU_h = 90
+            # rightD_h = 60
+            # leftD_h = 70
             frequency = 2
         elif(self.data == 1):   #Happy
-            # h = 70
-            rightU_h = 60
-            leftU_h = 90
-            rightD_h = 60
-            leftD_h = 70
+            h = 70
+            # rightU_h = 60
+            # leftU_h = 90
+            # rightD_h = 60
+            # leftD_h = 70
             frequency = 3
         elif(self.data == 2):   #Sad
-            # h = 50
-            rightU_h = 60
-            leftU_h = 90
-            rightD_h = 60
-            leftD_h = 70
+            h = 50
+            # rightU_h = 60
+            # leftU_h = 90
+            # rightD_h = 60
+            # leftD_h = 70
             frequency = 4
         elif(self.data == 3):   #Rage
-            # h = 45
-            rightU_h = 60
-            leftU_h = 90
-            rightD_h = 60
-            leftD_h = 70
+            h = 45
+            # rightU_h = 60
+            # leftU_h = 90
+            # rightD_h = 60
+            # leftD_h = 70
             frequency = 3
         elif(self.data == 4):   #Scared
-            # h = 80
-            rightU_h = 130
-            leftU_h = 130
-            rightD_h = 130
-            leftD_h = 130
+            h = 80
+            # rightU_h = 130
+            # leftU_h = 130
+            # rightD_h = 130
+            # leftD_h = 130
             frequency = 1
         #print(self.data)
     
@@ -156,13 +163,13 @@ class eyelidEnable():
             '''
 
             time.sleep(0.3)
-            # saveup = self.upper
-            # savedown = self.down
+            saveup = self.upper
+            savedown = self.down
 
-            saveup_right = self.upper_right
-            saveup_left = self.upper_left
-            savedown_right = self.down_right
-            savedown_left = self.down_left
+            # saveup_right = self.upper_right
+            # saveup_left = self.upper_left
+            # savedown_right = self.down_right
+            # savedown_left = self.down_left
 
             #while(x<50):
             #self.upper = 0 #self.upper - animationUpper
@@ -176,7 +183,7 @@ class eyelidEnable():
             time.sleep(0.3)
             #self.upper = saveup #self.upper + animationUpper
             #self.down = savedown #self.down + animationDown
-            self.output.data = [saveup_right, saveup_left, savedown_right, savedown_left]
+            self.output.data = [saveup, saveup, savedown, savedown]
                 #print("soma: "+str(self.upper))
                 #time.sleep(0.008)
                 #x = x + 1
