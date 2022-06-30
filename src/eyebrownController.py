@@ -12,12 +12,11 @@ class eyebrownEnable():
         pub = rospy.Publisher('eyebrown', Int16MultiArray, queue_size=10)
         rospy.init_node('eyebrownEnable', anonymous=False)
         self.sub_eyebrown_st = rospy.Subscriber('emotion', Int16, self.getEyebrown_st)
-        rate = rospy.Rate(50) # 50hz
+        rate = rospy.Rate(50)
 
-        # Set normal emotion on eyebrown
         self.emotion = 0
-        self.rightY = 20
-        self.leftY = 20
+        self.rightY = 50                # 20
+        self.leftY = 50                 # 20
         self.rightRotation = 50
         self.leftRotation = 50
 
@@ -29,31 +28,31 @@ class eyebrownEnable():
             rate.sleep()
         
     def getOutput(self):
-        if(self.emotion == 0): #Poker face | OK
-            self.rightY = 65
-            self.leftY = 50
-            self.rightRotation = 85
-            self.leftRotation = 130
-        elif(self.emotion == 1): #Happy | Ok
-            self.rightY = 130
-            self.leftY = 105
-            self.rightRotation = 80
-            self.leftRotation = 125
-        elif(self.emotion == 2): #Sad | Ok
-            self.rightY = 65
-            self.leftY = 50
-            self.rightRotation = 45
-            self.leftRotation = 20
-        elif(self.emotion == 3): #Rage
-            self.rightY = 20
-            self.leftY = 20
-            self.rightRotation = 140
-            self.leftRotation = 160
-        elif(self.emotion == 4): #Scared
-            self.rightY = 130
-            self.leftY = 105
-            self.rightRotation = 75
-            self.leftRotation = 120
+        if(self.emotion == 0):          # Poker Face
+            self.rightY = 50            # 65
+            self.leftY = 50             # 50
+            self.rightRotation = 50     # 85     
+            self.leftRotation = 50      # 130
+        elif(self.emotion == 1):        # Happy
+            self.rightY = 90            # 130
+            self.leftY = 90             # 105
+            self.rightRotation = 60     # 80
+            self.leftRotation = 60      # 125
+        elif(self.emotion == 2):        # Sad
+            self.rightY = 30            # 65
+            self.leftY = 30             # 50
+            self.rightRotation = 20     # 45
+            self.leftRotation = 20      # 20
+        elif(self.emotion == 3):        # Rage
+            self.rightY = 10            # 20
+            self.leftY = 10             # 20
+            self.rightRotation = 80     # 140
+            self.leftRotation = 80      # 160
+        elif(self.emotion == 4):        # Scared
+            self.rightY = 100           # 130
+            self.leftY = 100            # 105
+            self.rightRotation = 70     # 75
+            self.leftRotation = 70      # 120
 
     def getEyebrown_st(self, msg):
         self.data = msg.data
