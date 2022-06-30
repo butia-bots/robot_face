@@ -14,7 +14,7 @@ class dataflowEnable():
         # Define the output vector
         self.motors = [50] * 13
 
-        self.port = DxlComm(commPort="/dev/ttyACM1")
+        self.port = DxlComm(commPort="/dev/ttyACM0")
         self.joint = Joint(128)
         self.port.attachJoint(self.joint)
 
@@ -56,7 +56,7 @@ class dataflowEnable():
             # 10 - Mouth
 
             # print (self.motors)
-            
+            print('EYELIDS:', self.motors[4:8])
             self.joint.writeValue(4, int(self.motors[4]))
             self.joint.writeValue(5, int(self.motors[5]))
             self.joint.writeValue(6, int(self.motors[6]))

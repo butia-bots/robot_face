@@ -96,7 +96,7 @@ class eyelidEnable():
 
     def getEyelid_dn(self, msg):
         self.data = msg.data
-        self.y = self.data #- 50
+        self.y = 50  #- 50
 
     def getEyelid_st(self, msg):
         global h
@@ -109,7 +109,7 @@ class eyelidEnable():
         global frequency
         self.data = msg.data
         if(self.data == 0):     #Standard
-            h = 60
+            h = 80
             # rightU_h = 60
             # leftU_h = 90
             # rightD_h = 60
