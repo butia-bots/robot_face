@@ -1,4 +1,4 @@
-  #include "motor.h"
+#include "motor.h"
 #include "thread.h"
 
 #include <DynamixelProtocol.h>
@@ -25,18 +25,18 @@ void setup() {
   Serial.begin(9600);
 //  Serial.flush();80
 // RIGHT EH O LADO DIREITO DA DORIS
-  motor[EYEBROW_HEIGHT_RIGHT].setMotorDefinitions(92, 65, 115); 
-  motor[EYEBROW_HEIGHT_LEFT].setMotorDefinitions(75, 50, 110); 
-  motor[EYEBROW_ANGLE_RIGHT].setMotorDefinitions(80, 45, 110); 
-  motor[EYEBROW_ANGLE_LEFT].setMotorDefinitions(55, 20, 80); 
-  motor[EYELID_UP_RIGHT].setMotorDefinitions(60, 50, 80);      // Zero configurado [60] | Limites de [50, 80]  
-  motor[EYELID_UP_LEFT].setMotorDefinitions(50, 0, 80);         // Zero configurado [50] | Limites de [0, 80]  
-  motor[EYELID_DOWN_RIGHT].setMotorDefinitions(50, 0, 70);      // Zero configurado [50] | Limites de [0, 70]
-  motor[EYELID_DOWN_LEFT].setMotorDefinitions(55, 20, 80);     // Zero configurado [55] | Limites de [20, 80]
-  motor[EYE_HORIZONTAL].setMotorDefinitions(55, 0, 125);        // Olhos nao serao usados | Serao declarados para evitar confusao no codigo 
-  motor[EYE_VERTICAL].setMotorDefinitions(85, 0, 130);          // Olhos nao serao usados | Serao declarados para evitar confusao no codigo
-  motor[JAW_CLOCKWISE].setMotorDefinitions(35, 10, 35);
-  motor[JAW_ANTICLOCKWISE].setMotorDefinitions(0, 0, 150);
+  motor[EYEBROW_HEIGHT_RIGHT].setMotorDefinitions(92, 65, 115, 0); 
+  motor[EYEBROW_HEIGHT_LEFT].setMotorDefinitions(75, 50, 110, 0); 
+  motor[EYEBROW_ANGLE_RIGHT].setMotorDefinitions(80, 45, 110, 0); 
+  motor[EYEBROW_ANGLE_LEFT].setMotorDefinitions(55, 20, 80, 0); 
+  motor[EYELID_UP_RIGHT].setMotorDefinitions(0, 0, 80, 1);      // Zero configurado [60] | Limites de [50, 80]  
+  motor[EYELID_UP_LEFT].setMotorDefinitions(0, 0, 80, 0);         // Zero configurado [50] | Limites de [0, 80]  
+  motor[EYELID_DOWN_RIGHT].setMotorDefinitions(0, 0, 80, 0);      // Zero configurado [50] | Limites de [0, 70]
+  motor[EYELID_DOWN_LEFT].setMotorDefinitions(0, 0, 80, 1);     // Zero configurado [55] | Limites de [20, 80]
+  motor[EYE_HORIZONTAL].setMotorDefinitions(55, 0, 125, 0);        // Olhos nao serao usados | Serao declarados para evitar confusao no codigo 
+  motor[EYE_VERTICAL].setMotorDefinitions(85, 0, 130, 0);          // Olhos nao serao usados | Serao declarados para evitar confusao no codigo
+  motor[JAW_CLOCKWISE].setMotorDefinitions(35, 10, 35, 0);
+  motor[JAW_ANTICLOCKWISE].setMotorDefinitions(0, 0, 150, 0);
 }
 
 int angles2;
@@ -47,7 +47,7 @@ void loop()
     angles2 = Serial.parseInt();
     Serial.print("Input: ");
     Serial.println(angles2);
-    motor[EYELID_UP_LEFT].goTo(angles2);
+    motor[EYELID_UP_RIGHT].goTo(angles2);
   }
 //  dxl.checkMessages();
 //  
