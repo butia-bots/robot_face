@@ -28,7 +28,7 @@ class dataflowEnable():
         # Define the output vector
         self.motors = [50] * 13
 
-        self.port = DxlComm(commPort="/dev/ttyACM1")
+        self.port = DxlComm(commPort="/dev/ttyACM0")
         self.joint = Joint(128)
         self.port.attachJoint(self.joint)
 
