@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
 import rospy
-import time
-import threading
-from std_msgs.msg import (Int16MultiArray, Int16)
+from std_msgs.msg import Int16MultiArray, Bool, Float64MultiArray
 from PyDynamixel import DxlComm, Joint
-from std_msgs.msg import Float64MultiArray
 
 MOTORS_IDX = {
     "EyebrowRightHeight": 0,
@@ -24,7 +21,10 @@ MOTORS_IDX = {
 }
 
 class dataflowEnable():
-    def __init__(self):
+
+    def __init__(self, pause=False):
+        self.pause = pause
+
         rospy.init_node('dataController', anonymous=False)
         rate = rospy.Rate(100) # 100hz
 
@@ -46,6 +46,8 @@ class dataflowEnable():
         self.port = DxlComm(commPort="/dev/ttyACM0")
         self.joint = Joint(128)
         self.port.attachJoint(self.joint)
+
+        rospy.Subscriber("emergency_stop", Bool, self.setPause)
 
         self.sub_mouth = Int16MultiArray()
         self.sub_mouth.data = []  
@@ -71,21 +73,25 @@ class dataflowEnable():
         # updateLoop.setDaemon(True)
         # updateLoop.start()
 
-        while not rospy.is_shutdown():            
-            self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
-            self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
-            self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
-            self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
-            self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
-            self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
-            self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
-            self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
-            self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
-            self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
-            self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
-            self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
-            self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
+        while not rospy.is_shutdown():
+            if not self.pause: 
+                self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
+                self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
+                self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
+                self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
+                self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
+                self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
+                self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
+                self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
+                self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
+                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
+                self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
+                self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
+                self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
             rate.sleep()
+    
+    def setPause(self, msg):
+        self.pause = msg.data
 
     def getMouth(self, msg):
         data = msg.data
