@@ -15,8 +15,8 @@ class Motor{
     static int counter;
     unsigned char checkRange(unsigned char targetPos);
     unsigned char limitAngle[2] = {5,175};
+    unsigned char invert = 0;
     Servo servo;
-    
 };
 
 #endif

@@ -1,0 +1,76 @@
+butia_emotions:
+
+  eyebrown:
+
+    standard:
+      rightY: 20
+      leftY: 20
+      rightRotation: 52
+      leftRotation: 50
+      
+    happy:
+      rightY: 75
+      leftY: 50
+      rightRotation: 50
+      leftRotation: 60
+
+    sad:
+      rightY: 10
+      leftY: 10
+      rightRotation: 10
+      leftRotation: 10
+
+    rage:
+      rightY: 10
+      leftY: 10
+      rightRotation: 90
+      leftRotation: 100
+
+    scared:
+      rightY: 90
+      leftY: 90
+      rightRotation: 40
+      leftRotation: 50
+
+  eyelid:
+
+    standard:
+      h: 80
+      frequency: 2
+
+    happy:
+      h: 100
+      frequency: 3
+
+    sad:
+      h: 50
+      frequency: 3
+
+    rage:
+      h: 60
+      frequency: 3
+
+    scared:
+      h: 90
+      frequency: 1
+
+  neck:
+    standard:
+      horizontal: 180
+      vertical: 0
+
+    happy:
+      horizontal: 180
+      vertical: 0
+    
+    sad:
+      horizontal: 180
+      vertical: 0
+
+    rage:
+      horizontal: 180
+      vertical: 0
+
+    scared:
+      horizontal: 180
+      vertical: 0

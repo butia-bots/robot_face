@@ -5,7 +5,7 @@ from std_msgs.msg import Empty, Int16, Bool
 
 def callback(msg):
     data = msg.data
-    print (data)
+    # print (data)
 
 rospy.init_node('sendEnable', anonymous=False)
 sub_finish = rospy.Subscriber('finishedSound', Bool, callback)

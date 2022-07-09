@@ -14,14 +14,13 @@ class eyesEnable():
         pub = rospy.Publisher('eye', Int16MultiArray, queue_size=10)
         rospy.init_node('eyesEnable', anonymous=False)
         self.sub_eye = rospy.Subscriber('updateEyes', Float64MultiArray, self.getEyes)
-        rate = rospy.Rate(50) # 50hz
+        rate = rospy.Rate(50) 
 
         self.xPosition = 50
         self.yPosition = 50
 
         while not rospy.is_shutdown():
             output.data = [self.xPosition , self.yPosition]
-            rospy.loginfo(output)
             pub.publish(output)
             rate.sleep()
 

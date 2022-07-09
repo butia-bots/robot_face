@@ -7,62 +7,96 @@ from std_msgs.msg import (Int16, Int16MultiArray)
 output = Int16MultiArray()
 output.data = []
 
+EMOTIONS = {
+    "standard": 0,
+    "happy": 1,
+    "sad": 2,
+    "rage": 3,
+    "scared": 4,
+}
+
 class eyebrownEnable():
     def __init__(self):
         pub = rospy.Publisher('eyebrown', Int16MultiArray, queue_size=10)
         rospy.init_node('eyebrownEnable', anonymous=False)
         self.sub_eyebrown_st = rospy.Subscriber('emotion', Int16, self.getEyebrown_st)
-        rate = rospy.Rate(50) # 50hz
+        rate = rospy.Rate(50)
 
-        # Set normal emotion on eyebrown
         self.emotion = 0
-        self.rightY = 20
-        self.leftY = 20
-        self.rightRotation = 50
-        self.leftRotation = 50
+
+        self._readParameters()
+
+        self.rightY = self.rightY_standard_params
+        self.leftY = self.leftY_standard_params
+        self.rightRotation = self.rightRotation_standard_params
+        self.leftRotation = self.leftRotation_standard_params
 
         while not rospy.is_shutdown():
             eyebrownEnable.getOutput(self)
             output.data = []
             output.data = [self.rightY, self.leftY, self.rightRotation, self.leftRotation]
-            rospy.loginfo(output)
             pub.publish(output)
             rate.sleep()
         
     def getOutput(self):
-        if(self.emotion):
-            self.rightY = 20
-            self.leftY = 20
-            self.rightRotation = 50
-            self.leftRotation = 50
-        elif(self.emotion == 1):
-            self.rightY = 80
-            self.leftY = 80
-            self.rightRotation = 40
-            self.leftRotation = 40
-        elif(self.emotion == 2):
-            self.rightY = 15
-            self.leftY = 15
-            self.rightRotation = 0
-            self.leftRotation = 0
-        elif(self.emotion == 3):
-            self.rightY = 20
-            self.leftY = 20
-            self.rightRotation = 100
-            self.leftRotation = 100
-        elif(self.emotion == 4):
-            self.rightY = 70
-            self.leftY = 70
-            self.rightRotation = 30
-            self.leftRotation = 30
+        if(self.emotion == EMOTIONS["standard"]):                       # Standard
+            self.rightY = self.rightY_standard_params                   # 65
+            self.leftY = self.leftY_standard_params                     # 50
+            self.rightRotation = self.rightRotation_standard_params     # 85     
+            self.leftRotation = self.leftRotation_standard_params       # 130
+        elif(self.emotion == EMOTIONS["happy"]):                        # Happy
+            self.rightY = self.rightY_happy_params                      # 130
+            self.leftY = self.leftY_happy_params                        # 105
+            self.rightRotation = self.rightRotation_happy_params        # 80
+            self.leftRotation = self.leftRotation_happy_params          # 125
+        elif(self.emotion == EMOTIONS["sad"]):                          # Sad
+            self.rightY = self.rightY_sad_params                        # 65
+            self.leftY = self.leftY_sad_params                          # 50
+            self.rightRotation = self.rightRotation_sad_params          # 45
+            self.leftRotation = self.leftRotation_sad_params            # 20
+        elif(self.emotion == EMOTIONS["rage"]):                         # Rage
+            self.rightY = self.rightY_rage_params                       # 20
+            self.leftY = self.leftY_rage_params                         # 20
+            self.rightRotation = self.rightRotation_rage_params         # 140
+            self.leftRotation = self.leftRotation_rage_params           # 160
+        elif(self.emotion == EMOTIONS["scared"]):                       # Scared
+            self.rightY = self.rightY_scared_params                     # 130
+            self.leftY = self.leftY_scared_params                       # 105
+            self.rightRotation = self.rightRotation_scared_params       # 75
+            self.leftRotation = self.leftRotation_scared_params         # 120
 
     def getEyebrown_st(self, msg):
         self.data = msg.data
         self.emotion = self.data
 
+    def _readParameters(self):
+        self.rightY_standard_params = rospy.get_param("butia_emotions/eyebrown/standard/rightY")
+        self.leftY_standard_params = rospy.get_param("butia_emotions/eyebrown/standard/leftY")
+        self.rightRotation_standard_params = rospy.get_param("butia_emotions/eyebrown/standard/rightRotation")
+        self.leftRotation_standard_params = rospy.get_param("butia_emotions/eyebrown/standard/leftRotation")
+
+        self.rightY_happy_params = rospy.get_param("butia_emotions/eyebrown/happy/rightY")
+        self.leftY_happy_params = rospy.get_param("butia_emotions/eyebrown/happy/leftY")
+        self.rightRotation_happy_params = rospy.get_param("butia_emotions/eyebrown/happy/rightRotation")
+        self.leftRotation_happy_params = rospy.get_param("butia_emotions/eyebrown/happy/leftRotation")
+
+        self.rightY_sad_params = rospy.get_param("butia_emotions/eyebrown/sad/rightY")
+        self.leftY_sad_params = rospy.get_param("butia_emotions/eyebrown/sad/leftY")
+        self.rightRotation_sad_params = rospy.get_param("butia_emotions/eyebrown/sad/rightRotation")
+        self.leftRotation_sad_params = rospy.get_param("butia_emotions/eyebrown/sad/leftRotation")
+
+        self.rightY_rage_params = rospy.get_param("butia_emotions/eyebrown/rage/rightY")
+        self.leftY_rage_params = rospy.get_param("butia_emotions/eyebrown/rage/leftY")
+        self.rightRotation_rage_params = rospy.get_param("butia_emotions/eyebrown/rage/rightRotation")
+        self.leftRotation_rage_params = rospy.get_param("butia_emotions/eyebrown/rage/leftRotation")
+
+        self.rightY_scared_params = rospy.get_param("butia_emotions/eyebrown/scared/rightY")
+        self.leftY_scared_params = rospy.get_param("butia_emotions/eyebrown/scared/leftY")
+        self.rightRotation_scared_params = rospy.get_param("butia_emotions/eyebrown/scared/rightRotation")
+        self.leftRotation_scared_params = rospy.get_param("butia_emotions/eyebrown/scared/leftRotation")
+
 if __name__ == '__main__':
     try:
         eyebrownEnable()
     except rospy.ROSInterruptException:
-        print(f'****\n\n\n\n\n\n')
-        print('Error on eyebrownEnable()',end='\n\n\n\n\n\n\n\n\n\n')
+        pass
