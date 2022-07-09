@@ -21,24 +21,24 @@ MOTORS_IDX = {
 }
 
 class dataflowEnable():
-
     def __init__(self, pause=False):
         self.pause = pause
 
         rospy.init_node('dataController', anonymous=False)
         rate = rospy.Rate(100) # 100hz
 
-        port = DxlComm("/dev/ttyUSB0")
+        self.neck_port = DxlComm("/dev/ttyUSB0")
 
         self.neckHorizontal = Joint(62)
         self.neckVertical = Joint(61)
 
-        port.attachJoint(self.neckVertical)
-        port.attachJoint(self.neckHorizontal)
+        self.neck_port.attachJoint(self.neckVertical)
+        self.neck_port.attachJoint(self.neckHorizontal)
 
         # Ativa o torque dos motores, por seguranca
         self.neckHorizontal.enableTorque()
         self.neckVertical.enableTorque()
+
 
         # Define the output vector
         self.motors = [50] * 13
@@ -111,8 +111,6 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["EyelidLeftUp"]] = data[1]
         self.motors[MOTORS_IDX["EyelidRightDown"]] = data[2]
         self.motors[MOTORS_IDX["EyelidLeftDown"]] = data[3]
-        self.motors[11] = data[2]
-        self.motors[12] = data[0]
 
     def getEyebrown(self, msg):
         data = msg.data
@@ -123,8 +121,8 @@ class dataflowEnable():
 
     def getNeck(self, msg):
        data = msg.data
-       self.motors[MOTORS_IDX["NeckHorizontal"]] = data[0]
-       self.motors[MOTORS_IDX["NeckVertical"]] = data[1]
+       self.motors[MOTORS_IDX["NeckHorizontal"]] = (data[0] * 3.1415)/180
+       self.motors[MOTORS_IDX["NeckVertical"]] = (data[1] * 3.1415)/180
 
 if __name__ == '__main__':
     try:
