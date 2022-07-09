@@ -5,6 +5,7 @@ import time
 import threading
 from std_msgs.msg import (Int16MultiArray, Int16)
 from PyDynamixel import DxlComm, Joint
+from std_msgs.msg import Float64MultiArray
 
 MOTORS_IDX = {
     "EyebrowRightHeight": 0,
@@ -18,12 +19,26 @@ MOTORS_IDX = {
     "EyeHorizontal": 8,
     "EyeVertical": 9,
     "Mouth": 10,
+    "NeckHorizontal": 11,
+    "NeckVertical": 12,
 }
 
 class dataflowEnable():
     def __init__(self):
         rospy.init_node('dataController', anonymous=False)
         rate = rospy.Rate(100) # 100hz
+
+        port = DxlComm("/dev/ttyUSB0")
+
+        self.neckHorizontal = Joint(62)
+        self.neckVertical = Joint(61)
+
+        port.attachJoint(self.neckVertical)
+        port.attachJoint(self.neckHorizontal)
+
+        # Ativa o torque dos motores, por seguranca
+        self.neckHorizontal.enableTorque()
+        self.neckVertical.enableTorque()
 
         # Define the output vector
         self.motors = [50] * 13
@@ -48,29 +63,15 @@ class dataflowEnable():
         self.sub_eyebrown.data = []  
         self.sub_eyebrown = rospy.Subscriber('eyebrown', Int16MultiArray, self.getEyebrown)
 
-        #self.sub_neck = Int16MultiArray()
-        #self.sub_neck.data = []  
-        #self.sub_neck = rospy.Subscriber('neck', Int16MultiArray, self.getNeck)
+        self.sub_neck = Float64MultiArray()
+        self.sub_neck.data = []  
+        self.sub_neck = rospy.Subscriber('neck', Float64MultiArray, self.getNeck)
 
         # updateLoop = threading.Thread(name = 'send2Arduino', target = dataflowEnable.sendArduino, args = (self,))
         # updateLoop.setDaemon(True)
         # updateLoop.start()
 
-        while not rospy.is_shutdown():
-            # 0 - EyebrowRightHeight
-            # 1 - EyebrowLeftHeight
-            # 2 - EyebrowRightAngle
-            # 3 - EyebrowLeftAngle
-            # 4 - EyelidRightUp
-            # 5 - EyelidLeftUp
-            # 6 - EyelidRightDown
-            # 7 - EyelidLeftDown
-            # 8 - EyeHorizontal
-            # 9 - EyeVertical
-            # 10 - Mouth
-
-            # print (self.motors)
-            
+        while not rospy.is_shutdown():            
             self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
             self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
             self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
@@ -82,6 +83,8 @@ class dataflowEnable():
             self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
             self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
             self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
+            self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
+            self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
             rate.sleep()
 
     def getMouth(self, msg):
@@ -114,39 +117,8 @@ class dataflowEnable():
 
     def getNeck(self, msg):
        data = msg.data
-       self.motors[12] = data[0]
-       self.motors[13] = data[1]
-
-    def sendArduino(self):
-        while(True):
-            # 0 - EyebrowRightHeight
-            # 1 - EyebrowLeftHeight
-            # 2 - EyebrowRightAngle
-            # 3 - EyebrowLeftAngle
-            # 4 - EyelidRightUp
-            # 5 - EyelidLeftUp
-            # 6 - EyelidRightDown
-            # 7 - EyelidLeftDown
-            # 8 - EyeHorizontal
-            # 9 - EyeVertical
-            # 10 - Mouth
-
-            print (self.motors)
-
-            
-            self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
-            self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
-            self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
-            self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
-            #self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
-            self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
-            self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
-            self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
-            self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
-            self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
-            self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
-            
-            time.sleep(0.001)
+       self.motors[MOTORS_IDX["NeckHorizontal"]] = data[0]
+       self.motors[MOTORS_IDX["NeckVertical"]] = data[1]
 
 if __name__ == '__main__':
     try:

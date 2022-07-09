@@ -11,11 +11,6 @@ import map as mp
 h = 50
 frequency = 3.5
 
-#animationUpper = float(3)
-animationUpper = 0
-#animationDown = float (3)
-animationDown = 0
-
 EMOTIONS = {
     "standard": 0,
     "happy": 1,
@@ -26,12 +21,14 @@ EMOTIONS = {
 
 class eyelidEnable():
     def __init__(self):
-        pub = rospy.Publisher('eyelid', Int16MultiArray, queue_size=10)
         rospy.init_node('eyelidEnable', anonymous=False)
+        pub = rospy.Publisher('eyelid', Int16MultiArray, queue_size=10)
+
         self.sub_eyelid_st = rospy.Subscriber('emotion', Int16, self.getEyelid_st)
-        self.sub_eyelid_dn = Int16MultiArray()
-        self.sub_eyelid_dn.data = []   
-        self.sub_eyelid_dn = rospy.Subscriber('eye', Int16MultiArray, self.getEyelid_dn)
+        # self.sub_eyelid_dn = Int16MultiArray()
+        # self.sub_eyelid_dn.data = []   
+        # self.sub_eyelid_dn = rospy.Subscriber('eye', Int16MultiArray, self.getEyelid_dn)
+        
         rate = rospy.Rate(30)
 
         # Define the output vector
@@ -51,7 +48,7 @@ class eyelidEnable():
         blinkLoop.start()
 
         while not rospy.is_shutdown():
-            eyelidEnable.getOutput(self)
+            self.getOutput()
             pub.publish(self.output)
             rate.sleep()
         
@@ -59,7 +56,7 @@ class eyelidEnable():
         if (self.animation == 1):
             pass
         elif(self.animation == 0): 
-            eyelidEnable.setValues(self)
+            self.setValues()
     
     def setValues(self):
         if(self.y > 50):
@@ -71,8 +68,8 @@ class eyelidEnable():
             self.down = 140 - (h + self.y)
             self.output.data = [self.upper, self.upper, self.down, self.down]
         elif(self.y == 50):
-            self.upper = h
-            self.down = h
+            self.upper = 100-h
+            self.down = 100-h
             self.output.data = [self.upper, self.upper, self.down, self.down]
 
     def getEyelid_dn(self, msg):
@@ -117,19 +114,13 @@ class eyelidEnable():
     
     def blink(self):
         while(True):
+            time.sleep(0.3)
+            self.output.data = [100, 100, 100, 100]
             self.animation = 1
-            eyelidEnable.setValues(self)
-
             time.sleep(0.3)
-            saveup = self.upper
-            savedown = self.down
-            self.output.data = [0, 0, 0, 0]
-
-            time.sleep(0.3)
-
-            self.output.data = [saveup, saveup, savedown, savedown]
-
+            self.setValues()
             self.animation = 0
+            
             time.sleep(frequency)  
             
 
