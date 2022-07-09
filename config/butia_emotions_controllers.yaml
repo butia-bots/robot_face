@@ -55,22 +55,23 @@ butia_emotions:
       frequency: 1
 
   neck:
+
     standard:
       horizontal: 180
-      vertical: 0
+      vertical: 180
 
     happy:
       horizontal: 180
-      vertical: 0
+      vertical: 180
     
     sad:
       horizontal: 180
-      vertical: 0
+      vertical: 180
 
     rage:
       horizontal: 180
-      vertical: 0
+      vertical: 180
 
     scared:
       horizontal: 180
-      vertical: 0
+      vertical: 180
