@@ -32,7 +32,7 @@ class dataflowEnable():
             # self.neck_port = DxlCommProtocol2("/dev/ttyUSB0") 
 
             # If use Dynamixel Protocol 2, uncomment the next line
-            self.neck_port = DxlCommProtocol2("/dev/ttyUSB0")
+            self.neck_port = DxlCommProtocol2("/dev/ttyNECK")
 
             # If use Dynamixel Protocol 1, uncomment the next two lines
             # self.neckHorizontal = JointProtocol1(62)
@@ -51,13 +51,13 @@ class dataflowEnable():
 
             self.neckHorizontal.setVelocityLimit(limit=80)
             self.neckVertical.setVelocityLimit(limit=40)
-        except:
-            pass
+        except Exception as e:
+            print("Neck port don't connected.")
 
         # Define the output vector
         self.motors = [50] * 13
 
-        self.port = DxlCommProtocol1(commPort="/dev/ttyACM0")
+        self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
         self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
 
@@ -100,12 +100,12 @@ class dataflowEnable():
                 self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
                 self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
                 self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
-                # self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
-                # self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
+                self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
+                self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
             rate.sleep()
     
     def setPause(self, msg):
-        self.pause = msg.data
+        self.pause = not msg.data
 
     def getMouth(self, msg):
         data = msg.data

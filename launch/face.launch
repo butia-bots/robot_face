@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="output" default="$(arg output)"/>
+    <arg name="output" default="screen"/>
     <rosparam file="$(find robotFace)/config/butia_emotions_controllers.yaml" command="load"/>
 
     <node pkg="robotFace" type="eyelidController.py" name="eyelidController" output="$(arg output)" />
