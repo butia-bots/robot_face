@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import pyjoints as pj
+import PyDynamixel.pyjoints_protocol1 as pj
 from math import pi
 from time import sleep
 

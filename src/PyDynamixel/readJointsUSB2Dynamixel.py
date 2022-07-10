@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from pyjoints import DxlComm, Joint
+from PyDynamixel.pyjoints_protocol1 import DxlComm, Joint
 
 port = DxlComm('/dev/ttyUSB0',8)
 
@@ -13,14 +13,14 @@ port.attachJoints(torso_joints)
 
 for i in range(1023):
     port.receiveCurrAngles()
-    print 'lleg',
+    print( 'lleg'),
     for joint in lleg_joints:
-        print str(joint.servo_id)+":"+str(joint.currValue),
-    print 'rleg',
+        print( str(joint.servo_id)+":"+str(joint.currValue)),
+    print( 'rleg'),
     for joint in rleg_joints:
-        print str(joint.servo_id)+":"+str(joint.currValue),
-    print 'trunk',
+        print( str(joint.servo_id)+":"+str(joint.currValue)),
+    print( 'trunk'),
     for joint in torso_joints:
-        print str(joint.servo_id)+":"+str(joint.currValue),
+        print( str(joint.servo_id)+":"+str(joint.currValue)),
     print
 

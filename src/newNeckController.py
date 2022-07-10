@@ -3,7 +3,6 @@
 import rospy
 import numpy as np
 import sys
-from PyDynamixel import DxlComm, Joint
 from std_msgs.msg import Float64MultiArray, Int16
 
 EMOTIONS = {

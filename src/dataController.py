@@ -2,7 +2,7 @@
 
 import rospy
 from std_msgs.msg import Int16MultiArray, Bool, Float64MultiArray
-from PyDynamixel import DxlComm, Joint
+from PyDynamixel import DxlCommProtocol1, DxlCommProtocol2, JointProtocol1, JointProtocol2
 
 MOTORS_IDX = {
     "EyebrowRightHeight": 0,
@@ -27,27 +27,41 @@ class dataflowEnable():
         rospy.init_node('dataController', anonymous=False)
         rate = rospy.Rate(100) # 100hz
 
-        self.neck_port = DxlComm("/dev/ttyUSB0")
+        try:
+            # If use Dynamixel Protocol 1, uncomment the next line
+            # self.neck_port = DxlCommProtocol2("/dev/ttyUSB0") 
 
-        self.neckHorizontal = Joint(62)
-        self.neckVertical = Joint(61)
+            # If use Dynamixel Protocol 2, uncomment the next line
+            self.neck_port = DxlCommProtocol2("/dev/ttyUSB0")
 
-        self.neck_port.attachJoint(self.neckVertical)
-        self.neck_port.attachJoint(self.neckHorizontal)
+            # If use Dynamixel Protocol 1, uncomment the next two lines
+            # self.neckHorizontal = JointProtocol1(62)
+            # self.neckVertical = JointProtocol1(61)
 
-        # Ativa o torque dos motores, por seguranca
-        self.neckHorizontal.enableTorque()
-        self.neckVertical.enableTorque()
+            # If use Dynamixel Protocol 2, uncomment the next two lines
+            self.neckHorizontal = JointProtocol2(62)
+            self.neckVertical = JointProtocol2(61)
 
+            self.neck_port.attachJoint(self.neckVertical)
+            self.neck_port.attachJoint(self.neckHorizontal)
+
+            # Ativa o torque dos motores, por seguranca
+            self.neckHorizontal.enableTorque()
+            self.neckVertical.enableTorque()
+
+            self.neckHorizontal.setVelocityLimit(limit=80)
+            self.neckVertical.setVelocityLimit(limit=40)
+        except:
+            pass
 
         # Define the output vector
         self.motors = [50] * 13
 
-        self.port = DxlComm(commPort="/dev/ttyACM0")
-        self.joint = Joint(128)
+        self.port = DxlCommProtocol1(commPort="/dev/ttyACM0")
+        self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
 
-        rospy.Subscriber("emergency_stop", Bool, self.setPause)
+        rospy.Subscriber("/RosAria/motors_state", Bool, self.setPause)
 
         self.sub_mouth = Int16MultiArray()
         self.sub_mouth.data = []  
@@ -86,8 +100,8 @@ class dataflowEnable():
                 self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
                 self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
                 self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
-                self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
-                self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
+                # self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
+                # self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
             rate.sleep()
     
     def setPause(self, msg):

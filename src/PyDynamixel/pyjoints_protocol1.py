@@ -7,10 +7,10 @@ import dynamixel_sdk as dxl
 #sys.path.append('/home/jardel/Workspace/faceDoris/src/robotFace/src/PyDynamixel/dynamixel')
 #import dynamixel_functions as dxl
 
-ADDR_MX_TORQUE_ENABLE = 0x18  # Address for torque enable
-ADDR_MX_PRESENT_POSITION = 0x24 # Address for the current position
-ADDR_MX_GOAL_POSITION = 0x1E # Address for goal position
-MAXADDR_MX_TORQUE_ENABLE = 0x0E # Address for maximum torque
+ADDR_MX_TORQUE_ENABLE = 24  # Address for torque enable
+ADDR_MX_PRESENT_POSITION = 36 # Address for the current position
+ADDR_MX_GOAL_POSITION = 30 # Address for goal position
+MAXADDR_MX_TORQUE_ENABLE = 14 # Address for maximum torque
 MAXTORQUELIMIT = 767 # Maximum torque possible
 
 PROTOCOL_VERSION            = 1
@@ -19,7 +19,7 @@ COMM_TX_FAIL                = -1001                         # Communication Tx F
 
 BROADCAST_ID = 254
 
-class DxlComm(object):
+class DxlCommProtocol1(object):
     ''' This class implements low level
     communication with the dynamixel
     protocol.
@@ -133,8 +133,7 @@ class DxlComm(object):
         ''' Enable torque for all motors connected
         in this port.
         '''
-        self.pack_handler.write1ByteTxRx(self.socket, BROADCAST_ID, \
-                ADDR_MX_TORQUE_ENABLE, 1)
+        self.pack_handler.write1ByteTxRx(self.socket, BROADCAST_ID, ADDR_MX_TORQUE_ENABLE, 1)
 
     def disableTorques(self):
 
@@ -156,7 +155,7 @@ class DxlComm(object):
         for joint in self.joints:
             joint.receiveCurrAngle()
 
-class Joint(object):
+class JointProtocol1(object):
 
     ''' This class represents a Dynamixel
     servo motor.
