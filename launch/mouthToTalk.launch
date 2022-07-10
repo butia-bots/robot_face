@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <launch>
 
-    <rosparam file="$(find butia_face)/config/butia_emotions_controllers.yaml" command="load"/>
+    <rosparam file="$(find robotFace)/config/butia_emotions_controllers.yaml" command="load"/>
     
     <include file="$(find butia_speech)/launch/synthesizer_speech.launch"/>
 

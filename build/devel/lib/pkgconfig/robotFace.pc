@@ -1,8 +1,8 @@
-prefix=/home/victor_kich/faceDoris/src/butia_face/build/devel
+prefix=/home/victor_kich/faceDoris/src/robotFace/build/devel
 
-Name: butia_face
-Description: Description of butia_face
+Name: robotFace
+Description: Description of robotFace
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/victor_kich/faceDoris/src/butia_face/build/devel/lib 
+Libs: -L/home/victor_kich/faceDoris/src/robotFace/build/devel/lib 
 Requires: 

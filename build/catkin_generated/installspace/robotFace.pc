@@ -1,7 +1,7 @@
 prefix=/usr/local
 
-Name: butia_face
-Description: Description of butia_face
+Name: robotFace
+Description: Description of robotFace
 Version: 0.0.0
 Cflags: 
 Libs: -L/usr/local/lib 

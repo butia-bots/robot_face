@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="output" default="$(arg output)"/>
-    <rosparam file="$(find butia_face)/config/butia_emotions_controllers.yaml" command="load"/>
+    <rosparam file="$(find robotFace)/config/butia_emotions_controllers.yaml" command="load"/>
 
-    <node pkg="butia_face" type="eyelidController.py" name="eyelidController" output="$(arg output)" />
-    <node pkg="butia_face" type="eyebrownController.py" name="eyebrowController" output="$(arg output)" />
-    <node pkg="butia_face" type="emotionController.py" name="emotionController" output="$(arg output)" />
-    <node pkg="butia_face" type="newNeckController.py" name="newNeckController" output="$(arg output)" />
-    <node pkg="butia_face" type="dataController.py" name="dataController" output="$(arg output)" />
+    <node pkg="robotFace" type="eyelidController.py" name="eyelidController" output="$(arg output)" />
+    <node pkg="robotFace" type="eyebrownController.py" name="eyebrowController" output="$(arg output)" />
+    <node pkg="robotFace" type="emotionController.py" name="emotionController" output="$(arg output)" />
+    <node pkg="robotFace" type="newNeckController.py" name="newNeckController" output="$(arg output)" />
+    <node pkg="robotFace" type="dataController.py" name="dataController" output="$(arg output)" />
 </launch>
