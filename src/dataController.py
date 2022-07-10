@@ -57,6 +57,18 @@ class dataflowEnable():
         # Define the output vector
         self.motors = [50] * 13
 
+        self.motors[MOTORS_IDX["EyebrowRightHeight"]] = 20
+        self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = 20
+        self.motors[MOTORS_IDX["EyebrowRightAngle"]] = 50
+        self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = 50
+        self.motors[MOTORS_IDX["EyelidRightUp"]] = 20
+        self.motors[MOTORS_IDX["EyelidLeftUp"]] = 20
+        self.motors[MOTORS_IDX["EyelidRightDown"]] = 20
+        self.motors[MOTORS_IDX["EyelidLeftDown"]] = 20
+        self.motors[MOTORS_IDX["EyeHorizontal"]] = 40
+        self.motors[MOTORS_IDX["EyeVertical"]] = 85
+        self.motors[MOTORS_IDX["Mouth"]] = 100
+
         self.port = DxlCommProtocol1(commPort="/dev/ttyACM0")
         self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
