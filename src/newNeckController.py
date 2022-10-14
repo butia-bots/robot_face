@@ -88,10 +88,19 @@ def get(msg):
     neckData.data = [float(horizontal), float(vertical)]
     neckPub.publish(neckData)
 
+def set_initial_position():
+    horizontal = 180
+    vertical = 0
+
+    neckData = Float64MultiArray()
+
+    neckData.data = [float(horizontal), float(vertical)]
+    neckPub.publish(neckData)
+
 if __name__ == '__main__':
     rospy.init_node('neckController', anonymous=False)    
     neckPub = rospy.Publisher("neck", Float64MultiArray, queue_size = 10)
-    _readParameters()
+    # _readParameters()
 
-    rospy.Subscriber("emotion", Int16, get)
-    rospy.spin()
+    set_initial_position()
+
