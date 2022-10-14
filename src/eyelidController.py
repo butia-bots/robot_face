@@ -43,9 +43,9 @@ class eyelidEnable():
         self._readParameters()
 
         # Start blink thread
-        blinkLoop = threading.Thread(name = 'blink', target = eyelidEnable.blink, args = (self,))
+        '''blinkLoop = threading.Thread(name = 'blink', target = eyelidEnable.blink, args = (self,))
         blinkLoop.setDaemon(True)
-        blinkLoop.start()
+        blinkLoop.start()'''
 
         while not rospy.is_shutdown():
             self.getOutput()
@@ -82,19 +82,19 @@ class eyelidEnable():
         self.data = msg.data
         if(self.data == EMOTIONS["standard"]):
             h = self.h_standard_params
-            frequency = self.frequency_standard_params
+            frequency = 0
         elif(self.data == EMOTIONS["happy"]):
             h = self.h_happy_params 
-            frequency = self.frequency_happy_params 
+            frequency = 0
         elif(self.data == EMOTIONS["sad"]):   
             h = self.h_sad_params
-            frequency = self.frequency_sad_params
+            frequency = 0
         elif(self.data == EMOTIONS["rage"]):
             h = self.h_rage_params
-            frequency = self.frequency_rage_params
+            frequency = 0
         elif(self.data == EMOTIONS["scared"]):  
             h = self.h_scared_params
-            frequency = self.frequency_scared_params
+            frequency = 0
 
     def _readParameters(self):
         self.h_standard_params = rospy.get_param("butia_emotions/eyelid/standard/h")
@@ -113,6 +113,8 @@ class eyelidEnable():
         self.frequency_scared_params = rospy.get_param("butia_emotions/eyelid/scared/frequency")
     
     def blink(self):
+        pass
+        '''
         while(True):
             time.sleep(0.3)
             self.output.data = [100, 100, 100, 100]
@@ -122,6 +124,7 @@ class eyelidEnable():
             self.animation = 0
             
             time.sleep(frequency)  
+        '''
             
 
 if __name__ == '__main__':

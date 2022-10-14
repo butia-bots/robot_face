@@ -68,6 +68,8 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["EyeHorizontal"]] = 40
         self.motors[MOTORS_IDX["EyeVertical"]] = 85
         self.motors[MOTORS_IDX["Mouth"]] = 100
+        self.motors[MOTORS_IDX["NeckHorizontal"]] = 3.1415
+        self.motors[MOTORS_IDX["NeckVertical"]] = 3.1415
 
         self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
         self.joint = JointProtocol1(128)

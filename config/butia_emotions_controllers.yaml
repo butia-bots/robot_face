@@ -36,23 +36,23 @@ butia_emotions:
 
     standard:
       h: 80
-      frequency: 2
+      frequency: 0
 
     happy:
       h: 100
-      frequency: 3
+      frequency: 0
 
     sad:
       h: 50
-      frequency: 3
+      frequency: 0
 
     rage:
       h: 60
-      frequency: 3
+      frequency: 0
 
     scared:
       h: 90
-      frequency: 1
+      frequency: 0
 
   neck:
 

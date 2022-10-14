@@ -30,6 +30,7 @@ vertical_rage_params = 0
 horizontal_scared_params = 0
 vertical_scared_params = 0
 
+'''
 def _readParameters():
     global horizontal_standard_params
     global vertical_standard_params
@@ -60,7 +61,8 @@ def _readParameters():
 
     horizontal_scared_params = rospy.get_param("butia_emotions/neck/scared/horizontal")
     vertical_scared_params = rospy.get_param("butia_emotions/neck/scared/vertical")
-
+'''
+"""
 def get(msg):
     neckData = Float64MultiArray()
 
@@ -87,10 +89,10 @@ def get(msg):
 
     neckData.data = [float(horizontal), float(vertical)]
     neckPub.publish(neckData)
-
+"""
 def set_initial_position():
     horizontal = 180
-    vertical = 0
+    vertical = 180
 
     neckData = Float64MultiArray()
 
@@ -100,7 +102,6 @@ def set_initial_position():
 if __name__ == '__main__':
     rospy.init_node('neckController', anonymous=False)    
     neckPub = rospy.Publisher("neck", Float64MultiArray, queue_size = 10)
-    # _readParameters()
 
-    set_initial_position()
+    # set_initial_position()
 
