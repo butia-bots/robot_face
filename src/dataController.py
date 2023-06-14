@@ -101,6 +101,15 @@ class dataflowEnable():
 
         self.pub_neck = JointState()
         self.pub_neck.data = []  
+
+        self.pub_neck.name = "horizontal_neck_joint"
+        self.pub_neck.header.seq = 62
+        self.pub_neck.header.stamp = 1.0
+        self.pub_neck.header.frame_id = 'kinect_camera_model_link'
+        self.pub_neck.position = 0.0
+        self.pub_neck.velocity = 0.1
+        self.pub_neck.effort = 0.0
+        
         self.pub_neck = rospy.Publisher('/doris_arm/joint_states', JointState)
 
         # updateLoop = threading.Thread(name = 'send2Arduino', target = dataflowEnable.sendArduino, args = (self,))
@@ -122,12 +131,11 @@ class dataflowEnable():
                 self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
                 self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
                 self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
-
-                self.pub_neck.publish(self.neckHorizontal(self.motors[MOTORS_IDX["NeckHorizontal"]])) # Ajustar sendGoalAngle
             rate.sleep()
     
     def setPause(self, msg):
         self.pause = not msg.data
+
 
     def getMouth(self, msg):
         data = msg.data
