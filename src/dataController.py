@@ -73,6 +73,7 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["NeckHorizontal"]] = 3.1415
         self.motors[MOTORS_IDX["NeckVertical"]] = 3.1415
 
+        self.seq = 0
         self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
         self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
@@ -100,16 +101,13 @@ class dataflowEnable():
         self.sub_neck = rospy.Subscriber('neck', Float64MultiArray, self.getNeck)
 
         self.pub_neck = JointState()
-        self.pub_neck.data = []  
+        self.pub_neck.data = []
 
-        self.pub_neck.name = "horizontal_neck_joint"
-        self.pub_neck.header.seq = 62
-        self.pub_neck.header.stamp = 1.0
-        self.pub_neck.header.frame_id = 'kinect_camera_model_link'
-        self.pub_neck.position = 0.0
-        self.pub_neck.velocity = 0.1
-        self.pub_neck.effort = 0.0
-        
+        self.joints_dict = {
+            'horizontal_neck_joint': (0., 0., 0.),
+            'vertical_neck_joint': (0., 0., 0.)
+        }
+
         self.pub_neck = rospy.Publisher('/doris_arm/joint_states', JointState)
 
         # updateLoop = threading.Thread(name = 'send2Arduino', target = dataflowEnable.sendArduino, args = (self,))
@@ -131,11 +129,36 @@ class dataflowEnable():
                 self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
                 self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
                 self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
+                self.publishJoints()
             rate.sleep()
+    
+    def publishJoints(self):
+        msg = JointState()
+
+        # Nome da joint no URDF do Kinect
+        msg.header.seq = self.seq
+        msg.header.stamp = rospy.get_rostime()
+        
+        msg.name = []
+        msg.position = []
+        msg.velocity = []
+        msg.effort = []
+
+        for key, value in self.joints_dict.items():
+            p, v, e = value
+            msg.name.append(key)
+            msg.position.append(p)
+            msg.velocity.append(v)
+            msg.effort.append(e)
+
+        # Publica a mensagem
+        self.pub_neck.publish(msg)
+
+        # Incrementa seq
+        self.seq += 1
     
     def setPause(self, msg):
         self.pause = not msg.data
-
 
     def getMouth(self, msg):
         data = msg.data
@@ -165,8 +188,14 @@ class dataflowEnable():
 
     def getNeck(self, msg):
        data = msg.data
-       self.motors[MOTORS_IDX["NeckHorizontal"]] = (data[0] * 3.1415)/180
-       self.motors[MOTORS_IDX["NeckVertical"]] = (data[1] * 3.1415)/180
+       pos_horizontal = (data[0] * 3.1415)/180
+       pos_vertical = (data[1] * 3.1415)/180
+
+       self.motors[MOTORS_IDX["NeckHorizontal"]] = pos_horizontal
+       self.joints_dict['horizontal_neck_joint'] = (pos_horizontal, 0., 0.)
+       
+       self.motors[MOTORS_IDX["NeckVertical"]] = pos_vertical
+       self.joints_dict['vertical_neck_joint'] = (pos_vertical, 0., 0.)
 
 if __name__ == '__main__':
     try:
