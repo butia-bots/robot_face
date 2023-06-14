@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import rospy
+
+from sensor_msgs.msg import JointState
 from std_msgs.msg import Int16MultiArray, Bool, Float64MultiArray
 from PyDynamixel import DxlCommProtocol1, DxlCommProtocol2, JointProtocol1, JointProtocol2
 
@@ -97,6 +99,10 @@ class dataflowEnable():
         self.sub_neck.data = []  
         self.sub_neck = rospy.Subscriber('neck', Float64MultiArray, self.getNeck)
 
+        self.pub_neck = JointState()
+        self.pub_neck.data = []  
+        self.pub_neck = rospy.Publisher('/doris_arm/joint_states', JointState)
+
         # updateLoop = threading.Thread(name = 'send2Arduino', target = dataflowEnable.sendArduino, args = (self,))
         # updateLoop.setDaemon(True)
         # updateLoop.start()
@@ -116,6 +122,8 @@ class dataflowEnable():
                 self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
                 self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
                 self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
+
+                self.pub_neck.publish(self.neckHorizontal(self.motors[MOTORS_IDX["NeckHorizontal"]])) # Ajustar sendGoalAngle
             rate.sleep()
     
     def setPause(self, msg):
