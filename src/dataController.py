@@ -100,15 +100,12 @@ class dataflowEnable():
         self.sub_neck.data = []  
         self.sub_neck = rospy.Subscriber('neck', Float64MultiArray, self.getNeck)
 
-        self.pub_neck = JointState()
-        self.pub_neck.data = []
-
         self.joints_dict = {
             'horizontal_neck_joint': (0., 0., 0.),
             'vertical_neck_joint': (0., 0., 0.)
         }
 
-        self.pub_neck = rospy.Publisher('/doris_arm/joint_states', JointState)
+        self.pub_neck = rospy.Publisher('/doris_head/joint_states', JointState, queue_size=10)
 
         # updateLoop = threading.Thread(name = 'send2Arduino', target = dataflowEnable.sendArduino, args = (self,))
         # updateLoop.setDaemon(True)
@@ -192,10 +189,10 @@ class dataflowEnable():
        pos_vertical = (data[1] * 3.1415)/180
 
        self.motors[MOTORS_IDX["NeckHorizontal"]] = pos_horizontal
-       self.joints_dict['horizontal_neck_joint'] = (pos_horizontal, 0., 0.)
+       self.joints_dict['horizontal_neck_joint'] = (pos_horizontal-3.1415, 0., 0.)
        
        self.motors[MOTORS_IDX["NeckVertical"]] = pos_vertical
-       self.joints_dict['vertical_neck_joint'] = (pos_vertical, 0., 0.)
+       self.joints_dict['vertical_neck_joint'] = (pos_vertical-3.1415, 0., 0.)
 
 if __name__ == '__main__':
     try:
