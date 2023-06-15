@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
+import numpy as np
 
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Int16MultiArray, Bool, Float64MultiArray
@@ -102,7 +103,8 @@ class dataflowEnable():
 
         self.joints_dict = {
             'horizontal_neck_joint': (0., 0., 0.),
-            'vertical_neck_joint': (0., 0., 0.)
+            'vertical_neck_joint': (0., 0., 0.),
+            'kinect2_joint': (0., 0., 0.)
         }
 
         self.pub_neck = rospy.Publisher('/doris_head/joint_states', JointState, queue_size=10)
@@ -126,9 +128,19 @@ class dataflowEnable():
                 self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
                 self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
                 self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
+                self.updateJointsDict()
                 self.publishJoints()
             rate.sleep()
     
+    def updateJointsDict(self):
+        pos_horizontal = self.neckHorizontal.receiveCurrAngle()
+        pos_vertical = self.neckVertical.receiveCurrAngle()
+
+        self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - 3.1415, 0., 0.)
+        self.joints_dict['kinect2_joint'] = (pos_horizontal - 3.1415, 0., 0.)
+
+        self.joints_dict['vertical_neck_joint'] = (pos_vertical - 3.1415, 0., 0.)
+
     def publishJoints(self):
         msg = JointState()
 
@@ -189,10 +201,11 @@ class dataflowEnable():
        pos_vertical = (data[1] * 3.1415)/180
 
        self.motors[MOTORS_IDX["NeckHorizontal"]] = pos_horizontal
-       self.joints_dict['horizontal_neck_joint'] = (pos_horizontal-3.1415, 0., 0.)
+       self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - 3.1415, 0., 0.)
+       self.joints_dict['kinect2_joint'] = (pos_horizontal - 3.1415, 0., 0.)
        
        self.motors[MOTORS_IDX["NeckVertical"]] = pos_vertical
-       self.joints_dict['vertical_neck_joint'] = (pos_vertical-3.1415, 0., 0.)
+       self.joints_dict['vertical_neck_joint'] = (pos_vertical - 3.1415, 0., 0.)
 
 if __name__ == '__main__':
     try:
