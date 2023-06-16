@@ -21,6 +21,8 @@ MOTORS_IDX = {
     "Mouth": 10,
     "NeckHorizontal": 11,
     "NeckVertical": 12,
+    "Pan": 13,
+    "Tilt": 14,
 }
 
 class dataflowEnable():
@@ -44,21 +46,29 @@ class dataflowEnable():
             # If use Dynamixel Protocol 2, uncomment the next two lines
             self.neckHorizontal = JointProtocol2(62)
             self.neckVertical = JointProtocol2(61)
+            self.panJoint = JointProtocol2(8)
+            self.tiltJoint = JointProtocol2(9)
 
             self.neck_port.attachJoint(self.neckVertical)
             self.neck_port.attachJoint(self.neckHorizontal)
+            self.neck_port.attachJoint(self.panJoint)
+            self.neck_port.attachJoint(self.tiltJoint)
 
             # Ativa o torque dos motores, por seguranca
             self.neckHorizontal.enableTorque()
             self.neckVertical.enableTorque()
+            self.panJoint.enableTorque()
+            self.tiltJoint.enableTorque()
 
             self.neckHorizontal.setVelocityLimit(limit=80)
             self.neckVertical.setVelocityLimit(limit=40)
+            self.panJoint.setVelocityLimit(limit=80)
+            self.tiltJoint.setVelocityLimit(limit=40)
         except Exception as e:
             print("Neck port don't connected.")
 
         # Define the output vector
-        self.motors = [0] * 13
+        self.motors = [0] * len(MOTORS_IDX.keys())
 
         self.motors[MOTORS_IDX["EyebrowRightHeight"]] = 20
         self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = 20
@@ -71,8 +81,10 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["EyeHorizontal"]] = 40
         self.motors[MOTORS_IDX["EyeVertical"]] = 85
         self.motors[MOTORS_IDX["Mouth"]] = 100
-        self.motors[MOTORS_IDX["NeckHorizontal"]] = 3.1415
-        self.motors[MOTORS_IDX["NeckVertical"]] = 3.1415
+        self.motors[MOTORS_IDX["NeckHorizontal"]] = np.pi
+        self.motors[MOTORS_IDX["NeckVertical"]] = np.pi
+        self.motors[MOTORS_IDX["Pan"]] = np.pi
+        self.motors[MOTORS_IDX["Tilt"]] = np.pi
 
         self.seq = 0
         self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
@@ -128,6 +140,8 @@ class dataflowEnable():
                 self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
                 self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
                 self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
+                self.panJoint.sendGoalAngle(self.motors[MOTORS_IDX["Pan"]])
+                self.tiltJoint.sendGoalAngle(self.motors[MOTORS_IDX["Tilt"]])
                 self.updateJointsDict()
                 self.publishJoints()
             rate.sleep()
@@ -135,11 +149,14 @@ class dataflowEnable():
     def updateJointsDict(self):
         pos_horizontal = self.neckHorizontal.receiveCurrAngle()
         pos_vertical = self.neckVertical.receiveCurrAngle()
+        pos_pan = self.panJoint.receiveCurrAngle()
+        pos_tilt = self.tiltJoint.receiveCurrAngle()
 
-        self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - 3.1415, 0., 0.)
-        self.joints_dict['kinect2_joint'] = (pos_horizontal - 3.1415, 0., 0.)
+        self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - np.pi, 0., 0.)
+        self.joints_dict['head_pan_joint'] = (pos_pan - np.pi, 0., 0.)
 
-        self.joints_dict['vertical_neck_joint'] = (pos_vertical - 3.1415, 0., 0.)
+        self.joints_dict['vertical_neck_joint'] = (-pos_vertical + np.pi, 0., 0.)
+        self.joints_dict['head_tilt_joint'] = (pos_tilt - np.pi, 0., 0.)
 
     def publishJoints(self):
         msg = JointState()
@@ -197,15 +214,14 @@ class dataflowEnable():
 
     def getNeck(self, msg):
        data = msg.data
-       pos_horizontal = (data[0] * 3.1415)/180
-       pos_vertical = (data[1] * 3.1415)/180
+       pos_horizontal = (data[0] * np.pi)/180
+       pos_vertical = (data[1] * np.pi)/180
 
        self.motors[MOTORS_IDX["NeckHorizontal"]] = pos_horizontal
-       self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - 3.1415, 0., 0.)
-       self.joints_dict['kinect2_joint'] = (pos_horizontal - 3.1415, 0., 0.)
-       
        self.motors[MOTORS_IDX["NeckVertical"]] = pos_vertical
-       self.joints_dict['vertical_neck_joint'] = (pos_vertical - 3.1415, 0., 0.)
+
+       self.motors[MOTORS_IDX["Pan"]] = pos_horizontal
+       self.motors[MOTORS_IDX["Tilt"]] = 2*np.pi - pos_vertical
 
 if __name__ == '__main__':
     try:
