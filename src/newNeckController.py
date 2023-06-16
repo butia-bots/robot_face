@@ -7,7 +7,7 @@ from std_msgs.msg import Float64MultiArray, Int16
 from std_srvs.srv import Empty, EmptyResponse
 from geometry_msgs.msg import PoseStamped
 from butia_vision_msgs.srv import LookAtDescription3D, LookAtDescription3DRequest, LookAtDescription3DResponse
-from butia_vision_msgs.msg import DescriptionIdentifier, Recognitions3D, Description3D
+from butia_vision_msgs.msg import  Recognitions3D, Description3D
 
 import tf2_ros
 
@@ -123,7 +123,7 @@ class neckController():
 
     def lookAtStart(self, req):
         self.state = neckController.STATES['LOOKAT']
-        self.lookat_description_identifier = req.description_identifier
+        self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label}
         self.lookat_sub = rospy.Subscriber(req.recognitions3d_topic, Recognitions3D, self.lookAt_st)
 
     def lookAtStop(self, req):
