@@ -32,18 +32,14 @@ class dataflowEnable():
         rospy.init_node('dataController', anonymous=False)
         rate = rospy.Rate(100) # 100hz
 
+        self.min_horizontal = 120
+        self.max_horizontal = 240
+        self.min_vertical = 170
+        self.max_vertical = 190
+
         try:
-            # If use Dynamixel Protocol 1, uncomment the next line
-            # self.neck_port = DxlCommProtocol2("/dev/ttyUSB0") 
+            self.neck_port = DxlCommProtocol2("/dev/ttyUSB0")
 
-            # If use Dynamixel Protocol 2, uncomment the next line
-            self.neck_port = DxlCommProtocol2("/dev/ttyNECK")
-
-            # If use Dynamixel Protocol 1, uncomment the next two lines
-            # self.neckHorizontal = JointProtocol1(62)
-            # self.neckVertical = JointProtocol1(61)
-
-            # If use Dynamixel Protocol 2, uncomment the next two lines
             self.neckHorizontal = JointProtocol2(62)
             self.neckVertical = JointProtocol2(61)
             self.panJoint = JointProtocol2(8)
@@ -54,7 +50,6 @@ class dataflowEnable():
             self.neck_port.attachJoint(self.panJoint)
             self.neck_port.attachJoint(self.tiltJoint)
 
-            # Ativa o torque dos motores, por seguranca
             self.neckHorizontal.enableTorque()
             self.neckVertical.enableTorque()
             self.panJoint.enableTorque()
@@ -87,9 +82,9 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["Tilt"]] = np.pi
 
         self.seq = 0
-        self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
+        #self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
         self.joint = JointProtocol1(128)
-        self.port.attachJoint(self.joint)
+        #self.port.attachJoint(self.joint)
 
         rospy.Subscriber("/RosAria/motors_state", Bool, self.setPause)
 
@@ -115,29 +110,26 @@ class dataflowEnable():
 
         self.joints_dict = {
             'horizontal_neck_joint': (0., 0., 0.),
-            'vertical_neck_joint': (0., 0., 0.),
-            'kinect2_joint': (0., 0., 0.)
+            'vertical_neck_joint':   (0., 0., 0.),
+            'head_pan_joint':        (0., 0., 0.),
+            'head_tilt_joint':       (0., 0., 0.)
         }
 
         self.pub_neck = rospy.Publisher('/doris_head/joint_states', JointState, queue_size=10)
 
-        # updateLoop = threading.Thread(name = 'send2Arduino', target = dataflowEnable.sendArduino, args = (self,))
-        # updateLoop.setDaemon(True)
-        # updateLoop.start()
-
         while not rospy.is_shutdown():
             if not self.pause: 
-                self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
-                self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
-                self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
-                self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
-                self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
-                self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
-                self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
-                self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
-                self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
-                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
-                self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
+                # self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
+                # self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
+                # self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
+                # self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
+                # self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
+                # self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
+                # self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
+                # self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
+                # self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
+                # self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
+                # self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
                 self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
                 self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
                 self.panJoint.sendGoalAngle(self.motors[MOTORS_IDX["Pan"]])
@@ -214,8 +206,8 @@ class dataflowEnable():
 
     def getNeck(self, msg):
        data = msg.data
-       pos_horizontal = (data[0] * np.pi)/180
-       pos_vertical = (data[1] * np.pi)/180
+       pos_horizontal = np.radians(min(self.max_horizontal, max(self.min_horizontal, data[0])))
+       pos_vertical = np.radians(min(self.max_vertical, max(self.min_vertical, data[1])))
 
        self.motors[MOTORS_IDX["NeckHorizontal"]] = pos_horizontal
        self.motors[MOTORS_IDX["NeckVertical"]] = pos_vertical
