@@ -10,6 +10,7 @@ from butia_vision_msgs.srv import LookAtDescription3D, LookAtDescription3DReques
 from butia_vision_msgs.msg import  Recognitions3D, Description3D
 
 import tf2_ros
+import tf2_geometry_msgs
 
 #TODO: this should be in a generic file
 EMOTIONS = {
@@ -82,9 +83,12 @@ class neckController():
                 self.horizontal = self.horizontal_scared_params                  
                 self.vertical = self.vertical_scared_params
         elif self.state == neckController.STATES['HAND_UPDATED']:
-            self.horizontal, self.vertical = self.neck_updated
+            if self.neck_updated is not None:
+                self.horizontal, self.vertical = self.neck_updated
         elif self.state == neckController.STATES['LOOKAT']:
-            self.horizontal, self.vertical = self.lookat_neck
+            if self.lookat_neck is not None:
+                self.horizontal, self.vertical = self.lookat_neck
+                print('self.horizontal, self.vertical', self.horizontal, self.vertical)
 
     def getEmotion_st(self, msg):
         self.emotion = msg.data
@@ -108,23 +112,29 @@ class neckController():
         #TODO: implement logic based on 'lookat_description_identifier'
 
         lookat_pose = PoseStamped()
-        lookat_pose.header = msg.descriptions[0].poses_header
+        header = msg.descriptions[0].poses_header
+        lookat_pose.header = header
         lookat_pose.pose = msg.descriptions[0].bbox.center
 
-        ps = self.tf_listener.transformPose('map', lookat_pose)
+        try:
+            transform = self.tf_buffer.lookup_transform('camera_link_static', header.frame_id, header.stamp)
+        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+            return
+
+        ps = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform).pose.position
         
-        horizontal = math.pi + math.atan2(ps.z, ps.x)
-        mod_x_z = math.sqrt(ps.x**2 + ps.z**2)
-        vertical = math.pi - math.atan2(ps.y, mod_x_z)
+        #print(ps.x, ps.y, ps.z)
+        horizontal = math.pi + math.atan2(ps.y, ps.x)
+        vertical = math.pi + math.atan2(ps.z, ps.x)
 
-        self.lookat_neck = [horizontal, vertical]
-
+        self.lookat_neck = [math.degrees(horizontal), math.degrees(vertical)]
         self.publish = True
 
     def lookAtStart(self, req):
-        self.state = neckController.STATES['LOOKAT']
         self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label}
-        self.lookat_sub = rospy.Subscriber(req.recognitions3d_topic, Recognitions3D, self.lookAt_st)
+        self.lookat_sub = rospy.Subscriber(req.recognitions3d_topic, Recognitions3D, self.lookAt_st, queue_size=1)
+        self.state = neckController.STATES['LOOKAT']
+        return LookAtDescription3DResponse()
 
     def lookAtStop(self, req):
         self.state = neckController.STATES['EMOTION']
@@ -132,6 +142,7 @@ class neckController():
             self.lookat_sub.unregister()
             self.lookat_sub = None
         self.lookat_description_identifier = None
+        self.publish = True
         return EmptyResponse()
 
     def _readParameters(self):
