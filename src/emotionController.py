@@ -12,13 +12,17 @@ class emotionEnable():
         rate = rospy.Rate(50)
         self.emotion = 0
 
+        self.publish_emotion = True
+
         while not rospy.is_shutdown():
-            pub.publish(self.emotion)
+            if self.publish_emotion:
+                pub.publish(self.emotion)
+                self.publish_emotion = False
             rate.sleep()
 
     def getEmotion(self, msg):
-        self.data = msg.data
-        self.emotion = self.data
+        self.emotion = msg.data
+        self.publish_emotion = True
 
 if __name__ == '__main__':
     try:

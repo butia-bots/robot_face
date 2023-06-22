@@ -257,7 +257,8 @@ class JointProtocol2(object):
         getAngle()
         '''
 
-        self.currValue = self.pack_handler.read4ByteTxRx(self.socket, self.servo_id, ADDR_MX_PRESENT_POSITION) - self.centerValue
+        values = self.pack_handler.read4ByteTxRx(self.socket, self.servo_id, ADDR_MX_PRESENT_POSITION)
+        self.currValue = values[0] - self.centerValue
         self.currAngle = pi*float(self.currValue)/2048.0
         return self.currAngle
 
