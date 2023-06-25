@@ -136,24 +136,53 @@ class neckController():
             self.neck_pub.publish(neck_data)
             self.publish = False
     
+    def getCloserDescription(self, descriptions):
+        min_desc = None
+        min_dist = float('inf')
+        for desc in descriptions:
+            p = desc.bbox.center.position
+            dist = math.sqrt(p.x**2 + p.y**2 + p.z**2)
+            if dist < min_dist:
+                min_desc = desc
+                min_dist = dist
+        
+        return min_desc
+
+    # TODO: implement for another parameters like global_id or local_id
+    def selectDescription(self, descriptions):
+        selected_descriptions = []
+
+        desired_label = self.lookat_description_identifier['label']
+
+        if desired_label != '':
+            for desc in descriptions:
+                if desc.label == desired_label:
+                   selected_descriptions.append(desc)
+        else:
+            selected_descriptions = descriptions
+
+        desc = self.getCloserDescription(selected_descriptions)
+
+        return desc
+    
     def lookAt_st(self, msg):
-        #TODO: implement logic based on 'lookat_description_identifier'
+        selected_desc = self.selectDescription(msg.descriptions)
 
-        header = msg.descriptions[0].poses_header
+        if selected_desc is not None:
 
-        transform = self.computeTFTransform(header)
+            header = selected_desc.poses_header
 
-        lookat_pose = PoseStamped()
-        lookat_pose.header = header
-        lookat_pose.pose = msg.descriptions[0].bbox.center
+            transform = self.computeTFTransform(header)
 
-        ps = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform).pose.position
+            lookat_pose = PoseStamped()
+            lookat_pose.header = header
+            lookat_pose.pose = selected_desc.bbox.center
 
-        print(ps)
-        
-        self.lookat_neck = self.computeNeckStateByPoint(ps)
-        
-        self.publish = True
+            ps = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform).pose.position
+            
+            self.lookat_neck = self.computeNeckStateByPoint(ps)
+            
+            self.publish = True
 
     def lookAtStart(self, req):
         self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label}
