@@ -31,6 +31,9 @@ class neckController():
     def __init__(self):
         rospy.init_node('neckController', anonymous=False)
 
+        self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0))
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+
         self.neck_pub = rospy.Publisher("neck", Float64MultiArray, queue_size = 1)
 
         self.sub_update_neck = rospy.Subscriber("updateNeck", Float64MultiArray, self.getNeck_st,
@@ -57,9 +60,6 @@ class neckController():
         self.state = neckController.STATES['EMOTION']
 
         self._readParameters()
-
-        self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0))
-        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
@@ -117,7 +117,7 @@ class neckController():
     def getNeckByPoint_st(self, msg):
         self.lookAtStop(None)
         transform = self.computeTFTransform(msg.header)
-        ps = tf2_geometry_msgs.do_transform_point(msg, transform).position
+        ps = tf2_geometry_msgs.do_transform_point(msg, transform).point
         self.neck_updated = self.computeNeckStateByPoint(ps)
         self.state = neckController.STATES['HAND_UPDATED']
         self.publish = True
