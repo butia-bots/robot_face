@@ -5,7 +5,7 @@ import math
 
 from std_msgs.msg import Float64MultiArray, Int16
 from std_srvs.srv import Empty, EmptyResponse
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, PointStamped
 from butia_vision_msgs.srv import LookAtDescription3D, LookAtDescription3DRequest, LookAtDescription3DResponse
 from butia_vision_msgs.msg import  Recognitions3D, Description3D
 
@@ -31,9 +31,13 @@ class neckController():
     def __init__(self):
         rospy.init_node('neckController', anonymous=False)
 
-        self.neck_pub = rospy.Publisher("neck", Float64MultiArray, queue_size = 10)
+        self.neck_pub = rospy.Publisher("neck", Float64MultiArray, queue_size = 1)
 
-        self.sub_update_neck = rospy.Subscriber("updateNeck", Float64MultiArray, self.getNeck_st)
+        self.sub_update_neck = rospy.Subscriber("updateNeck", Float64MultiArray, self.getNeck_st,
+                                                queue_size=1)
+        self.sub_update_neck_by_point = rospy.Subscriber("updateNeckByPoint", PointStamped,
+                                                         self.getNeckByPoint_st, queue_size=1)
+        
         self.sub_emotion = rospy.Subscriber('emotion', Int16, self.getEmotion_st)
 
         self.start_lookat_service = rospy.Service('lookat_start', LookAtDescription3D, self.lookAtStart)
@@ -64,6 +68,21 @@ class neckController():
             self.publishNeck()
 
             rate.sleep()
+
+    def computeTFTransform(self, header):
+        try:
+            transform = self.tf_buffer.lookup_transform('camera_link_static', header.frame_id, header.stamp)
+        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+            return
+    
+        return transform
+    
+    def computeNeckStateByPoint(self, point):
+        horizontal = math.pi + math.atan2(point.y, point.x)
+        dist = math.sqrt(point.x**2 + point.y**2)
+        vertical = math.pi + math.atan2(point.z, dist)
+
+        return [math.degrees(horizontal), math.degrees(vertical)]
         
     def getOutput(self):
         if self.state == neckController.STATES['EMOTION']:
@@ -88,14 +107,23 @@ class neckController():
         elif self.state == neckController.STATES['LOOKAT']:
             if self.lookat_neck is not None:
                 self.horizontal, self.vertical = self.lookat_neck
-                print('self.horizontal, self.vertical', self.horizontal, self.vertical)
 
     def getEmotion_st(self, msg):
+        self.lookAtStop(None)
         self.emotion = msg.data
         self.state = neckController.STATES['EMOTION']
         self.publish = True
 
+    def getNeckByPoint_st(self, msg):
+        self.lookAtStop(None)
+        transform = self.computeTFTransform(msg.header)
+        ps = tf2_geometry_msgs.do_transform_point(msg, transform).position
+        self.neck_updated = self.computeNeckStateByPoint(ps)
+        self.state = neckController.STATES['HAND_UPDATED']
+        self.publish = True
+
     def getNeck_st(self, msg):
+        self.lookAtStop(None)
         self.neck_updated = [float(msg.data[0]), float(msg.data[1])]
         self.state = neckController.STATES['HAND_UPDATED']
         self.publish = True
@@ -111,23 +139,20 @@ class neckController():
     def lookAt_st(self, msg):
         #TODO: implement logic based on 'lookat_description_identifier'
 
-        lookat_pose = PoseStamped()
         header = msg.descriptions[0].poses_header
+
+        transform = self.computeTFTransform(header)
+
+        lookat_pose = PoseStamped()
         lookat_pose.header = header
         lookat_pose.pose = msg.descriptions[0].bbox.center
 
-        try:
-            transform = self.tf_buffer.lookup_transform('camera_link_static', header.frame_id, header.stamp)
-        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
-            return
-
         ps = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform).pose.position
-        
-        #print(ps.x, ps.y, ps.z)
-        horizontal = math.pi + math.atan2(ps.y, ps.x)
-        vertical = math.pi + math.atan2(ps.z, ps.x)
 
-        self.lookat_neck = [math.degrees(horizontal), math.degrees(vertical)]
+        print(ps)
+        
+        self.lookat_neck = self.computeNeckStateByPoint(ps)
+        
         self.publish = True
 
     def lookAtStart(self, req):

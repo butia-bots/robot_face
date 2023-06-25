@@ -32,10 +32,10 @@ class dataflowEnable():
         rospy.init_node('dataController', anonymous=False)
         rate = rospy.Rate(100) # 100hz
 
-        self.min_horizontal = 120
-        self.max_horizontal = 240
-        self.min_vertical = 170
-        self.max_vertical = 190
+        self.min_horizontal = 90
+        self.max_horizontal = 270
+        self.min_vertical = 160
+        self.max_vertical = 200
 
         try:
             self.neck_port = DxlCommProtocol2("/dev/ttyUSB0")
