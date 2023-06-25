@@ -82,9 +82,9 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["Tilt"]] = np.pi
 
         self.seq = 0
-        #self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
+        self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
         self.joint = JointProtocol1(128)
-        #self.port.attachJoint(self.joint)
+        self.port.attachJoint(self.joint)
 
         rospy.Subscriber("/RosAria/motors_state", Bool, self.setPause)
 
@@ -119,17 +119,17 @@ class dataflowEnable():
 
         while not rospy.is_shutdown():
             if not self.pause: 
-                # self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
-                # self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
-                # self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
-                # self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
-                # self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
-                # self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
-                # self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
-                # self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
-                # self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
-                # self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
-                # self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
+                self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
+                self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
+                self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
+                self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
+                self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
+                self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
+                self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
+                self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
+                self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
+                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
+                self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
                 self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
                 self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
                 self.panJoint.sendGoalAngle(self.motors[MOTORS_IDX["Pan"]])

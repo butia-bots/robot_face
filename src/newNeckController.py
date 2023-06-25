@@ -31,15 +31,10 @@ class neckController():
     def __init__(self):
         rospy.init_node('neckController', anonymous=False)
 
-        self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0))
-        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
-
         self.neck_pub = rospy.Publisher("neck", Float64MultiArray, queue_size = 1)
 
-        self.sub_update_neck = rospy.Subscriber("updateNeck", Float64MultiArray, self.getNeck_st,
-                                                queue_size=1)
-        self.sub_update_neck_by_point = rospy.Subscriber("updateNeckByPoint", PointStamped,
-                                                         self.getNeckByPoint_st, queue_size=1)
+        self.sub_update_neck = rospy.Subscriber("updateNeck", Float64MultiArray, self.getNeck_st, queue_size=1)
+        self.sub_update_neck_by_point = rospy.Subscriber("updateNeckByPoint", PointStamped, self.getNeckByPoint_st, queue_size=1)
         
         self.sub_emotion = rospy.Subscriber('emotion', Int16, self.getEmotion_st)
 
@@ -60,6 +55,10 @@ class neckController():
         self.state = neckController.STATES['EMOTION']
 
         self._readParameters()
+
+
+        self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0))
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
@@ -109,24 +108,24 @@ class neckController():
                 self.horizontal, self.vertical = self.lookat_neck
 
     def getEmotion_st(self, msg):
-        self.lookAtStop(None)
-        self.emotion = msg.data
-        self.state = neckController.STATES['EMOTION']
-        self.publish = True
+        if self.state != neckController.STATES['LOOKAT']:
+            self.emotion = msg.data
+            self.state = neckController.STATES['EMOTION']
+            self.publish = True
 
     def getNeckByPoint_st(self, msg):
-        self.lookAtStop(None)
-        transform = self.computeTFTransform(msg.header)
-        ps = tf2_geometry_msgs.do_transform_point(msg, transform).point
-        self.neck_updated = self.computeNeckStateByPoint(ps)
-        self.state = neckController.STATES['HAND_UPDATED']
-        self.publish = True
+        if self.state != neckController.STATES['LOOKAT']:
+            transform = self.computeTFTransform(msg.header)
+            ps = tf2_geometry_msgs.do_transform_point(msg, transform).point
+            self.neck_updated = self.computeNeckStateByPoint(ps)
+            self.state = neckController.STATES['HAND_UPDATED']
+            self.publish = True
 
     def getNeck_st(self, msg):
-        self.lookAtStop(None)
-        self.neck_updated = [float(msg.data[0]), float(msg.data[1])]
-        self.state = neckController.STATES['HAND_UPDATED']
-        self.publish = True
+        if self.state != neckController.STATES['LOOKAT']:
+            self.neck_updated = [float(msg.data[0]), float(msg.data[1])]
+            self.state = neckController.STATES['HAND_UPDATED']
+            self.publish = True
 
     def publishNeck(self):
         if self.publish:
