@@ -5,6 +5,7 @@ import math
 
 from std_msgs.msg import Float64MultiArray, Int16
 from std_srvs.srv import Empty, EmptyResponse
+from sensor_msgs.msg import JointState
 from geometry_msgs.msg import PoseStamped, PointStamped
 from butia_vision_msgs.srv import LookAtDescription3D, LookAtDescription3DRequest, LookAtDescription3DResponse
 from butia_vision_msgs.msg import  Recognitions3D, Description3D
@@ -35,6 +36,8 @@ class neckController():
 
         self.sub_update_neck = rospy.Subscriber("updateNeck", Float64MultiArray, self.getNeck_st, queue_size=1)
         self.sub_update_neck_by_point = rospy.Subscriber("updateNeckByPoint", PointStamped, self.getNeckByPoint_st, queue_size=1)
+
+        self.sub_face_joint_states = rospy.Subscriber("doris_head/joint_states", JointState, self.getStoppedTime)
         
         self.sub_emotion = rospy.Subscriber('emotion', Int16, self.getEmotion_st)
 
@@ -43,6 +46,7 @@ class neckController():
         self.lookat_sub = None
         self.lookat_description_identifier = None
         self.lookat_neck = None
+        self.last_stopped_time = None
 
         self.publish = True
         
@@ -55,7 +59,6 @@ class neckController():
         self.state = neckController.STATES['EMOTION']
 
         self._readParameters()
-
 
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0))
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
@@ -106,6 +109,19 @@ class neckController():
         elif self.state == neckController.STATES['LOOKAT']:
             if self.lookat_neck is not None:
                 self.horizontal, self.vertical = self.lookat_neck
+
+    def getStoppedTime(self, msg):
+        time = msg.header.stamp
+
+        stopped = True
+        for i, name in enumerate(msg.name):
+            if name == 'head_pan_joint' or name == 'head_tilt_joint':
+                stopped = stopped and (abs(msg.velocity[i]) <= 0.2)
+
+        if stopped:
+            self.last_stopped_time = time
+        else:
+            self.last_stopped_time = None
 
     def getEmotion_st(self, msg):
         if self.state != neckController.STATES['LOOKAT']:
@@ -171,17 +187,18 @@ class neckController():
 
             header = selected_desc.poses_header
 
-            transform = self.computeTFTransform(header)
+            if self.last_stopped_time is not None and header.stamp >= self.last_stopped_time:
+                transform = self.computeTFTransform(header)
 
-            lookat_pose = PoseStamped()
-            lookat_pose.header = header
-            lookat_pose.pose = selected_desc.bbox.center
+                lookat_pose = PoseStamped()
+                lookat_pose.header = header
+                lookat_pose.pose = selected_desc.bbox.center
 
-            ps = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform).pose.position
-            
-            self.lookat_neck = self.computeNeckStateByPoint(ps)
-            
-            self.publish = True
+                ps = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform).pose.position
+                
+                self.lookat_neck = self.computeNeckStateByPoint(ps)
+                
+                self.publish = True
 
     def lookAtStart(self, req):
         self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label}

@@ -55,10 +55,10 @@ class dataflowEnable():
             self.panJoint.enableTorque()
             self.tiltJoint.enableTorque()
 
-            self.neckHorizontal.setVelocityLimit(limit=200)
-            self.neckVertical.setVelocityLimit(limit=400)
-            self.panJoint.setVelocityLimit(limit=200)
-            self.tiltJoint.setVelocityLimit(limit=400)
+            self.neckHorizontal.setVelocityLimit(limit=300)
+            self.neckVertical.setVelocityLimit(limit=300)
+            self.panJoint.setVelocityLimit(limit=300)
+            self.tiltJoint.setVelocityLimit(limit=300)
         except Exception as e:
             print("Neck port don't connected.")
 
@@ -136,7 +136,7 @@ class dataflowEnable():
                 self.tiltJoint.sendGoalAngle(self.motors[MOTORS_IDX["Tilt"]])
                 self.updateJointsDict()
                 self.publishJoints()
-            rate.sleep()
+        rate.sleep()
     
     def updateJointsDict(self):
         pos_horizontal = self.neckHorizontal.receiveCurrAngle()
@@ -144,11 +144,11 @@ class dataflowEnable():
         pos_pan = self.panJoint.receiveCurrAngle()
         pos_tilt = self.tiltJoint.receiveCurrAngle()
 
-        self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - np.pi, 0., 0.)
-        self.joints_dict['head_pan_joint'] = (pos_pan - np.pi, 0., 0.)
+        self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - np.pi, self.neckHorizontal.receiveCurrVelocity(), 0.)
+        self.joints_dict['head_pan_joint'] = (pos_pan - np.pi, self.panJoint.receiveCurrVelocity(), 0.)
 
-        self.joints_dict['vertical_neck_joint'] = (-pos_vertical + np.pi, 0., 0.)
-        self.joints_dict['head_tilt_joint'] = (pos_tilt - np.pi, 0., 0.)
+        self.joints_dict['vertical_neck_joint'] = (-pos_vertical + np.pi, self.neckVertical.receiveCurrVelocity(), 0.)
+        self.joints_dict['head_tilt_joint'] = (pos_tilt - np.pi, self.tiltJoint.receiveCurrVelocity(), 0.)
 
     def publishJoints(self):
         msg = JointState()

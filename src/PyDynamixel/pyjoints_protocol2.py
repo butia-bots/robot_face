@@ -6,6 +6,7 @@ import dynamixel_sdk as dxl
 
 ADDR_MX_TORQUE_ENABLE = 64  
 ADDR_MX_PRESENT_POSITION = 132 
+ADDR_MX_PRESENT_VELOCITY = 128 
 ADDR_MX_GOAL_POSITION = 116 
 ADDR_PROFILE_VELOCITY = 112
 # MAXADDR_MX_TORQUE_ENABLE = 0x0E # Address for maximum torque
@@ -248,6 +249,13 @@ class JointProtocol2(object):
         if goalAngle:
             self.setGoalAngle(goalAngle)
         result = self.pack_handler.write4ByteTxRx(self.socket, self.servo_id, ADDR_MX_GOAL_POSITION, self.goalValue)
+
+    def receiveCurrVelocity(self):
+        values = self.pack_handler.read4ByteTxRx(self.socket, self.servo_id, ADDR_MX_PRESENT_VELOCITY)
+        self.currValue = values[0] if values[0] < (2**31 - 1) else values[0] - 2**32
+        #0.229 is the unit measure from dynamixel manual and 0.1047198 is to pass from rpm to rad/s
+        self.currVelocity = (self.currValue*0.229)*0.1047198
+        return self.currVelocity
 
     def receiveCurrAngle(self):
 
