@@ -45,7 +45,7 @@ class neckController():
         self.stop_lookat_service = rospy.Service('lookat_stop', Empty, self.lookAtStop)
         self.lookat_sub = None
         self.lookat_description_identifier = None
-        self.lookat_neck = None
+        self.lookat_pose = None
         self.last_stopped_time = None
 
         self.publish = True
@@ -71,9 +71,10 @@ class neckController():
 
             rate.sleep()
 
-    def computeTFTransform(self, header):
+    def computeTFTransform(self, header, to_frame_id='camera_link_static', lastest=False):
         try:
-            transform = self.tf_buffer.lookup_transform('camera_link_static', header.frame_id, header.stamp)
+            transform = self.tf_buffer.lookup_transform(to_frame_id, header.frame_id,
+                                                        header.stamp if not lastest else rospy.Time(0))
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
             return
     
@@ -107,8 +108,11 @@ class neckController():
             if self.neck_updated is not None:
                 self.horizontal, self.vertical = self.neck_updated
         elif self.state == neckController.STATES['LOOKAT']:
-            if self.lookat_neck is not None:
-                self.horizontal, self.vertical = self.lookat_neck
+            if self.lookat_pose is not None:
+                transform = self.computeTFTransform(self.lookat_pose.header, now=True)
+                ps = tf2_geometry_msgs.do_transform_pose(self.lookat_pose, transform).pose.position
+                lookat_neck = self.computeNeckStateByPoint(ps)
+                self.horizontal, self.vertical = lookat_neck
 
     def getStoppedTime(self, msg):
         time = msg.header.stamp
@@ -188,16 +192,14 @@ class neckController():
             header = selected_desc.poses_header
 
             if self.last_stopped_time is not None and header.stamp >= self.last_stopped_time:
-                transform = self.computeTFTransform(header)
+                transform = self.computeTFTransform(header, to_frame_id='map')
 
                 lookat_pose = PoseStamped()
                 lookat_pose.header = header
                 lookat_pose.pose = selected_desc.bbox.center
 
-                ps = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform).pose.position
-                
-                self.lookat_neck = self.computeNeckStateByPoint(ps)
-                
+                self.lookat_pose = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform)
+                                
                 self.publish = True
 
     def lookAtStart(self, req):
