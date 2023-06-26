@@ -109,9 +109,10 @@ class neckController():
                 self.horizontal, self.vertical = self.neck_updated
         elif self.state == neckController.STATES['LOOKAT']:
             if self.lookat_pose is not None:
-                transform = self.computeTFTransform(self.lookat_pose.header, now=True)
+                transform = self.computeTFTransform(self.lookat_pose.header, lastest=True)
                 ps = tf2_geometry_msgs.do_transform_pose(self.lookat_pose, transform).pose.position
                 lookat_neck = self.computeNeckStateByPoint(ps)
+                print(lookat_neck)
                 self.horizontal, self.vertical = lookat_neck
 
     def getStoppedTime(self, msg):
@@ -120,10 +121,11 @@ class neckController():
         stopped = True
         for i, name in enumerate(msg.name):
             if name == 'head_pan_joint' or name == 'head_tilt_joint':
-                stopped = stopped and (abs(msg.velocity[i]) <= 0.2)
+                stopped = stopped and (abs(msg.velocity[i]) <= 0.3)
 
         if stopped:
-            self.last_stopped_time = time
+            if self.last_stopped_time is None:
+                self.last_stopped_time = time
         else:
             self.last_stopped_time = None
 
@@ -190,7 +192,6 @@ class neckController():
         if selected_desc is not None:
 
             header = selected_desc.poses_header
-
             if self.last_stopped_time is not None and header.stamp >= self.last_stopped_time:
                 transform = self.computeTFTransform(header, to_frame_id='map')
 
