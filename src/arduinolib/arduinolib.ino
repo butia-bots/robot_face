@@ -33,8 +33,8 @@ void setup() {
   motor[EYELID_DOWN_LEFT].setMotorDefinitions(55, 20, 80, 0);
   motor[EYE_HORIZONTAL].setMotorDefinitions(55, 0, 125, 0); 
   motor[EYE_VERTICAL].setMotorDefinitions(85, 0, 130, 0);
-  motor[JAW_CLOCKWISE].setMotorDefinitions(35, 10, 35, 0);
-  motor[JAW_ANTICLOCKWISE].setMotorDefinitions(0, 0, 150, 0);
+  motor[JAW_CLOCKWISE].setMotorDefinitions(35, 20, 35, 0);
+  motor[JAW_ANTICLOCKWISE].setMotorDefinitions(0, 20, 150, 0);
 }
 
 int angles2;

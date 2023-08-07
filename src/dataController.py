@@ -55,10 +55,10 @@ class dataflowEnable():
             self.panJoint.enableTorque()
             self.tiltJoint.enableTorque()
 
-            self.neckHorizontal.setVelocityLimit(limit=300)
-            self.neckVertical.setVelocityLimit(limit=300)
-            self.panJoint.setVelocityLimit(limit=300)
-            self.tiltJoint.setVelocityLimit(limit=300)
+            self.neckHorizontal.setVelocityLimit(limit=600)
+            self.neckVertical.setVelocityLimit(limit=600)
+            self.panJoint.setVelocityLimit(limit=600)
+            self.tiltJoint.setVelocityLimit(limit=600)
         except Exception as e:
             print("Neck port don't connected.")
 
