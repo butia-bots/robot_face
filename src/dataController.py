@@ -32,13 +32,13 @@ class dataflowEnable():
         rospy.init_node('dataController', anonymous=False)
         rate = rospy.Rate(100) # 100hz
 
-        self.min_horizontal = 90
-        self.max_horizontal = 270
-        self.min_vertical = 160
-        self.max_vertical = 200
+        self.min_horizontal = 120
+        self.max_horizontal = 240
+        self.min_vertical = 150
+        self.max_vertical = 190
 
         try:
-            self.neck_port = DxlCommProtocol2("/dev/ttyFACE")
+            self.neck_port = DxlCommProtocol2("/dev/ttyUSB0")
 
             self.neckHorizontal = JointProtocol2(62)
             self.neckVertical = JointProtocol2(61)
@@ -55,11 +55,10 @@ class dataflowEnable():
             self.panJoint.enableTorque()
             self.tiltJoint.enableTorque()
 
-            VEL_LIMIT = 500
-            self.neckHorizontal.setVelocityLimit(limit=VEL_LIMIT) #original = 300
-            self.neckVertical.setVelocityLimit(limit=VEL_LIMIT)
-            self.panJoint.setVelocityLimit(limit=VEL_LIMIT)
-            self.tiltJoint.setVelocityLimit(limit=VEL_LIMIT)
+            self.neckHorizontal.setVelocityLimit(limit=200)
+            self.neckVertical.setVelocityLimit(limit=400)
+            self.panJoint.setVelocityLimit(limit=200)
+            self.tiltJoint.setVelocityLimit(limit=400)
         except Exception as e:
             print("Neck port don't connected.")
 
@@ -137,7 +136,7 @@ class dataflowEnable():
                 self.tiltJoint.sendGoalAngle(self.motors[MOTORS_IDX["Tilt"]])
                 self.updateJointsDict()
                 self.publishJoints()
-        rate.sleep()
+            rate.sleep()
     
     def updateJointsDict(self):
         pos_horizontal = self.neckHorizontal.receiveCurrAngle()
@@ -145,11 +144,11 @@ class dataflowEnable():
         pos_pan = self.panJoint.receiveCurrAngle()
         pos_tilt = self.tiltJoint.receiveCurrAngle()
 
-        self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - np.pi, self.neckHorizontal.receiveCurrVelocity(), 0.)
-        self.joints_dict['head_pan_joint'] = (pos_pan - np.pi, self.panJoint.receiveCurrVelocity(), 0.)
+        self.joints_dict['horizontal_neck_joint'] = (pos_horizontal - np.pi, 0., 0.)
+        self.joints_dict['head_pan_joint'] = (pos_pan - np.pi, 0., 0.)
 
-        self.joints_dict['vertical_neck_joint'] = (-pos_vertical + np.pi, self.neckVertical.receiveCurrVelocity(), 0.)
-        self.joints_dict['head_tilt_joint'] = (pos_tilt - np.pi, self.tiltJoint.receiveCurrVelocity(), 0.)
+        self.joints_dict['vertical_neck_joint'] = (-pos_vertical + np.pi, 0., 0.)
+        self.joints_dict['head_tilt_joint'] = (pos_tilt - np.pi, 0., 0.)
 
     def publishJoints(self):
         msg = JointState()
