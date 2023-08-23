@@ -34,8 +34,8 @@ class neckController():
 
         self.neck_pub = rospy.Publisher("neck", Float64MultiArray, queue_size = 1)
 
-        self.sub_update_neck = rospy.Subscriber("updateNeck", Float64MultiArray, self.getNeck_st, queue_size=1)
-        self.sub_update_neck_by_point = rospy.Subscriber("updateNeckByPoint", PointStamped, self.getNeckByPoint_st, queue_size=1)
+        self.sub_update_neck = rospy.Subscriber("updateNeck", Float64MultiArray, self.getNeck_st, queue_size=10)
+        self.sub_update_neck_by_point = rospy.Subscriber("updateNeckByPoint", PointStamped, self.getNeckByPoint_st, queue_size=10)
 
         self.sub_face_joint_states = rospy.Subscriber("doris_head/joint_states", JointState, self.getStoppedTime)
         
@@ -84,7 +84,7 @@ class neckController():
         horizontal = math.pi + math.atan2(point.y, point.x)
         dist = math.sqrt(point.x**2 + point.y**2)
         vertical = math.pi + math.atan2(point.z, dist)
-
+        print(math.degrees(horizontal), math.degrees(vertical))
         return [math.degrees(horizontal), math.degrees(vertical)]
         
     def getOutput(self):
@@ -136,6 +136,7 @@ class neckController():
             self.publish = True
 
     def getNeckByPoint_st(self, msg):
+        print('entrou')
         if self.state != neckController.STATES['LOOKAT']:
             transform = self.computeTFTransform(msg.header)
             ps = tf2_geometry_msgs.do_transform_point(msg, transform).point
