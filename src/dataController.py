@@ -38,7 +38,7 @@ class dataflowEnable():
         self.max_vertical = 190
 
         try:
-            self.neck_port = DxlCommProtocol2("/dev/ttyUSB0")
+            self.neck_port = DxlCommProtocol2("/dev/ttyNECK")
 
             self.neckHorizontal = JointProtocol2(62)
             self.neckVertical = JointProtocol2(61)
@@ -55,10 +55,12 @@ class dataflowEnable():
             self.panJoint.enableTorque()
             self.tiltJoint.enableTorque()
 
-            self.neckHorizontal.setVelocityLimit(limit=200)
-            self.neckVertical.setVelocityLimit(limit=400)
-            self.panJoint.setVelocityLimit(limit=200)
-            self.tiltJoint.setVelocityLimit(limit=400)
+            # Quanto menor o limit, maior a velocidade
+            var_limit = 800
+            self.neckHorizontal.setVelocityLimit(limit=var_limit)
+            self.neckVertical.setVelocityLimit(limit=var_limit)
+            self.panJoint.setVelocityLimit(limit=var_limit)
+            self.tiltJoint.setVelocityLimit(limit=var_limit)
         except Exception as e:
             print("Neck port don't connected.")
 
