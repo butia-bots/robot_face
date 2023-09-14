@@ -65,7 +65,8 @@ class neckController():
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0))
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
-        self.last_pose : PoseStamped = None
+        self.last_pose  = None
+        self.last_pose_time = 0.
 
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
@@ -117,16 +118,20 @@ class neckController():
                 ps = tf2_geometry_msgs.do_transform_pose(self.lookat_pose, transform).pose.position
 
                 distance = 0.
+                time = rospy.get_time()
+                delta = float("inf")
                 if self.last_pose != None:
                     new = np.array([ps.x, ps.y, ps.z])
                     previus = np.array([self.last_pose.x, self.last_pose.y, self.last_pose.z])
                     distance = np.linalg.norm(new - previus)
+                    delta = time - self.last_pose_time
                 
                 rospy.logerr(distance)
-                if distance < 1.5:
+                if distance < max(1.5 * delta, 1.5):
                     lookat_neck = self.computeNeckStateByPoint(ps)
                     self.horizontal, self.vertical = lookat_neck
                     self.last_pose = deepcopy(ps)
+                    self.last_pose_time = time
 
     def getStoppedTime(self, msg):
         time = msg.header.stamp
