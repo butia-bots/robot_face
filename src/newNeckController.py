@@ -112,7 +112,7 @@ class neckController():
                 transform = self.computeTFTransform(self.lookat_pose.header, lastest=True)
                 ps = tf2_geometry_msgs.do_transform_pose(self.lookat_pose, transform).pose.position
                 lookat_neck = self.computeNeckStateByPoint(ps)
-                print(lookat_neck)
+                # print(lookat_neck)
                 self.horizontal, self.vertical = lookat_neck
 
     def getStoppedTime(self, msg):
