@@ -14,6 +14,7 @@ from butia_vision_msgs.msg import  Recognitions3D, Description3D
 import tf2_ros
 import tf2_geometry_msgs
 
+from copy import deepcopy
 #TODO: this should be in a generic file
 EMOTIONS = {
     "standard": 0,
@@ -114,9 +115,18 @@ class neckController():
             if self.lookat_pose is not None:
                 transform = self.computeTFTransform(self.lookat_pose.header, lastest=True)
                 ps = tf2_geometry_msgs.do_transform_pose(self.lookat_pose, transform).pose.position
-                lookat_neck = self.computeNeckStateByPoint(ps)
-                # print(lookat_neck)
-                self.horizontal, self.vertical = lookat_neck
+
+                distance = 0.
+                if self.last_pose != None:
+                    new = np.array([ps.x, ps.y, ps.z])
+                    previus = np.array([self.last_pose.x, self.last_pose.y, self.last_pose.z])
+                    distance = np.linalg.norm(new - previus)
+                
+                rospy.logerr(distance)
+                if distance < 1.5:
+                    lookat_neck = self.computeNeckStateByPoint(ps)
+                    self.horizontal, self.vertical = lookat_neck
+                    self.last_pose = deepcopy(ps)
 
     def getStoppedTime(self, msg):
         time = msg.header.stamp
@@ -205,14 +215,6 @@ class neckController():
                 lookat_pose.pose = selected_desc.bbox.center
 
                 self.lookat_pose = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform)
-                if self.last_pose != None:
-                    new = np.array([self.lookat_pose.pose.position.x,self.lookat_pose.pose.position.y,self.lookat_pose.pose.position.z])
-                    previus = np.array([self.last_pose.pose.position.x,self.last_pose.pose.position.y,self.last_pose.pose.position.z])
-                    distance = np.linalg.norm(new - previus)
-                    rospy.logerr(distance)
-                    if distance >= 1.5:
-                        return
-                self.last_pose = self.lookat_pose
                                 
                 self.publish = True
 
