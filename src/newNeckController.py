@@ -207,13 +207,13 @@ class neckController():
     
     def lookAt_st(self, msg):
         selected_desc = self.selectDescription(msg.descriptions)
-        frame = rospy.get_param('frame', 'map')
+        # frame = rospy.get_param('frame', 'map')
 
         if selected_desc is not None:
 
             header = selected_desc.poses_header
             if self.last_stopped_time is not None and header.stamp >= self.last_stopped_time:
-                transform = self.computeTFTransform(header, to_frame_id=frame)
+                transform = self.computeTFTransform(header, to_frame_id=self.frame)
 
                 lookat_pose = PoseStamped()
                 lookat_pose.header = header
@@ -255,6 +255,7 @@ class neckController():
         self.vertical_scared_params = rospy.get_param("butia_emotions/neck/scared/vertical")
 
         self.max_pose_speed = rospy.get_param("max_pose_speed",1.5)
+        self.frame = rospy.get_param('frame', 'map')
 
 if __name__ == '__main__':
     try:
