@@ -205,9 +205,11 @@ class neckController():
                 lookat_pose.pose = selected_desc.bbox.center
 
                 self.lookat_pose = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform)
-
                 if self.last_pose != None:
-                    distance = np.linalg.norm(self.lookat_pose.pose.position - self.last_pose.pose.position)
+                    new = np.array([self.lookat_pose.pose.position.x,self.lookat_pose.pose.position.y,self.lookat_pose.pose.position.z])
+                    previus = np.array([self.last_pose.pose.position.x,self.last_pose.pose.position.y,self.last_pose.pose.position.z])
+                    distance = np.linalg.norm(new - previus)
+                    rospy.logerr(distance)
                     if distance >= 1.5:
                         return
                 self.last_pose = self.lookat_pose
