@@ -188,12 +188,13 @@ class neckController():
     
     def lookAt_st(self, msg):
         selected_desc = self.selectDescription(msg.descriptions)
+        frame = rospy.get_param('frame', 'map')
 
         if selected_desc is not None:
 
             header = selected_desc.poses_header
             if self.last_stopped_time is not None and header.stamp >= self.last_stopped_time:
-                transform = self.computeTFTransform(header, to_frame_id='map')
+                transform = self.computeTFTransform(header, to_frame_id=frame)
 
                 lookat_pose = PoseStamped()
                 lookat_pose.header = header
