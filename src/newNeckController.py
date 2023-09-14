@@ -2,6 +2,7 @@
 
 import rospy
 import math
+import numpy as np
 
 from std_msgs.msg import Float64MultiArray, Int16
 from std_srvs.srv import Empty, EmptyResponse
@@ -62,6 +63,8 @@ class neckController():
 
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0))
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+
+        self.last_pose : PoseStamped = None
 
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
@@ -202,6 +205,12 @@ class neckController():
                 lookat_pose.pose = selected_desc.bbox.center
 
                 self.lookat_pose = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform)
+
+                if self.last_pose != None:
+                    distance = np.linalg.norm(self.lookat_pose.pose.position - self.last_pose.pose.position)
+                    if distance >= 1.5:
+                        return
+                self.last_pose = self.lookat_pose
                                 
                 self.publish = True
 
