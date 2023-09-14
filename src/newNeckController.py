@@ -254,6 +254,8 @@ class neckController():
         self.horizontal_scared_params = rospy.get_param("butia_emotions/neck/scared/horizontal")
         self.vertical_scared_params = rospy.get_param("butia_emotions/neck/scared/vertical")
 
+        self.max_pose_speed = rospy.get_param("max_pose_speed",1.5)
+
 if __name__ == '__main__':
     try:
         neckController()
