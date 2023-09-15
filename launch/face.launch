@@ -8,7 +8,7 @@
     <node pkg="robotFace" type="eyebrownController.py" name="eyebrowController" output="$(arg output)" />
     <node pkg="robotFace" type="emotionController.py" name="emotionController" output="$(arg output)" />
     <node pkg="robotFace" type="newNeckController.py" name="newNeckController" output="$(arg output)">
-        <arg name="frame" value="$(arg frame)"/>
+        <param name="frame" value="$(arg frame)"/>
     </node>
     <node pkg="robotFace" type="dataController.py" name="dataController" output="$(arg output)" />
 </launch>
