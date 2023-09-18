@@ -2,6 +2,7 @@
 
 import rospy
 import math
+import numpy as np
 
 from std_msgs.msg import Float64MultiArray, Int16
 from std_srvs.srv import Empty, EmptyResponse
@@ -13,6 +14,7 @@ from butia_vision_msgs.msg import  Recognitions3D, Description3D
 import tf2_ros
 import tf2_geometry_msgs
 
+from copy import deepcopy
 #TODO: this should be in a generic file
 EMOTIONS = {
     "standard": 0,
@@ -63,6 +65,9 @@ class neckController():
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(1200.0))
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
+        self.last_pose  = None
+        self.last_pose_time = 0.
+
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
             self.getOutput()
@@ -84,7 +89,6 @@ class neckController():
         horizontal = math.pi + math.atan2(point.y, point.x)
         dist = math.sqrt(point.x**2 + point.y**2)
         vertical = math.pi + math.atan2(point.z, dist)
-        print(math.degrees(horizontal), math.degrees(vertical))
         return [math.degrees(horizontal), math.degrees(vertical)]
         
     def getOutput(self):
@@ -111,9 +115,22 @@ class neckController():
             if self.lookat_pose is not None:
                 transform = self.computeTFTransform(self.lookat_pose.header, lastest=True)
                 ps = tf2_geometry_msgs.do_transform_pose(self.lookat_pose, transform).pose.position
-                lookat_neck = self.computeNeckStateByPoint(ps)
-                # print(lookat_neck)
-                self.horizontal, self.vertical = lookat_neck
+
+                distance = 0.
+                time = rospy.get_time()
+                delta = float("inf")
+                if self.last_pose != None:
+                    new = np.array([ps.x, ps.y, ps.z])
+                    previus = np.array([self.last_pose.x, self.last_pose.y, self.last_pose.z])
+                    distance = np.linalg.norm(new - previus)
+                    delta = time - self.last_pose_time
+                
+                # rospy.logerr(distance)
+                if distance < max(1.5 * delta, 1.5):
+                    lookat_neck = self.computeNeckStateByPoint(ps)
+                    self.horizontal, self.vertical = lookat_neck
+                    self.last_pose = deepcopy(ps)
+                    self.last_pose_time = time
 
     def getStoppedTime(self, msg):
         time = msg.header.stamp
@@ -136,7 +153,6 @@ class neckController():
             self.publish = True
 
     def getNeckByPoint_st(self, msg):
-        print('entrou')
         if self.state != neckController.STATES['LOOKAT']:
             transform = self.computeTFTransform(msg.header)
             ps = tf2_geometry_msgs.do_transform_point(msg, transform).point
@@ -189,13 +205,12 @@ class neckController():
     
     def lookAt_st(self, msg):
         selected_desc = self.selectDescription(msg.descriptions)
-        frame = rospy.get_param('frame', 'map')
 
         if selected_desc is not None:
 
             header = selected_desc.poses_header
             if self.last_stopped_time is not None and header.stamp >= self.last_stopped_time:
-                transform = self.computeTFTransform(header, to_frame_id=frame)
+                transform = self.computeTFTransform(header, to_frame_id=self.frame)
 
                 lookat_pose = PoseStamped()
                 lookat_pose.header = header
@@ -235,6 +250,9 @@ class neckController():
 
         self.horizontal_scared_params = rospy.get_param("butia_emotions/neck/scared/horizontal")
         self.vertical_scared_params = rospy.get_param("butia_emotions/neck/scared/vertical")
+
+        self.max_pose_speed = rospy.get_param("max_pose_speed",1.5)
+        self.frame = rospy.get_param('frame', 'map')
 
 if __name__ == '__main__':
     try:
