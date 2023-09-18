@@ -89,7 +89,6 @@ class neckController():
         horizontal = math.pi + math.atan2(point.y, point.x)
         dist = math.sqrt(point.x**2 + point.y**2)
         vertical = math.pi + math.atan2(point.z, dist)
-        print(math.degrees(horizontal), math.degrees(vertical))
         return [math.degrees(horizontal), math.degrees(vertical)]
         
     def getOutput(self):
@@ -126,7 +125,7 @@ class neckController():
                     distance = np.linalg.norm(new - previus)
                     delta = time - self.last_pose_time
                 
-                rospy.logerr(distance)
+                # rospy.logerr(distance)
                 if distance < max(1.5 * delta, 1.5):
                     lookat_neck = self.computeNeckStateByPoint(ps)
                     self.horizontal, self.vertical = lookat_neck
@@ -154,7 +153,6 @@ class neckController():
             self.publish = True
 
     def getNeckByPoint_st(self, msg):
-        print('entrou')
         if self.state != neckController.STATES['LOOKAT']:
             transform = self.computeTFTransform(msg.header)
             ps = tf2_geometry_msgs.do_transform_point(msg, transform).point
@@ -207,7 +205,6 @@ class neckController():
     
     def lookAt_st(self, msg):
         selected_desc = self.selectDescription(msg.descriptions)
-        # frame = rospy.get_param('frame', 'map')
 
         if selected_desc is not None:
 
