@@ -224,6 +224,8 @@ class neckController():
         self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label}
         self.lookat_sub = rospy.Subscriber(req.recognitions3d_topic, Recognitions3D, self.lookAt_st, queue_size=1)
         self.state = neckController.STATES['LOOKAT']
+        self.last_pose  = None
+        self.last_pose_time = 0.
         return LookAtDescription3DResponse()
 
     def lookAtStop(self, req):
