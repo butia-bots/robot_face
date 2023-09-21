@@ -125,12 +125,14 @@ class neckController():
                     distance = np.linalg.norm(new - previus)
                     delta = time - self.last_pose_time
                 
-                # rospy.logerr(distance)
                 if distance < max(1.5 * delta, 1.5):
                     lookat_neck = self.computeNeckStateByPoint(ps)
+                    rospy.logerr(lookat_neck)
                     self.horizontal, self.vertical = lookat_neck
                     self.last_pose = deepcopy(ps)
                     self.last_pose_time = time
+                else:
+                    self.publish = False
 
     def getStoppedTime(self, msg):
         time = msg.header.stamp
@@ -226,6 +228,8 @@ class neckController():
         self.state = neckController.STATES['LOOKAT']
         self.last_pose  = None
         self.last_pose_time = 0.
+        self.lookat_pose = None
+        self.last_stopped_time = None
         return LookAtDescription3DResponse()
 
     def lookAtStop(self, req):
