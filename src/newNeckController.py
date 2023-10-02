@@ -68,6 +68,8 @@ class neckController():
         self.last_pose  = None
         self.last_pose_time = 0.
 
+        self.offset = np.array([0,0,0]) #X,Y,Z
+
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
             self.getOutput()
@@ -205,6 +207,22 @@ class neckController():
 
         return desc
     
+    def getTargetPose(self, description : Description3D, header) -> PoseStamped:
+        pose = PoseStamped()
+        pose.header = header
+        pose.pose = description.bbox.center
+
+        target = self.lookat_description_identifier["target"]
+        if target == "TOP":
+            pose.pose.position.z += (description.bbox.size.z / 2)
+        elif target == "LEFT":
+            pose.pose.position.y -= (description.bbox.size.y / 2)
+        elif target == "RIGHT":
+            pose.pose.position.y += (description.bbox.size.y / 2)
+        elif target == "BOTTOM":
+            pose.pose.position.z -= (description.bbox.size.z / 2)
+        return pose
+    
     def lookAt_st(self, msg):
         selected_desc = self.selectDescription(msg.descriptions)
 
@@ -214,16 +232,18 @@ class neckController():
             if self.last_stopped_time is not None and header.stamp >= self.last_stopped_time:
                 transform = self.computeTFTransform(header, to_frame_id=self.frame)
 
-                lookat_pose = PoseStamped()
-                lookat_pose.header = header
-                lookat_pose.pose = selected_desc.bbox.center
+                # lookat_pose = PoseStamped()
+                # lookat_pose.header = header
+                # lookat_pose.pose = selected_desc.bbox.center
+
+                lookat_pose = self.getTargetPose(selected_desc)
 
                 self.lookat_pose = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform)
                                 
                 self.publish = True
 
     def lookAtStart(self, req):
-        self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label}
+        self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label, 'target': req.target, 'offset': req.offset }
         self.lookat_sub = rospy.Subscriber(req.recognitions3d_topic, Recognitions3D, self.lookAt_st, queue_size=1)
         self.state = neckController.STATES['LOOKAT']
         self.last_pose  = None
