@@ -213,6 +213,7 @@ class neckController():
         pose.pose = description.bbox.center
 
         target = self.lookat_description_identifier["target"]
+        # rospy.logerr(target)
         if target == "TOP":
             pose.pose.position.y -= (description.bbox.size.x / 2)
         elif target == "LEFT":
@@ -236,7 +237,7 @@ class neckController():
                 # lookat_pose.header = header
                 # lookat_pose.pose = selected_desc.bbox.center
 
-                lookat_pose = self.getTargetPose(selected_desc)
+                lookat_pose = self.getTargetPose(selected_desc,header)
 
                 self.lookat_pose = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform)
                                 
