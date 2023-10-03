@@ -7,7 +7,7 @@ import numpy as np
 from std_msgs.msg import Float64MultiArray, Int16
 from std_srvs.srv import Empty, EmptyResponse
 from sensor_msgs.msg import JointState
-from geometry_msgs.msg import PoseStamped, PointStamped
+from geometry_msgs.msg import PoseStamped, PointStamped, Vector3
 from butia_vision_msgs.srv import LookAtDescription3D, LookAtDescription3DRequest, LookAtDescription3DResponse
 from butia_vision_msgs.msg import  Recognitions3D, Description3D
 
@@ -207,6 +207,13 @@ class neckController():
 
         return desc
     
+    def addRelativeOffset(self, pose : PoseStamped, size : Vector3) -> None:
+        offset : Vector3 = self.lookat_description_identifier["offset"]
+        pose.pose.position.x += offset.x * size.x/2
+        pose.pose.position.y += offset.y * size.y/2
+        pose.pose.position.z += offset.z * size.z/2
+        return
+    
     def getTargetPose(self, description : Description3D, header) -> PoseStamped:
         pose = PoseStamped()
         pose.header = header
@@ -222,6 +229,7 @@ class neckController():
             pose.pose.position.x += (description.bbox.size.y / 2)
         elif target == "BOTTOM":
             pose.pose.position.y -= (description.bbox.size.x / 2)
+        self.addRelativeOffset(pose, description.bbox.size)
         return pose
     
     def lookAt_st(self, msg):
