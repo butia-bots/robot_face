@@ -207,34 +207,34 @@ class neckController():
 
         return desc
     
-    def addRelativeOffset(self, pose : PoseStamped, size : Vector3) -> None:
+    def addRelativeOffset(self, pose : PoseStamped, size : Vector3, offset : Vector3) -> None:
         offset : Vector3 = self.lookat_description_identifier["offset"]
         pose.pose.position.x += offset.x * size.x/2
         pose.pose.position.y += offset.y * size.y/2
         pose.pose.position.z += offset.z * size.z/2
         return
     
-    def getTargetPose(self, description : Description3D, header) -> PoseStamped:
-        pose = PoseStamped()
-        pose.header = header
-        pose.pose = description.bbox.center
+    # def getTargetPose(self, description : Description3D, header) -> PoseStamped:
+    #     pose = PoseStamped()
+    #     pose.header = header
+    #     pose.pose = description.bbox.center
 
-        target = self.lookat_description_identifier["target"]
-        # rospy.logerr(target)
-        if target == "TOP":
-            pose.pose.position.y -= (description.bbox.size.y / 2)
-        elif target == "LEFT":
-            pose.pose.position.x -= (description.bbox.size.x / 2)
-        elif target == "RIGHT":
-            pose.pose.position.x += (description.bbox.size.x / 2)
-        elif target == "BOTTOM":
-            pose.pose.position.y += (description.bbox.size.y / 2)
-        self.addRelativeOffset(pose, description.bbox.size)
-        rospy.logerr(pose)
-        return pose
+    #     target = self.lookat_description_identifier["target"]
+    #     # rospy.logerr(target)
+    #     if target == "TOP":
+    #         pose.pose.position.y -= (description.bbox.size.y / 2)
+    #     elif target == "LEFT":
+    #         pose.pose.position.x -= (description.bbox.size.x / 2)
+    #     elif target == "RIGHT":
+    #         pose.pose.position.x += (description.bbox.size.x / 2)
+    #     elif target == "BOTTOM":
+    #         pose.pose.position.y += (description.bbox.size.y / 2)
+    #     self.addRelativeOffset(pose, description.bbox.size)
+    #     rospy.logerr(pose)
+    #     return pose
     
     def lookAt_st(self, msg):
-        selected_desc = self.selectDescription(msg.descriptions)
+        selected_desc : Description3D = self.selectDescription(msg.descriptions)
 
         if selected_desc is not None:
 
@@ -242,14 +242,19 @@ class neckController():
             if self.last_stopped_time is not None and header.stamp >= self.last_stopped_time:
                 transform = self.computeTFTransform(header, to_frame_id=self.frame)
 
-                # lookat_pose = PoseStamped()
-                # lookat_pose.header = header
-                # lookat_pose.pose = selected_desc.bbox.center
+                lookat_pose = PoseStamped()
+                lookat_pose.header = header
+                lookat_pose.pose = selected_desc.bbox.center
 
-                lookat_pose = self.getTargetPose(selected_desc,header)
+                # lookat_pose = self.getTargetPose(selected_desc,header)
 
-                self.lookat_pose = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform)
-                                
+                lookat_pose = tf2_geometry_msgs.do_transform_pose(lookat_pose, transform)
+                lookat_size = tf2_geometry_msgs.do_transform_vector3(selected_desc.bbox.size, transform)
+                lookat_offset = tf2_geometry_msgs.do_transform_vector3(self.lookat_description_identifier["offset"])
+
+                self.addRelativeOffset(lookat_pose,lookat_size, lookat_offset)
+                
+                # self.lookat_pose =
                 self.publish = True
 
     def lookAtStart(self, req : LookAtDescription3DRequest):
