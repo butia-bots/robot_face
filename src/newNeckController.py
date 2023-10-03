@@ -222,14 +222,15 @@ class neckController():
         target = self.lookat_description_identifier["target"]
         # rospy.logerr(target)
         if target == "TOP":
-            pose.pose.position.y -= (description.bbox.size.x / 2)
+            pose.pose.position.y -= (description.bbox.size.y / 2)
         elif target == "LEFT":
-            pose.pose.position.x -= (description.bbox.size.y / 2)
+            pose.pose.position.x -= (description.bbox.size.x / 2)
         elif target == "RIGHT":
-            pose.pose.position.x += (description.bbox.size.y / 2)
+            pose.pose.position.x += (description.bbox.size.x / 2)
         elif target == "BOTTOM":
-            pose.pose.position.y -= (description.bbox.size.x / 2)
+            pose.pose.position.y += (description.bbox.size.y / 2)
         self.addRelativeOffset(pose, description.bbox.size)
+        rospy.logerr(pose)
         return pose
     
     def lookAt_st(self, msg):
