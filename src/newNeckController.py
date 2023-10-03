@@ -214,13 +214,13 @@ class neckController():
 
         target = self.lookat_description_identifier["target"]
         if target == "TOP":
-            pose.pose.position.z += (description.bbox.size.z / 2)
+            pose.pose.position.y -= (description.bbox.size.x / 2)
         elif target == "LEFT":
-            pose.pose.position.y -= (description.bbox.size.y / 2)
+            pose.pose.position.x -= (description.bbox.size.y / 2)
         elif target == "RIGHT":
-            pose.pose.position.y += (description.bbox.size.y / 2)
+            pose.pose.position.x += (description.bbox.size.y / 2)
         elif target == "BOTTOM":
-            pose.pose.position.z -= (description.bbox.size.z / 2)
+            pose.pose.position.y -= (description.bbox.size.x / 2)
         return pose
     
     def lookAt_st(self, msg):
@@ -242,7 +242,7 @@ class neckController():
                                 
                 self.publish = True
 
-    def lookAtStart(self, req):
+    def lookAtStart(self, req : LookAtDescription3DRequest):
         self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label, 'target': req.target, 'offset': req.offset }
         self.lookat_sub = rospy.Subscriber(req.recognitions3d_topic, Recognitions3D, self.lookAt_st, queue_size=1)
         self.state = neckController.STATES['LOOKAT']
