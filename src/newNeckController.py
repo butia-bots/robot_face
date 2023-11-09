@@ -49,7 +49,7 @@ class neckController():
         self.lookat_description_identifier = None
         self.lookat_pose = None
         self.last_stopped_time = None
-        self.look_at_timeout = 10
+        self.look_at_timeout = float("inf")
 
         self.publish = True
         
@@ -132,12 +132,11 @@ class neckController():
                     # rospy.logerr(lookat_neck)
                     self.horizontal, self.vertical = lookat_neck
                     self.last_pose = deepcopy(ps)
-                    self.lookat_pose = None
                 else:
                     self.publish = False
                 self.last_pose_time = time
+                self.lookat_pose = None
             elif rospy.get_time() - self.last_pose_time > self.look_at_timeout:
-                rospy.logerr("OI"*100)
                 self.publish = True
                 self.horizontal, self.vertical = 180, 180
 
@@ -229,7 +228,7 @@ class neckController():
                                 
                 self.publish = True
 
-    def lookAtStart(self, req):
+    def lookAtStart(self, req : LookAtDescription3DRequest):
         self.lookat_description_identifier = {'global_id': req.global_id, 'id': req.id, 'label': req.label}
         self.lookat_sub = rospy.Subscriber(req.recognitions3d_topic, Recognitions3D, self.lookAt_st, queue_size=1)
         self.state = neckController.STATES['LOOKAT']
@@ -237,6 +236,7 @@ class neckController():
         self.last_pose_time = 0.
         self.lookat_pose = None
         self.last_stopped_time = None
+        self.look_at_timeout = float("inf") if req.timeout == 0 else req.timeout
         return LookAtDescription3DResponse()
 
     def lookAtStop(self, req):
