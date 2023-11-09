@@ -135,7 +135,7 @@ class neckController():
                 else:
                     self.publish = False
             elif rospy.Time() - self.last_pose_time > self.look_at_timeout:
-                self.horizontal, self.vertical = np.pi, np.pi
+                self.horizontal, self.vertical = 180, 180
 
     def getStoppedTime(self, msg):
         time = msg.header.stamp
