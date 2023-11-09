@@ -113,6 +113,7 @@ class neckController():
             if self.neck_updated is not None:
                 self.horizontal, self.vertical = self.neck_updated
         elif self.state == neckController.STATES['LOOKAT']:
+            rospy.logerr(f"Delta: {rospy.get_time() - self.last_pose_time}")
             if self.lookat_pose is not None:
                 transform = self.computeTFTransform(self.lookat_pose.header, lastest=True)
                 ps = tf2_geometry_msgs.do_transform_pose(self.lookat_pose, transform).pose.position
@@ -128,13 +129,16 @@ class neckController():
                 
                 if distance < max(1.5 * delta, 1.5):
                     lookat_neck = self.computeNeckStateByPoint(ps)
-                    rospy.logerr(lookat_neck)
+                    # rospy.logerr(lookat_neck)
                     self.horizontal, self.vertical = lookat_neck
                     self.last_pose = deepcopy(ps)
-                    self.last_pose_time = time
+                    self.lookat_pose = None
                 else:
                     self.publish = False
+                self.last_pose_time = time
             elif rospy.get_time() - self.last_pose_time > self.look_at_timeout:
+                rospy.logerr("OI"*100)
+                self.publish = True
                 self.horizontal, self.vertical = 180, 180
 
     def getStoppedTime(self, msg):
