@@ -17,7 +17,21 @@ void Motor::goTo(unsigned char angle){
 
   Serial.print("ANGLE TO GO: ");
   Serial.println(new_angle);
-  servo.write(new_angle);
+  //servo.write(new_angle);
+  fadeWrite(servo, new_angle, 1)
+}
+
+void fadeWrite(Servo objServo, int finalAngle, int delayms){
+
+  int currentAngle = objServo.read();
+
+  int increment = (currentAngle < finalAngle) ? 1 : -1;
+
+  for(; (increment == 1) ? (currentAngle < finalAngle) : (currentAngle > finalAngle); currentAngle += increment){
+    objServo.write(currentAngle);
+    delay(delayms);
+  }
+
 }
 
 unsigned char Motor::checkRange(unsigned char targetPos){

@@ -1,0 +1,122 @@
+{
+    "EYEBROW_HEIGHT_RIGHT": {
+       "gpio": 4,
+       "beginLimit": 70,
+       "endLimit": 155,
+       "neutro": 80,
+       "feliz": 120,
+       "triste": 80,
+       "surpresa": 155,
+       "raiva": 90,
+       "duvida": 155,
+       "sono": 70
+    },
+    "EYEBROW_HEIGHT_LEFT": {
+       "gpio": 8,
+       "beginLimit": 15,
+       "endLimit": 115,
+       "neutro": 80,
+       "feliz": 22,
+       "triste": 105,
+       "surpresa": 15,
+       "raiva": 95,
+       "duvida": 115,
+       "sono": 80
+    },
+    "EYEBROW_ANGLE_RIGHT": {
+       "gpio": 5,
+       "beginLimit": 10,
+       "endLimit": 170,
+       "neutro": 50,
+       "feliz": 43,
+       "triste": 170,
+       "surpresa": 35,
+       "raiva": 75,
+       "duvida": 80,
+       "sono": 35
+    },
+    "EYEBROW_ANGLE_LEFT": {
+       "gpio": 9,
+       "beginLimit": 10,
+       "endLimit": 170,
+       "neutro": 120,
+       "feliz": 120,
+       "triste": 10,
+       "surpresa": 130,
+       "raiva": 100,
+       "duvida": 120,
+       "sono": 125
+    },
+    "EYELID_RIGHT": {
+       "gpio": 3,
+       "beginLimit": 60,
+       "endLimit": 120,
+       "neutro": 70,
+       "feliz": 75,
+       "triste": 60,
+       "surpresa": 60,
+       "raiva": 75,
+       "duvida": 80,
+       "sono": 100
+    },
+    "EYELID_LEFT": {
+       "gpio": 2,
+       "beginLimit": 60,
+       "endLimit": 120,
+       "neutro": 115,
+       "feliz": 112,
+       "triste": 105,
+       "surpresa": 125,
+       "raiva": 110,
+       "duvida": 100,
+       "sono": 100
+    },
+    "EYE_HORIZONTAL": {
+       "gpio": 10,
+       "beginLimit": 10,
+       "endLimit": 170,
+       "neutro": 95,
+       "feliz": 95,
+       "triste": 95,
+       "surpresa": 95,
+       "raiva": 95,
+       "duvida": 95,
+       "sono": 95
+    },
+    "EYE_VERTICAL": {
+       "gpio": 11,
+       "beginLimit": 110,
+       "endLimit": 150,
+       "neutro": 135,
+       "feliz": 140,
+       "triste": 115,
+       "surpresa": 140,
+       "raiva": 140,
+       "duvida": 130,
+       "sono": 125
+    },
+    "JAW_CLOCKWISE": {
+       "gpio": null,
+       "beginLimit": null,
+       "endLimit": null,
+       "neutro": null,
+       "feliz": null,
+       "triste": null,
+       "surpresa": null,
+       "raiva": null,
+       "duvida": null,
+       "sono": null
+    },
+    "JAW_ANTICLOCKWISE": {
+       "gpio": null,
+       "beginLimit": null,
+       "endLimit": null,
+       "neutro": null,
+       "feliz": null,
+       "triste": null,
+       "surpresa": null,
+       "raiva": null,
+       "duvida": null,
+       "sono": null
+    }
+ }
