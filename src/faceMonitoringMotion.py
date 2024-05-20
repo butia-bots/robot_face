@@ -28,7 +28,7 @@ def setCustomSize(x, width, height):
     x.setMaximumSize(QtCore.QSize(width, height))
 
 emotion = 0
-motors = [50]*12
+motors = [50]*10
 
 class Env():
     def __init__(self):
@@ -103,16 +103,14 @@ class Env():
         self.data = msg.data
         motors[4] = self.data[0]
         motors[5] = self.data[1]
-        motors[6] = self.data[2]
-        motors[7] = self.data[3]
         # print(self.data)
 
     def getEyebrown(self, msg):
         self.data = msg.data
-        motors[8] = self.data[0]
-        motors[9] = self.data[1]
-        motors[10] = self.data[2]
-        motors[11] = self.data[3]
+        motors[6] = self.data[0]
+        motors[7] = self.data[1]
+        motors[8] = self.data[2]
+        motors[9] = self.data[3]
 
 class CustomMainWindow(QtWidgets.QMainWindow):
     def __init__(self):

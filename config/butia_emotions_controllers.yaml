@@ -3,56 +3,90 @@ butia_emotions:
   eyebrown:
 
     standard:
-      rightY: 20
-      leftY: 20
-      rightRotation: 52
-      leftRotation: 50
+      rightY: 80
+      leftY: 80
+      rightRotation: 50
+      leftRotation: 120
       
     happy:
-      rightY: 75
-      leftY: 50
-      rightRotation: 50
-      leftRotation: 60
+      rightY: 120
+      leftY: 22
+      rightRotation: 43
+      leftRotation: 120
 
     sad:
-      rightY: 10
-      leftY: 10
-      rightRotation: 10
+      rightY: 80
+      leftY: 105
+      rightRotation: 170
       leftRotation: 10
 
     rage:
-      rightY: 10
-      leftY: 10
-      rightRotation: 90
+      rightY: 90
+      leftY: 95
+      rightRotation: 75
       leftRotation: 100
 
     scared:
-      rightY: 90
-      leftY: 90
-      rightRotation: 40
-      leftRotation: 50
+      rightY: 155
+      leftY: 15
+      rightRotation: 35
+      leftRotation: 130
 
+    doubt:
+      rightY: 155
+      leftY: 115
+      rightRotation: 80
+      leftRotation: 120
+
+    sleepy:
+      rightY: 70
+      leftY: 80
+      rightRotation: 35
+      leftRotation: 125
+    
   eyelid:
 
     standard:
-      h: 80
+      h: 70
       frequency: 0
+      right: 70
+      left: 115
 
     happy:
-      h: 100
+      h: 75
       frequency: 0
+      right: 75
+      left: 112
 
     sad:
-      h: 50
-      frequency: 0
-
-    rage:
       h: 60
       frequency: 0
+      right: 60
+      left: 105
+
+    rage:
+      h: 75
+      frequency: 0
+      right: 75
+      left: 110
 
     scared:
-      h: 90
+      h: 60
       frequency: 0
+      right: 60
+      left: 125
+    
+    doubt:
+      h: 80
+      frequency: 0
+      right: 80
+      left: 100
+    
+    sleepy:
+      h: 100
+      frequency: 0
+      right: 100
+      left: 100
 
   neck:
 
@@ -73,5 +107,13 @@ butia_emotions:
       vertical: 180
 
     scared:
+      horizontal: 180
+      vertical: 180
+    
+    doubt:
+      horizontal: 180
+      vertical: 180
+    
+    sleepy:
       horizontal: 180
       vertical: 180

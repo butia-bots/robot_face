@@ -16,11 +16,12 @@ MOTORS_IDX = {
     "EyelidLeft": 5,
     "EyeHorizontal": 6,
     "EyeVertical": 7,
-    "Mouth": 8,
-    "NeckHorizontal": 9,
-    "NeckVertical": 10,
-    "Pan": 11,
-    "Tilt": 12
+    "JawClockWise": 8,
+    "JawAntiClockWise": 9,
+    "NeckHorizontal": 10,
+    "NeckVertical": 11,
+    "Pan": 12,
+    "Tilt": 13
 }
 
 class dataflowEnable():
@@ -73,7 +74,8 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["EyelidLeft"]] = 20
         self.motors[MOTORS_IDX["EyeHorizontal"]] = 40
         self.motors[MOTORS_IDX["EyeVertical"]] = 85
-        self.motors[MOTORS_IDX["Mouth"]] = 100
+        self.motors[MOTORS_IDX["JawClockWise"]] = 100
+        self.motors[MOTORS_IDX["JawAntiClockWise"]] = 100
         self.motors[MOTORS_IDX["NeckHorizontal"]] = np.pi
         self.motors[MOTORS_IDX["NeckVertical"]] = np.pi
         self.motors[MOTORS_IDX["Pan"]] = np.pi
@@ -86,6 +88,7 @@ class dataflowEnable():
 
         rospy.Subscriber("/RosAria/motors_state", Bool, self.setPause)
 
+        #*** Onde fica o script que inicializa e publica no tópico 'mouth'
         self.sub_mouth = Int16MultiArray()
         self.sub_mouth.data = []  
         self.sub_mouth = rospy.Subscriber('mouth', Int16MultiArray, self.getMouth)
@@ -119,7 +122,8 @@ class dataflowEnable():
             if not self.pause: 
                 self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRight"]]))
                 self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeft"]]))
-                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["Mouth"]]))
+                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["JawClockWise"]])) #mouth
+                self.joint.writeValue(9, int(self.motors[MOTORS_IDX["JawAntiClockWise"]])) #mouth
                 self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
                 self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
                 self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
@@ -178,7 +182,8 @@ class dataflowEnable():
         data = msg.data
         #self.motors[0] = int(0.3059*self.data[0])
         #self.motors[10] = abs(100-data[0])
-        self.motors[MOTORS_IDX["Mouth"]] = data[1]
+        self.motors[MOTORS_IDX["JawClockWise"]] = data[0]
+        self.motors[MOTORS_IDX["JawAntiClockWise"]] = data[1]
         #self.motors[1] = data[1]
 
     def getEye(self, msg):

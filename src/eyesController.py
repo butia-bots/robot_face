@@ -25,6 +25,7 @@ class eyesEnable():
             rate.sleep()
 
     def getEyes(self, msg):
+        #*** Qual a estrutura e lógica da mensagem enviado pelo tópico updateEyes?
         self.data = msg.data
         self.x = self.data[0]
         self.y = self.data[1]
