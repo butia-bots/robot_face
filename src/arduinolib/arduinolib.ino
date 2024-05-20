@@ -11,10 +11,10 @@ enum motors : byte {
   EYEBROW_HEIGHT_RIGHT, EYEBROW_HEIGHT_LEFT, EYEBROW_ANGLE_RIGHT, EYEBROW_ANGLE_LEFT,
   EYELID_RIGHT, EYELID_LEFT,
   EYE_HORIZONTAL, EYE_VERTICAL,
-  JAW_CLOCKWISE, JAW_ANTICLOCKWISE
+  JAW_ROTATE_RIGHT, JAW_ROTATE_LEFT, JAW_HORIZONTAL_RIGHT, JAW_HORIZONTAL_LEFT
 };
 
-Motor motor[10];
+Motor motor[12];
 DynamixelProtocol dxl(BAUDRATE, ID);
 unsigned char adress;
 unsigned char angle;
@@ -27,12 +27,17 @@ void setup() {
   motor[EYEBROW_HEIGHT_LEFT].setMotorDefinitions(80, 15, 15, 8); 
   motor[EYEBROW_ANGLE_RIGHT].setMotorDefinitions(50, 10, 170, 5); 
   motor[EYEBROW_ANGLE_LEFT].setMotorDefinitions(120, 10, 170, 9); 
+
   motor[EYELID_RIGHT].setMotorDefinitions(70, 60, 120, 3);
   motor[EYELID_LEFT].setMotorDefinitions(115, 60, 120, 2);
+
   motor[EYE_HORIZONTAL].setMotorDefinitions(95, 10, 170, 10); 
   motor[EYE_VERTICAL].setMotorDefinitions(135, 110, 150, 11);
-  motor[JAW_CLOCKWISE].setMotorDefinitions(35, 20, 35, 0);//*a definir
-  motor[JAW_ANTICLOCKWISE].setMotorDefinitions(0, 20, 150, 0);//*a definir
+  
+  motor[JAW_ROTATE_RIGHT].setMotorDefinitions(35, 20, 35, 12);//*a definir
+  motor[JAW_ROTATE_LEFT].setMotorDefinitions(0, 20, 150, 1);//*a definir
+  motor[JAW_HORIZONTAL_RIGHT].setMotorDefinitions(35, 20, 35, 13);//*a definir
+  motor[JAW_HORIZONTAL_LEFT].setMotorDefinitions(0, 20, 150, 0);//*a definir
 }
 
 int angles2;
@@ -78,9 +83,17 @@ void loop() {
           case EYE_VERTICAL:
             motor[EYE_VERTICAL].goTo(angle);
             break;
-          case JAW_CLOCKWISE:
-            motor[JAW_CLOCKWISE].goTo(angle);
-            motor[JAW_ANTICLOCKWISE].goTo(angle);         
+          case JAW_ROTATE_RIGHT:
+            motor[JAW_ROTATE_RIGHT].goTo(angle);
+            break;
+          case JAW_ROTATE_LEFT:
+            motor[JAW_ROTATE_LEFT].goTo(angle);
+            break;
+          case JAW_HORIZONTAL_RIGHT:
+            motor[JAW_HORIZONTAL_RIGHT].goTo(angle);
+            break;
+          case JAW_HORIZONTAL_LEFT:
+            motor[JAW_HORIZONTAL_LEFT].goTo(angle);   
             break;
           default:
             break;

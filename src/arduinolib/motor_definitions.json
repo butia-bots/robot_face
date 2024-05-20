@@ -95,8 +95,8 @@
        "duvida": 130,
        "sono": 125
     },
-    "JAW_CLOCKWISE": {
-       "gpio": null,
+    "JAW_ROTATE_RIGHT": {
+       "gpio": 12,
        "beginLimit": null,
        "endLimit": null,
        "neutro": null,
@@ -107,8 +107,32 @@
        "duvida": null,
        "sono": null
     },
-    "JAW_ANTICLOCKWISE": {
-       "gpio": null,
+    "JAW_ROTATE_LEFT": {
+       "gpio": 1,
+       "beginLimit": null,
+       "endLimit": null,
+       "neutro": null,
+       "feliz": null,
+       "triste": null,
+       "surpresa": null,
+       "raiva": null,
+       "duvida": null,
+       "sono": null
+    },
+    "JAW_HORIZONTAL_RIGHT": {
+       "gpio": 13,
+       "beginLimit": null,
+       "endLimit": null,
+       "neutro": null,
+       "feliz": null,
+       "triste": null,
+       "surpresa": null,
+       "raiva": null,
+       "duvida": null,
+       "sono": null
+    },
+    "JAW_HORIZONTAL_LEFT": {
+       "gpio": 0,
        "beginLimit": null,
        "endLimit": null,
        "neutro": null,
@@ -119,4 +143,7 @@
        "duvida": null,
        "sono": null
     }
+    
+    
+    
  }
