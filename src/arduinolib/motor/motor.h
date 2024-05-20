@@ -7,7 +7,7 @@
 
 class Motor{  
   public:
-    void setMotorDefinitions( unsigned char startAngle, unsigned char beginLimit, unsigned char endLimit);
+    void setMotorDefinitions( unsigned char startAngle, unsigned char beginLimit, unsigned char endLimit, int attachPin);
     void goTo(unsigned char angle);
     static void returnCount();
         
