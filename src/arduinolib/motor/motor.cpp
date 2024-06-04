@@ -2,7 +2,7 @@
 
 int Motor::counter = 2;
 
-void Motor::setMotorDefinitions(unsigned char startAngle, unsigned char beginLimit, unsigned char endLimit, int attachPin){
+void Motor::setMotorDefinitions(uint8_t startAngle, uint8_t beginLimit,  uint8_t endLimit, uint8_t attachPin);{
   servo.attach(attachPin);
   limitAngle[0] = beginLimit;
   limitAngle[1] = endLimit;

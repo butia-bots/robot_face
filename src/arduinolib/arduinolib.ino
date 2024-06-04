@@ -1,5 +1,5 @@
-#include "motor.h"
-#include "thread.h"
+#include "motor/motor.h"
+#include "thread/thread.h"
 
 #include <DynamixelProtocol.h>
 #include <Servo.h>

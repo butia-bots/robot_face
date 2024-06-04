@@ -92,7 +92,6 @@ class dataflowEnable():
 
         rospy.Subscriber("/RosAria/motors_state", Bool, self.setPause)
 
-        #*** Onde fica o script que inicializa e publica no tópico 'mouth'
         self.sub_mouth = Int16MultiArray()
         self.sub_mouth.data = []  
         self.sub_mouth = rospy.Subscriber('mouth', Int16MultiArray, self.getMouth)

@@ -4,11 +4,11 @@ from math import pi
 import sys
 
 import dynamixel_sdk as dxl
-#sys.path.append('/home/jardel/Workspace/faceDoris/src/robotFace/src/PyDynamixel/dynamixel')
+#sys.path.append('/home/rich/catkin_ws/src/butia_face/src/PyDynamixel/dynamixel')
 #import dynamixel_functions as dxl
 
 ADDR_MX_TORQUE_ENABLE = 24  # Address for torque enable
-ADDR_MX_PRESENT_POSITION = 36 # Address for the current position
+ADDR_MX_PRESENT_POSITION = 36 # Address sfor the current position
 ADDR_MX_GOAL_POSITION = 30 # Address for goal position
 MAXADDR_MX_TORQUE_ENABLE = 14 # Address for maximum torque
 MAXTORQUELIMIT = 767 # Maximum torque possible

@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <thread.h>
+#include "thread.h"
 #include <Servo.h>
 
 #ifndef Motor_h
@@ -7,7 +7,7 @@
 
 class Motor{  
   public:
-    void setMotorDefinitions( unsigned char startAngle, unsigned char beginLimit, unsigned char endLimit, int attachPin);
+    void setMotorDefinitions(uint8_t startAngle, uint8_t beginLimit,  uint8_t endLimit, uint8_t attachPin);
     void goTo(unsigned char angle);
     static void returnCount();
         
