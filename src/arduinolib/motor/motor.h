@@ -17,7 +17,7 @@ class Motor{
     unsigned char limitAngle[2] = {5,175};
     unsigned char invert = 0;
     Servo servo;
-    void fadeWrite;
+    void fadeWrite(Servo objServo, int finalAngle, int delayms);
 };
 
 #endif
