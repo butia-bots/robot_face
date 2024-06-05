@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include "thread.h"
 #include <Servo.h>
 
 #ifndef Motor_h
