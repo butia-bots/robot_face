@@ -7,17 +7,26 @@
 class Motor{  
   public:
     void setMotorDefinitions(unsigned char startAngle, unsigned char beginLimit,  unsigned char endLimit, unsigned char attachPin);
-    void goTo(unsigned char angle);
-    static void returnCount();
-        
-  private:
-    static int counter;
+    virtual void goTo(unsigned char angle) = 0;
+    unsigned char reversed = 0;
+    
+  protected:
     unsigned char checkRange(unsigned char targetPos);
     unsigned char limitAngle[2] = {5,175};
-    unsigned char invert = 0;
-    Servo servo;
     void fadeWrite(Servo objServo, int finalAngle, int delayms);
+    Servo servo;  
 };
 
+class percentualMotor : public Motor {
+  public:
+    percentualMotor();
+    void goTo(unsigned char angle) override;
+};
+
+class rawangleMotor : public Motor {
+  public:
+    rawangleMotor();
+    void goTo(unsigned char angle) override;
+};
 #endif
 

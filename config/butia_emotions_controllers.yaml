@@ -3,44 +3,44 @@ butia_emotions:
   eyebrown:
 
     standard:
-      rightY: 80
-      leftY: 80
+      rightY: 50
+      leftY: 50
       rightRotation: 50
       leftRotation: 120
       
     happy:
-      rightY: 120
-      leftY: 22
+      rightY: 80
+      leftY: 80
       rightRotation: 43
       leftRotation: 120
 
     sad:
-      rightY: 80
-      leftY: 105
+      rightY: 10
+      leftY: 10
       rightRotation: 170
       leftRotation: 10
 
     rage:
-      rightY: 90
-      leftY: 95
+      rightY: 30
+      leftY: 30
       rightRotation: 75
       leftRotation: 100
 
     scared:
-      rightY: 155
-      leftY: 15
+      rightY: 90
+      leftY: 90
       rightRotation: 35
       leftRotation: 130
 
     doubt:
-      rightY: 155
-      leftY: 115
+      rightY: 90
+      leftY: 60
       rightRotation: 80
       leftRotation: 120
 
     sleepy:
-      rightY: 70
-      leftY: 80
+      rightY: 10
+      leftY: 10
       rightRotation: 35
       leftRotation: 125
     
@@ -50,43 +50,43 @@ butia_emotions:
       h: 70
       frequency: 0
       right: 70
-      left: 115
+      left: 70
 
     happy:
       h: 75
       frequency: 0
-      right: 75
-      left: 112
+      right: 60
+      left: 60
 
     sad:
       h: 60
       frequency: 0
-      right: 60
-      left: 105
+      right: 55
+      left: 55
 
     rage:
       h: 75
       frequency: 0
-      right: 75
-      left: 110
+      right: 50
+      left: 50
 
     scared:
       h: 60
       frequency: 0
-      right: 60
-      left: 125
+      right: 90
+      left: 90
     
     doubt:
       h: 80
       frequency: 0
-      right: 80
-      left: 100
+      right: 60
+      left: 60
     
     sleepy:
       h: 100
       frequency: 0
-      right: 100
-      left: 100
+      right: 30
+      left: 30
 
   neck:
 

@@ -1,24 +1,10 @@
 #include "motor.h"
 
-int Motor::counter = 2;
-
 void Motor::setMotorDefinitions(unsigned char startAngle, unsigned char beginLimit,  unsigned char endLimit, unsigned char attachPin){
   servo.attach(attachPin);
   limitAngle[0] = beginLimit;
   limitAngle[1] = endLimit;
   goTo(startAngle);
-}
-
-void Motor::goTo(unsigned char angle){
-  angle = angle <= 0 ? 0 : angle;
-  angle = angle >= 100 ? 100 : angle;
-
-  int new_angle = map(angle, 0, 100, limitAngle[0], limitAngle[1]);
-
-  Serial.print("ANGLE TO GO: ");
-  Serial.println(new_angle);
-  //servo.write(new_angle);
-  fadeWrite(servo, new_angle, 1);
 }
 
 void Motor::fadeWrite(Servo objServo, int finalAngle, int delayms){
@@ -44,6 +30,29 @@ unsigned char Motor::checkRange(unsigned char targetPos){
  else return targetPos;
 }
 
-void Motor::returnCount(){
-  Serial.println(counter);
+//motors using percentual values (0-100)
+percentualMotor::percentualMotor() {}
+
+void percentualMotor::goTo(unsigned char angle){
+  
+  int new_angle = map(angle, 0, 100, reversed=0 ? limitAngle[0] : limitAngle[1], reversed ? limitAngle[1] : limitAngle[0]);
+  new_angle = checkRange(new_angle);
+
+  Serial.print("ANGLE TO GO: ");
+  Serial.println(new_angle);
+  //servo.write(new_angle);
+  fadeWrite(servo, new_angle, 1);
+}
+
+
+
+//motors using raw angle values (0-180)
+rawangleMotor::rawangleMotor() {}
+
+void rawangleMotor::goTo(unsigned char angle){
+  int new_angle=checkRange(angle);
+  Serial.print("ANGLE TO GO: ");
+  Serial.println(new_angle);
+  //servo.write(new_angle);
+  fadeWrite(servo, new_angle, 1);
 }

@@ -16,14 +16,11 @@ MOTORS_IDX = {
     "EyelidLeft": 5,
     "EyeHorizontal": 6,
     "EyeVertical": 7,
-    "JawRotateRight": 8,
-    "JawRotateLeft": 9,
-    "JawHorizontalRight": 10,
-    "JawHorizontalLeft": 11,
-    "NeckHorizontal": 12,
-    "NeckVertical": 13,
-    "Pan": 14,
-    "Tilt": 15
+    "Jaw": 8,
+    "NeckHorizontal": 9,
+    "NeckVertical": 10,
+    "Pan": 11,
+    "Tilt": 12
 }
 
 class dataflowEnable():
@@ -68,18 +65,15 @@ class dataflowEnable():
         # Define the output vector
         self.motors = [0] * len(MOTORS_IDX.keys())
 
-        self.motors[MOTORS_IDX["EyebrowRightHeight"]] = 20
-        self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = 20
+        self.motors[MOTORS_IDX["EyebrowRightHeight"]] = 50
+        self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = 50
         self.motors[MOTORS_IDX["EyebrowRightAngle"]] = 50
-        self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = 50
-        self.motors[MOTORS_IDX["EyelidRight"]] = 20
-        self.motors[MOTORS_IDX["EyelidLeft"]] = 20
-        self.motors[MOTORS_IDX["EyeHorizontal"]] = 40
-        self.motors[MOTORS_IDX["EyeVertical"]] = 85
-        self.motors[MOTORS_IDX["JawRotateRight"]] = 100
-        self.motors[MOTORS_IDX["JawRotateLeft"]] = 100
-        self.motors[MOTORS_IDX["JawHorizontalRight"]] = 100
-        self.motors[MOTORS_IDX["JawHorizontalLeft"]] = 100
+        self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = 120
+        self.motors[MOTORS_IDX["EyelidRight"]] = 50
+        self.motors[MOTORS_IDX["EyelidLeft"]] = 50
+        self.motors[MOTORS_IDX["EyeHorizontal"]] = 95
+        self.motors[MOTORS_IDX["EyeVertical"]] = 135
+        self.motors[MOTORS_IDX["Jaw"]] = 10
         self.motors[MOTORS_IDX["NeckHorizontal"]] = np.pi
         self.motors[MOTORS_IDX["NeckVertical"]] = np.pi
         self.motors[MOTORS_IDX["Pan"]] = np.pi
@@ -125,10 +119,7 @@ class dataflowEnable():
             if not self.pause: 
                 self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRight"]]))
                 self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeft"]]))
-                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["JawRotateRight"]])) #mouth
-                self.joint.writeValue(9, int(self.motors[MOTORS_IDX["JawRotateLeft"]])) #mouth
-                self.joint.writeValue(10, int(self.motors[MOTORS_IDX["JawHorizontalRight"]])) #mouth
-                self.joint.writeValue(11, int(self.motors[MOTORS_IDX["JawHorizontalLeft"]])) #mouth
+                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["Jaw"]])) #mouth
                 self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
                 self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
                 self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
@@ -187,10 +178,7 @@ class dataflowEnable():
         data = msg.data
         #self.motors[0] = int(0.3059*self.data[0])
         #self.motors[10] = abs(100-data[0])
-        self.motors[MOTORS_IDX["JawRotateRight"]] = data[0]
-        self.motors[MOTORS_IDX["JawRotateLeft"]] = data[1]
-        self.motors[MOTORS_IDX["JawHorizontalRight"]] = data[2]
-        self.motors[MOTORS_IDX["JawHorizontalLeft"]] = data[3]
+        self.motors[MOTORS_IDX["Jaw"]] = data[0]
         #self.motors[1] = data[1]
 
     def getEye(self, msg):
