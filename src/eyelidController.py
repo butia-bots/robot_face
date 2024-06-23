@@ -24,7 +24,7 @@ EMOTIONS = {
 class eyelidEnable():
     def __init__(self):
         rospy.init_node('eyelidEnable', anonymous=False)
-        pub = rospy.Publisher('eyelid', Int16MultiArray, queue_size=10)
+        self.pub = rospy.Publisher('eyelid', Int16MultiArray, queue_size=10)
 
         self.sub_eyelid_st = rospy.Subscriber('emotion', Int16, self.getEyelid_st)
         # self.sub_eyelid_dn = Int16MultiArray()
@@ -54,13 +54,17 @@ class eyelidEnable():
         '''blinkLoop = threading.Thread(name = 'blink', target = eyelidEnable.blink, args = (self,))
         blinkLoop.setDaemon(True)
         blinkLoop.start()'''
+        
+        self.blinking = 0
+        blink_timer = rospy.timer(rospy.Duration(secs=10), self.blink)
 
-        while not rospy.is_shutdown():
-            self.getOutput()
-            self.output.data = []
-            self.output.data = [self.right, self.left]
-            pub.publish(self.output)
-            rate.sleep()
+
+        # while not rospy.is_shutdown():
+        #     self.getOutput()
+        #     self.output.data = []
+        #     self.output.data = [self.right, self.left]
+        #     pub.publish(self.output)
+        #     rate.sleep()
         
     def getOutput(self):
         # if (self.animation == 1):
@@ -120,8 +124,15 @@ class eyelidEnable():
     def getEyelid_st(self, msg):
         global h
         global frequency
+
         self.data = msg.data
         self.emotion=self.data
+
+        self.getOutput()
+        self.output.data = []
+        self.output.data = [self.right, self.left]
+        self.pub.publish(self.output)
+
         '''
         if(self.data == EMOTIONS["standard"]):
             h = self.h_standard_params
@@ -189,6 +200,22 @@ class eyelidEnable():
         self.frequency_sleepy_params = rospy.get_param("butia_emotions/eyelid/sleepy/frequency")'''
     
     def blink(self):
+        
+
+        self.output.data = []
+        
+        if self.blinking:
+            self.output.data = [self.right, self.left]
+            self.blinking=0
+
+        else:
+            self.output.data = [0, 0]
+            self.blinking=1
+            endblinking = rospy.Timer(rospy.Duration(nsecs=150000000), self.blink, oneshot=True)
+
+        self.pub.publish(self.output)
+
+
         pass
         '''
         while(True):

@@ -117,3 +117,56 @@ butia_emotions:
     sleepy:
       horizontal: 180
       vertical: 180
+
+  eyes:
+
+    standard:
+      horizontal: 65
+      vertical: 43
+
+    happy:
+      horizontal: 65
+      vertical: 57
+
+    sad:
+      horizontal: 65
+      vertical: 0
+
+    rage:
+      horizontal: 65
+      vertical: 57
+
+    scared:
+      horizontal: 65
+      vertical: 57
+    
+    doubt:
+      horizontal: 65
+      vertical: 43
+    
+    sleepy:
+      horizontal: 65
+      vertical: 43
+
+  jaw:
+  
+    standard:
+      percent: 25
+
+    happy:
+      percent: 50
+
+    sad:
+      percent: 10
+
+    rage:
+      percent: 10
+
+    scared:
+      percent: 100
+    
+    doubt:
+      percent: 50
+    
+    sleepy:
+      percent: 80

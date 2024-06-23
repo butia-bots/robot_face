@@ -42,10 +42,10 @@ void setup() {
   motor[EYELID_RIGHT]->setMotorDefinitions(50, 60, 140, 3);
   motor[EYELID_LEFT]->setMotorDefinitions(50, 60, 120, 2);
 
-  motor[EYE_HORIZONTAL] = new rawangleMotor();
-  motor[EYE_VERTICAL] = new rawangleMotor();
-  motor[EYE_HORIZONTAL]->setMotorDefinitions(95, 10, 140, 10); 
-  motor[EYE_VERTICAL]->setMotorDefinitions(135, 120, 155, 11);
+  motor[EYE_HORIZONTAL] = new percentualMotor(); // precisam ser percentuais pela logica do controle da direção do olhar
+  motor[EYE_VERTICAL] = new percentualMotor();
+  motor[EYE_HORIZONTAL]->setMotorDefinitions(65, 10, 140, 10); 
+  motor[EYE_VERTICAL]->setMotorDefinitions(43, 120, 155, 11);
   
   motor[JAW_ROTATE] = new percentualMotor();
   motor[JAW_HORIZONTAL] = new percentualMotor();
@@ -96,7 +96,7 @@ void loop() {
           case EYE_VERTICAL:
             motor[EYE_VERTICAL]->goTo(angle);
             break;
-          case JAW_ROTATE:
+          case JAW_ROTATE: //8
             motor[JAW_ROTATE]->goTo(angle);
             motor[JAW_HORIZONTAL]->goTo(angle);   
             break;
