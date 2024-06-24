@@ -35,7 +35,7 @@ percentualMotor::percentualMotor() {}
 
 void percentualMotor::goTo(unsigned char angle){
   
-  int new_angle = map(angle, 0, 100, reversed=0 ? limitAngle[0] : limitAngle[1], reversed ? limitAngle[1] : limitAngle[0]);
+  int new_angle = map(angle, 0, 100, reversed==0 ? limitAngle[0] : limitAngle[1], reversed==0 ? limitAngle[1] : limitAngle[0]);
   new_angle = checkRange(new_angle);
 
   Serial.print("ANGLE TO GO: ");
