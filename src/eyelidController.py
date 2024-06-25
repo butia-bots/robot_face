@@ -56,7 +56,7 @@ class eyelidEnable():
         blinkLoop.start()'''
         
         self.blinking = 0
-        blink_timer = rospy.timer(rospy.Duration(secs=10), self.blink)
+        blink_timer = rospy.Timer(rospy.Duration(secs=10), self.blink)
 
 
         # while not rospy.is_shutdown():
