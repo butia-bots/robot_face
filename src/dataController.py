@@ -36,7 +36,7 @@ class dataflowEnable():
         self.max_vertical = 190
 
         try:
-            self.neck_port = DxlCommProtocol2("/dev/ttyNECK")
+            self.neck_port = DxlCommProtocol2("/dev/ttyUSB1")
 
             self.neckHorizontal = JointProtocol2(62)
             self.neckVertical = JointProtocol2(61)
@@ -71,8 +71,8 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = 120
         self.motors[MOTORS_IDX["EyelidRight"]] = 50
         self.motors[MOTORS_IDX["EyelidLeft"]] = 50
-        self.motors[MOTORS_IDX["EyeHorizontal"]] = 95
-        self.motors[MOTORS_IDX["EyeVertical"]] = 135
+        self.motors[MOTORS_IDX["EyeHorizontal"]] = 65
+        self.motors[MOTORS_IDX["EyeVertical"]] = 43
         self.motors[MOTORS_IDX["Jaw"]] = 10
         self.motors[MOTORS_IDX["NeckHorizontal"]] = np.pi
         self.motors[MOTORS_IDX["NeckVertical"]] = np.pi
@@ -80,7 +80,7 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["Tilt"]] = np.pi
 
         self.seq = 0
-        self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
+        self.port = DxlCommProtocol1(commPort="/dev/ttyACM0")
         self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
 

@@ -31,15 +31,15 @@ void setup() {
   motor[EYEBROW_HEIGHT_LEFT]->setMotorDefinitions(50, 15, 115, 8); 
 
   motor[EYEBROW_ANGLE_RIGHT] = new rawangleMotor();
-  motor[EYEBROW_ANGLE_LEFT] = new rawangleMotor();
+  //motor[EYEBROW_ANGLE_LEFT] = new rawangleMotor();
   motor[EYEBROW_ANGLE_RIGHT]->setMotorDefinitions(50, 10, 170, 5); 
-  motor[EYEBROW_ANGLE_LEFT]->setMotorDefinitions(120, 10, 170, 9); 
+  //motor[EYEBROW_ANGLE_LEFT]->setMotorDefinitions(120, 10, 170, 9); 
 
 
   motor[EYELID_RIGHT] = new percentualMotor();
   motor[EYELID_RIGHT]->reversed=1;
   motor[EYELID_LEFT] = new percentualMotor();
-  motor[EYELID_RIGHT]->setMotorDefinitions(50, 60, 140, 3);
+  motor[EYELID_RIGHT]->setMotorDefinitions(100, 60, 140, 3);
   motor[EYELID_LEFT]->setMotorDefinitions(50, 60, 120, 2);
 
   motor[EYE_HORIZONTAL] = new percentualMotor(); // precisam ser percentuais pela logica do controle da direção do olhar
@@ -47,10 +47,10 @@ void setup() {
   motor[EYE_HORIZONTAL]->setMotorDefinitions(65, 10, 140, 10); 
   motor[EYE_VERTICAL]->setMotorDefinitions(43, 120, 155, 11);
   
-  motor[JAW_ROTATE] = new percentualMotor();
-  motor[JAW_HORIZONTAL] = new percentualMotor();
-  motor[JAW_ROTATE]->setMotorDefinitions(125, 90, 130, 12);//*a definir
-  motor[JAW_HORIZONTAL]->setMotorDefinitions(130, 90, 140, 13);//*a definir
+ // motor[JAW_ROTATE] = new percentualMotor();
+ // motor[JAW_HORIZONTAL] = new percentualMotor();
+ // motor[JAW_ROTATE]->setMotorDefinitions(125, 90, 130, 12);//*a definir
+ // motor[JAW_HORIZONTAL]->setMotorDefinitions(130, 90, 140, 13);//*a definir
 }
 
 int angles2;
@@ -81,9 +81,9 @@ void loop() {
           case EYEBROW_ANGLE_RIGHT:
             motor[EYEBROW_ANGLE_RIGHT]->goTo(angle);
             break;
-          case EYEBROW_ANGLE_LEFT:
-            motor[EYEBROW_ANGLE_LEFT]->goTo(angle);
-            break;
+    //      case EYEBROW_ANGLE_LEFT:
+     //       motor[EYEBROW_ANGLE_LEFT]->goTo(angle);
+       //     break;
           case EYELID_RIGHT:
             motor[EYELID_RIGHT]->goTo(angle);
             break;
@@ -96,10 +96,10 @@ void loop() {
           case EYE_VERTICAL:
             motor[EYE_VERTICAL]->goTo(angle);
             break;
-          case JAW_ROTATE: //8
-            motor[JAW_ROTATE]->goTo(angle);
-            motor[JAW_HORIZONTAL]->goTo(angle);   
-            break;
+        //  case JAW_ROTATE: //8
+        //    motor[JAW_ROTATE]->goTo(angle);
+        //    motor[JAW_HORIZONTAL]->goTo(angle);   
+        //    break;
           default:
             break;
         }

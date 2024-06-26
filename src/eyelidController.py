@@ -56,15 +56,15 @@ class eyelidEnable():
         blinkLoop.start()'''
         
         self.blinking = 0
-        blink_timer = rospy.Timer(rospy.Duration(secs=10), self.blink)
+      #  blink_timer = rospy.Timer(rospy.Duration(secs=10), self.blink)
 
 
-        # while not rospy.is_shutdown():
-        #     self.getOutput()
-        #     self.output.data = []
-        #     self.output.data = [self.right, self.left]
-        #     pub.publish(self.output)
-        #     rate.sleep()
+        while not rospy.is_shutdown():
+            self.getOutput()
+            self.output.data = []
+            self.output.data = [self.right, self.left]
+            self.pub.publish(self.output)
+            rate.sleep()
         
     def getOutput(self):
         # if (self.animation == 1):
