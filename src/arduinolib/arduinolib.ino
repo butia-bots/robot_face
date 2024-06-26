@@ -31,9 +31,9 @@ void setup() {
   motor[EYEBROW_HEIGHT_LEFT]->setMotorDefinitions(50, 15, 115, 8); 
 
   motor[EYEBROW_ANGLE_RIGHT] = new rawangleMotor();
-  //motor[EYEBROW_ANGLE_LEFT] = new rawangleMotor();
+  motor[EYEBROW_ANGLE_LEFT] = new rawangleMotor();
   motor[EYEBROW_ANGLE_RIGHT]->setMotorDefinitions(50, 10, 170, 5); 
-  //motor[EYEBROW_ANGLE_LEFT]->setMotorDefinitions(120, 10, 170, 9); 
+  motor[EYEBROW_ANGLE_LEFT]->setMotorDefinitions(120, 10, 170, 7); 
 
 
   motor[EYELID_RIGHT] = new percentualMotor();
@@ -81,9 +81,9 @@ void loop() {
           case EYEBROW_ANGLE_RIGHT:
             motor[EYEBROW_ANGLE_RIGHT]->goTo(angle);
             break;
-    //      case EYEBROW_ANGLE_LEFT:
-     //       motor[EYEBROW_ANGLE_LEFT]->goTo(angle);
-       //     break;
+          case EYEBROW_ANGLE_LEFT:
+            motor[EYEBROW_ANGLE_LEFT]->goTo(angle);
+            break;
           case EYELID_RIGHT:
             motor[EYELID_RIGHT]->goTo(angle);
             break;
