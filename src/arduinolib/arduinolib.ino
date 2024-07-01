@@ -11,7 +11,7 @@ enum motors : byte {
   EYEBROW_ANGLE_RIGHT, EYEBROW_ANGLE_LEFT,
   EYELID_RIGHT, EYELID_LEFT,
   EYE_HORIZONTAL, EYE_VERTICAL,
-  JAW_ROTATE, JAW_HORIZONTAL
+  JAW_ROTATE
 };
 
 Motor* motor[10];
@@ -22,8 +22,9 @@ unsigned char angle;
 void setup() {
   dxl.init();
   //Serial.begin(9600); //BAUDRATE
-  //Serial.flush();           //**setMotorDefinitions(start, beginlimit, endlimit, pin)
-  
+  //Serial.flush();          
+
+   //**setMotorDefinitions(start, beginlimit, endlimit, pin)
   motor[EYEBROW_HEIGHT_RIGHT] = new percentualMotor();
   motor[EYEBROW_HEIGHT_RIGHT]->reversed=1;
   motor[EYEBROW_HEIGHT_LEFT] = new percentualMotor();
@@ -48,9 +49,7 @@ void setup() {
   motor[EYE_VERTICAL]->setMotorDefinitions(43, 120, 155, 11);
   
  // motor[JAW_ROTATE] = new percentualMotor();
- // motor[JAW_HORIZONTAL] = new percentualMotor();
  // motor[JAW_ROTATE]->setMotorDefinitions(125, 90, 130, 12);//*a definir
- // motor[JAW_HORIZONTAL]->setMotorDefinitions(130, 90, 140, 13);//*a definir
 }
 
 int angles2;
@@ -60,9 +59,7 @@ void loop() {
   // angles2 = Serial.parseInt();
   // Serial.print("Input: ");
   // Serial.println(angles2);
-  // motor[EYELID_RIGHT]->goTo(angles2);
  // }
-//  dxl.checkMessages();
 //  
   dxl.checkMessages();
  
@@ -97,8 +94,7 @@ void loop() {
             motor[EYE_VERTICAL]->goTo(angle);
             break;
         //  case JAW_ROTATE: //8
-        //    motor[JAW_ROTATE]->goTo(angle);
-        //    motor[JAW_HORIZONTAL]->goTo(angle);   
+        //    motor[JAW_ROTATE]->goTo(angle); 
         //    break;
           default:
             break;
