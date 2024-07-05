@@ -113,7 +113,7 @@ class neckController():
             if self.neck_updated is not None:
                 self.horizontal, self.vertical = self.neck_updated
         elif self.state == neckController.STATES['LOOKAT']:
-            rospy.logerr(f"Delta: {rospy.get_time() - self.last_pose_time}")
+            # rospy.logerr(f"Delta: {rospy.get_time() - self.last_pose_time}")
             if self.lookat_pose is not None:
                 transform = self.computeTFTransform(self.lookat_pose.header, lastest=True)
                 ps = tf2_geometry_msgs.do_transform_pose(self.lookat_pose, transform).pose.position
