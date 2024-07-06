@@ -6,8 +6,6 @@ import os
 from std_msgs.msg import Int16MultiArray, Float64MultiArray, Int16
 import map as mp
 
-output = Int16MultiArray()
-output.data = []
 
 EMOTIONS = {
     "standard": 0,
@@ -23,9 +21,12 @@ class eyesEnable():
     def __init__(self):
         pub = rospy.Publisher('eye', Int16MultiArray, queue_size=10)
         rospy.init_node('eyesEnable', anonymous=False)
-        self.sub_eye = rospy.Subscriber('updateEyes', Float64MultiArray, self.getEyes)
+      #  self.sub_eye = rospy.Subscriber('updateEyes', Float64MultiArray, self.getEyes)
         self.sub_eye_emotion = rospy.Subscriber('emotion', Int16, self.getEyes_emotion)
         rate = rospy.Rate(50) 
+
+        self.output = Int16MultiArray()
+        self.output.data = []
 
         self._readParameters()
 
@@ -34,20 +35,22 @@ class eyesEnable():
         self.yPosition = self.vertical_standard_params
 
         while not rospy.is_shutdown():
-            output.data = [self.xPosition , self.yPosition]
-            pub.publish(output)
+            self.getOutput()
+            self.output.data = []
+            self.output.data = [self.xPosition , self.yPosition]
+            pub.publish(self.output)
             rate.sleep()
-
-    def getEyes(self, msg):
+#
+#   def getEyes(self, msg):
         #*** Qual a estrutura e l�gica da mensagem enviado pelo t�pico updateEyes?
-        self.data = msg.data
-        self.x = self.data[0]
-        self.y = self.data[1]
-        self.width = self.data[3]
-        self.height = self.data[2]
+ #       self.data = msg.data
+  #      self.x = self.data[0]
+   #     self.y = self.data[1]
+    #    self.width = self.data[3]
+     #   self.height = self.data[2]
 
-        self.xPosition = abs(100 - mp.map(0, self.width, 0, 100, self.x))
-        self.yPosition = mp.map(0, self.height, 0, 100, self.y)
+      #  self.xPosition = abs(100 - mp.map(0, self.width, 0, 100, self.x))
+      #  self.yPosition = mp.map(0, self.height, 0, 100, self.y)
 
     def getOutput(self):
         

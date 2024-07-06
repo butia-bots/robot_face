@@ -65,22 +65,22 @@ class dataflowEnable():
         # Define the output vector
         self.motors = [0] * len(MOTORS_IDX.keys())
 
-        self.motors[MOTORS_IDX["EyebrowRightHeight"]] = 50
-        self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = 50
-        self.motors[MOTORS_IDX["EyebrowRightAngle"]] = 50
-        self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = 120
-        self.motors[MOTORS_IDX["EyelidRight"]] = 50
-        self.motors[MOTORS_IDX["EyelidLeft"]] = 50
-        self.motors[MOTORS_IDX["EyeHorizontal"]] = 65
-        self.motors[MOTORS_IDX["EyeVertical"]] = 43
-        self.motors[MOTORS_IDX["Jaw"]] = 10
+        self.motors[MOTORS_IDX["EyebrowRightHeight"]] = rospy.get_param("butia_emotions/eyebrown/standard/rightY")
+        self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = rospy.get_param("butia_emotions/eyebrown/standard/leftY")
+        self.motors[MOTORS_IDX["EyebrowRightAngle"]] = rospy.get_param("butia_emotions/eyebrown/standard/rightRotation")
+        self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = rospy.get_param("butia_emotions/eyebrown/standard/leftRotation")
+        self.motors[MOTORS_IDX["EyelidRight"]] = rospy.get_param("butia_emotions/eyelid/standard/right")
+        self.motors[MOTORS_IDX["EyelidLeft"]] = rospy.get_param("butia_emotions/eyelid/standard/left")
+        self.motors[MOTORS_IDX["EyeHorizontal"]] = rospy.get_param("butia_emotions/eyes/standard/horizontal")
+        self.motors[MOTORS_IDX["EyeVertical"]] = rospy.get_param("butia_emotions/eyes/standard/vertical")
+        self.motors[MOTORS_IDX["Jaw"]] = rospy.get_param("butia_emotions/jaw/standard/percent")
         self.motors[MOTORS_IDX["NeckHorizontal"]] = np.pi
         self.motors[MOTORS_IDX["NeckVertical"]] = np.pi
         self.motors[MOTORS_IDX["Pan"]] = np.pi
         self.motors[MOTORS_IDX["Tilt"]] = np.pi
 
         self.seq = 0
-        self.port = DxlCommProtocol1(commPort="/dev/ttyACM0")
+        self.port = DxlCommProtocol1(commPort="/dev/ttyACM2")
         self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
 
