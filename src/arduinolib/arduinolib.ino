@@ -26,7 +26,7 @@ void setup() {
 
    //**setMotorDefinitions(start, beginlimitendlimit, pin)
   motor[EYEBROW_HEIGHT_RIGHT] = new percentualMotor();
-//  motor[EYEBROW_HEIGHT_RIGHT]->reversed=1;
+ // motor[EYEBROW_HEIGHT_RIGHT]->reversed=1;
   motor[EYEBROW_HEIGHT_LEFT] = new percentualMotor();
   motor[EYEBROW_HEIGHT_RIGHT]->setMotorDefinitions(50, 15, 140, 4); //EDITAR PINS CONFORME NECESS�RIO
   motor[EYEBROW_HEIGHT_LEFT]->setMotorDefinitions(50, 30, 125, 8); 
@@ -40,7 +40,7 @@ void setup() {
   motor[EYELID_RIGHT] = new percentualMotor();
   motor[EYELID_RIGHT]->reversed=1;
   motor[EYELID_LEFT] = new percentualMotor();
-  //motor[EYELID_RIGHT]->setMotorDefinitions(50, 20, 140, 3);
+  motor[EYELID_RIGHT]->setMotorDefinitions(100, 20, 140, 3);
   //motor[EYELID_LEFT]->setMotorDefinitions(50, 63, 135, 2);
 
   motor[EYE_HORIZONTAL] = new percentualMotor(); // precisam ser percentuais pela logica do controle da direção do olhar
@@ -85,7 +85,7 @@ void loop() {
             motor[EYELID_RIGHT]->goTo(angle);
             break;
           case EYELID_LEFT:
-            motor[EYELID_LEFT]->goTo(angle);
+    //        motor[EYELID_LEFT]->goTo(angle);
             break;
           case EYE_HORIZONTAL:
             motor[EYE_HORIZONTAL]->goTo(angle);
