@@ -7,9 +7,8 @@
 
     <node pkg="robotFace" type="eyelidController.py" name="eyelidController" output="$(arg output)" />
     <node pkg="robotFace" type="eyebrownController.py" name="eyebrowController" output="$(arg output)" />
-    <node pkg="robotFace" type="eyesController.py" name="eyesController" output="$(arg output)" />
-    <node pkg="robotFace" type="jawController.py" name="jawController" output="$(arg output)" />
-    <node pkg="robotFace" type="emotionController.py" name="emotionController" output="$(arg output)" >
+    <node pkg="robotFace" type="emotionController.py" name="emotionController" output="$(arg output)" />
+    <node pkg="robotFace" type="newNeckController.py" name="newNeckController" output="$(arg output)">
         <param name="frame" value="$(arg frame)"/>
         <param name="max_pose_speed" value="$(arg max_pose_speed)"/> 
     </node>
