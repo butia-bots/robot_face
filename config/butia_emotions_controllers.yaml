@@ -22,15 +22,15 @@ butia_emotions:
 
     rage:
       rightY: 30
-      leftY: 30
+      leftY: 50
       rightRotation: 115
-      leftRotation: 115
+      leftRotation: 125
 
     scared:
       rightY: 0
-      leftY: 0
+      leftY: 10
       rightRotation: 80
-      leftRotation: 80
+      leftRotation: 100
 
     doubt:
       rightY: 10
@@ -40,23 +40,23 @@ butia_emotions:
 
     sleepy:
       rightY: 100
-      leftY: 100
+      leftY: 90
       rightRotation: 80
-      leftRotation: 80
+      leftRotation: 90
     
   eyelid:
 
     standard:
       h: 70
       frequency: 0
-      right: 70
-      left: 70
+      right: 50
+      left: 50
 
     happy:
       h: 75
       frequency: 0
-      right: 60
-      left: 60
+      right: 50
+      left: 50
 
     sad:
       h: 60
@@ -67,26 +67,26 @@ butia_emotions:
     rage:
       h: 75
       frequency: 0
-      right: 50
-      left: 50
+      right: 80
+      left: 70
 
     scared:
       h: 60
       frequency: 0
-      right: 100
-      left: 100
+      right: 90
+      left: 60
     
     doubt:
       h: 80
       frequency: 0
       right: 60
-      left: 60
+      left: 50
     
     sleepy:
       h: 100
       frequency: 0
-      right: 30
-      left: 30
+      right: 120
+      left: 110
 
   neck:
 
@@ -151,22 +151,22 @@ butia_emotions:
   jaw:
   
     standard:
-      percent: 0
+      percent: 80
 
     happy:
       percent: 100
 
     sad:
-      percent: 0
+      percent: 75
 
     rage:
-      percent: 0
+      percent: 75
 
     scared:
       percent: 100
     
     doubt:
-      percent: 0
+      percent: 75
     
     sleepy:
-      percent: 0
+      percent: 75

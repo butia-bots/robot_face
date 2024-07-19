@@ -29,7 +29,7 @@ void setup() {
  // motor[EYEBROW_HEIGHT_RIGHT]->reversed=1;
   motor[EYEBROW_HEIGHT_LEFT] = new percentualMotor();
   motor[EYEBROW_HEIGHT_RIGHT]->setMotorDefinitions(50, 15, 150, 4); //EDITAR PINS CONFORME NECESS�RIO
-  motor[EYEBROW_HEIGHT_LEFT]->setMotorDefinitions(50, 20, 130, 8); 
+  motor[EYEBROW_HEIGHT_LEFT]->setMotorDefinitions(50, 20, 130, 6); 
 
   motor[EYEBROW_ANGLE_RIGHT] = new rawangleMotor();
   motor[EYEBROW_ANGLE_LEFT] = new rawangleMotor();
@@ -38,10 +38,10 @@ void setup() {
 
 
   motor[EYELID_RIGHT] = new percentualMotor();
-  motor[EYELID_RIGHT]->reversed=1;
+ // motor[EYELID_RIGHT]->reversed=1;
   motor[EYELID_LEFT] = new percentualMotor();
-  motor[EYELID_RIGHT]->setMotorDefinitions(20, 10, 120, 3);
-  //motor[EYELID_LEFT]->setMotorDefinitions(45, 50, 180, 7);
+  motor[EYELID_RIGHT]->setMotorDefinitions(30, 10, 120, 3);
+  motor[EYELID_LEFT]->setMotorDefinitions(45, 50, 180, 7);
 
   motor[EYE_HORIZONTAL] = new percentualMotor(); // precisam ser percentuais pela logica do controle da direção do olhar
   motor[EYE_VERTICAL] = new percentualMotor();
@@ -49,7 +49,7 @@ void setup() {
   motor[EYE_VERTICAL]->setMotorDefinitions(43, 120, 155, 11);
   
   motor[JAW_ROTATE] = new rawangleMotor();
-  motor[JAW_ROTATE]->setMotorDefinitions(30, 30, 100, 12);//*a definir 
+  motor[JAW_ROTATE]->setMotorDefinitions(80, 75, 100, 8);//*a definir 
 }
 
 int angles2;
@@ -85,7 +85,7 @@ void loop() {
             motor[EYELID_RIGHT]->goTo(angle);
             break;
           case EYELID_LEFT:
-    //        motor[EYELID_LEFT]->goTo(angle);
+            motor[EYELID_LEFT]->goTo(angle);
             break;
           case EYE_HORIZONTAL:
             motor[EYE_HORIZONTAL]->goTo(angle);
@@ -93,9 +93,9 @@ void loop() {
           case EYE_VERTICAL:
             motor[EYE_VERTICAL]->goTo(angle);
             break;
-        //  case JAW_ROTATE: //8
-        //    motor[JAW_ROTATE]->goTo(angle); 
-        //    break;
+          case JAW_ROTATE: //8
+            motor[JAW_ROTATE]->goTo(angle); 
+            break;
           default:
             break;
         }

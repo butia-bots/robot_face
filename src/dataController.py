@@ -80,7 +80,7 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["Tilt"]] = np.pi
 
         self.seq = 0
-        self.port = DxlCommProtocol1(commPort="/dev/ttyACM2")
+        self.port = DxlCommProtocol1(commPort="/dev/ttyACM0")
         self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
 
