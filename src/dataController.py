@@ -37,7 +37,7 @@ class dataflowEnable():
         self.max_vertical = 190
 
         try:
-            self.neck_port = DxlCommProtocol2("/dev/ttyUSB1")
+            self.neck_port = DxlCommProtocol2("/dev/ttyNECK")
 
             self.neckHorizontal = JointProtocol2(61)
             self.neckVertical = JointProtocol2(62)
@@ -82,11 +82,11 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["Tilt"]] = np.pi
 
         self.seq = 0
-        self.port = DxlCommProtocol1(commPort="/dev/ttyACM0")
+        self.port = DxlCommProtocol1(commPort="/dev/ttyFACE")
         self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
 
-        rospy.Subscriber("/RosAria/motors_state", Bool, self.setPause)
+        rospy.Subscriber("/emergency_button", Bool, self.setPause)
 
         self.sub_mouth = Int16MultiArray()
         self.sub_mouth.data = []  

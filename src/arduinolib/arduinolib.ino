@@ -14,7 +14,7 @@ enum motors : byte {
   JAW_LEFT, JAW_RIGHT
 };
 
-Motor* motor[10];
+Motor* motor[9];
 DynamixelProtocol dxl(BAUDRATE, ID);
 unsigned char adress;
 unsigned char angle;
