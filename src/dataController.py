@@ -16,11 +16,12 @@ MOTORS_IDX = {
     "EyelidLeft": 5,
     "EyeHorizontal": 6,
     "EyeVertical": 7,
-    "Jaw": 8,
-    "NeckHorizontal": 9,
-    "NeckVertical": 10,
-    "Pan": 11,
-    "Tilt": 12
+    "JawLeft": 8,
+    "JawRight":9,
+    "NeckHorizontal": 10,
+    "NeckVertical": 11,
+    "Pan": 12,
+    "Tilt": 13
 }
 
 class dataflowEnable():
@@ -73,7 +74,8 @@ class dataflowEnable():
         self.motors[MOTORS_IDX["EyelidLeft"]] = rospy.get_param("butia_emotions/eyelid/standard/left")
         self.motors[MOTORS_IDX["EyeHorizontal"]] = rospy.get_param("butia_emotions/eyes/standard/horizontal")
         self.motors[MOTORS_IDX["EyeVertical"]] = rospy.get_param("butia_emotions/eyes/standard/vertical")
-        self.motors[MOTORS_IDX["Jaw"]] = rospy.get_param("butia_emotions/jaw/standard/percent")
+        self.motors[MOTORS_IDX["JawLeft"]] = rospy.get_param("butia_emotions/jaw/standard/left")
+        self.motors[MOTORS_IDX["JawRight"]] = rospy.get_param("butia_emotions/jaw/standard/right")
         self.motors[MOTORS_IDX["NeckHorizontal"]] = np.pi
         self.motors[MOTORS_IDX["NeckVertical"]] = np.pi
         self.motors[MOTORS_IDX["Pan"]] = np.pi
@@ -119,7 +121,8 @@ class dataflowEnable():
             if not self.pause: 
                 self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRight"]]))
                 self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeft"]]))
-                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["Jaw"]])) #mouth
+                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["JawLeft"]])) #mouth
+                self.joint.writeValue(9, int(self.motors[MOTORS_IDX["JawRight"]])) #mouth
                 self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
                 self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
                 self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
@@ -178,7 +181,8 @@ class dataflowEnable():
         data = msg.data
         #self.motors[0] = int(0.3059*self.data[0])
         #self.motors[10] = abs(100-data[0])
-        self.motors[MOTORS_IDX["Jaw"]] = data[0]
+        self.motors[MOTORS_IDX["JawLeft"]] = data[0]
+        self.motors[MOTORS_IDX["JawRight"]] = data[1]
         #self.motors[1] = data[1]
 
     def getEye(self, msg):

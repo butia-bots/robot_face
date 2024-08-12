@@ -35,56 +35,71 @@ class jawEnable():
 
         self._readParameters()
 
-        self.percent = self.percent_standard_params
+        self.xPosition = self.left_standard_params
+        self.yPosition = self.right_standard_params
 
         while not rospy.is_shutdown():
             self.getOutput()
             self.output.data = []
-            self.output.data = [self.percent]
+            self.output.data = [self.xPosition , self.yPosition]
             pub.publish(self.output)
             rate.sleep()
         
     def getOutput(self):
 
         if(self.emotion == EMOTIONS["standard"]):
-            self.percent = self.percent_standard_params
+            self.xPosition = self.left_standard_params                   # 
+            self.yPosition = self.right_standard_params  
 
         elif(self.emotion == EMOTIONS["happy"]):
-            self.percent = self.percent_happy_params
+            self.xPosition = self.left_happy_params                   # 
+            self.yPosition = self.right_happy_params 
 
         elif(self.emotion == EMOTIONS["sad"]):   
-            self.percent = self.percent_sad_params
+            self.xPosition = self.left_sad_params                   # 
+            self.yPosition = self.right_sad_params 
             
         elif(self.emotion == EMOTIONS["rage"]):
-            self.percent = self.percent_rage_params
+            self.xPosition = self.left_rage_params                   # 
+            self.yPosition = self.right_rage_params 
 
         elif(self.emotion == EMOTIONS["scared"]):  
-            self.percent = self.percent_scared_params
+            self.xPosition = self.left_scared_params                   # 
+            self.yPosition = self.right_scared_params
 
         elif(self.emotion == EMOTIONS["doubt"]):  
-            self.percent = self.percent_doubt_params
+            self.xPosition = self.left_doubt_params                   # 
+            self.yPosition = self.right_doubt_params
 
         elif(self.emotion == EMOTIONS["sleepy"]):  
-            self.percent = self.percent_sleepy_params
+            self.xPosition = self.left_sleepy_params                   # 
+            self.yPosition = self.right_sleepy_params
 
     def getJaw_st(self, msg):
         self.data = msg.data
         self.emotion=self.data
 
     def _readParameters(self):
-        self.percent_standard_params = rospy.get_param("butia_emotions/jaw/standard/percent")
+        self.left_standard_params = rospy.get_param("butia_emotions/jaw/standard/left")
+        self.right_standard_params = rospy.get_param("butia_emotions/jaw/standard/right")
 
-        self.percent_happy_params = rospy.get_param("butia_emotions/jaw/happy/percent")
+        self.left_happy_params = rospy.get_param("butia_emotions/jaw/happy/left")
+        self.right_happy_params = rospy.get_param("butia_emotions/jaw/happy/right")
 
-        self.percent_sad_params = rospy.get_param("butia_emotions/jaw/sad/percent")
+        self.left_sad_params = rospy.get_param("butia_emotions/jaw/sad/left")
+        self.right_sad_params = rospy.get_param("butia_emotions/jaw/sad/right")
 
-        self.percent_rage_params = rospy.get_param("butia_emotions/jaw/rage/percent")
+        self.left_rage_params = rospy.get_param("butia_emotions/jaw/rage/left")
+        self.right_rage_params = rospy.get_param("butia_emotions/jaw/rage/right")
 
-        self.percent_scared_params = rospy.get_param("butia_emotions/jaw/scared/percent")
+        self.left_scared_params = rospy.get_param("butia_emotions/jaw/scared/left")
+        self.right_scared_params = rospy.get_param("butia_emotions/jaw/scared/right")
 
-        self.percent_doubt_params = rospy.get_param("butia_emotions/jaw/doubt/percent")
+        self.left_doubt_params = rospy.get_param("butia_emotions/jaw/doubt/left")
+        self.right_doubt_params = rospy.get_param("butia_emotions/jaw/doubt/right")
 
-        self.percent_sleepy_params = rospy.get_param("butia_emotions/jaw/sleepy/percent")
+        self.left_sleepy_params = rospy.get_param("butia_emotions/jaw/sleepy/left")
+        self.right_sleepy_params = rospy.get_param("butia_emotions/jaw/sleepy/right")
 
 
 if __name__ == '__main__':

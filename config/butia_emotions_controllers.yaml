@@ -151,22 +151,29 @@ butia_emotions:
   jaw:
   
     standard:
-      percent: 80
+      left: 118
+      right: 126
 
     happy:
-      percent: 100
+      left: 108
+      right: 116
 
     sad:
-      percent: 75
+      left: 118
+      right: 126
 
     rage:
-      percent: 75
+      left: 118
+      right: 126
 
     scared:
-      percent: 100
+      left: 108
+      right: 116
     
     doubt:
-      percent: 75
+      left: 118
+      right: 126
     
     sleepy:
-      percent: 75
+      left: 118
+      right: 126
