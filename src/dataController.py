@@ -88,7 +88,7 @@ class dataflowEnable():
         self.joint = JointProtocol1(128)
         self.port.attachJoint(self.joint)
 
-        rospy.Subscriber("/RosAria/motors_state", Bool, self.setPause)
+        rospy.Subscriber("/emergency_button", Bool, self.setPause)
 
         self.sub_mouth = Int16MultiArray()
         self.sub_mouth.data = []  
