@@ -13,6 +13,8 @@ EMOTIONS = {
     "sad": 2,
     "rage": 3,
     "scared": 4,
+    "doubt":5,
+    "sleepy":6
 }
 
 class eyebrownEnable():
@@ -39,31 +41,48 @@ class eyebrownEnable():
             rate.sleep()
         
     def getOutput(self):
+        
         if(self.emotion == EMOTIONS["standard"]):                       # Standard
-            self.rightY = self.rightY_standard_params                   # 65
-            self.leftY = self.leftY_standard_params                     # 50
-            self.rightRotation = self.rightRotation_standard_params     # 85     
-            self.leftRotation = self.leftRotation_standard_params       # 130
+            self.rightY = self.rightY_standard_params                   # 
+            self.leftY = self.leftY_standard_params                     # 
+            self.rightRotation = self.rightRotation_standard_params     #      
+            self.leftRotation = self.leftRotation_standard_params       # 
+        
         elif(self.emotion == EMOTIONS["happy"]):                        # Happy
-            self.rightY = self.rightY_happy_params                      # 130
-            self.leftY = self.leftY_happy_params                        # 105
-            self.rightRotation = self.rightRotation_happy_params        # 80
-            self.leftRotation = self.leftRotation_happy_params          # 125
+            self.rightY = self.rightY_happy_params                      # 
+            self.leftY = self.leftY_happy_params                        # 
+            self.rightRotation = self.rightRotation_happy_params        # 
+            self.leftRotation = self.leftRotation_happy_params          # 
+        
         elif(self.emotion == EMOTIONS["sad"]):                          # Sad
-            self.rightY = self.rightY_sad_params                        # 65
-            self.leftY = self.leftY_sad_params                          # 50
-            self.rightRotation = self.rightRotation_sad_params          # 45
-            self.leftRotation = self.leftRotation_sad_params            # 20
+            self.rightY = self.rightY_sad_params                        # 
+            self.leftY = self.leftY_sad_params                          # 
+            self.rightRotation = self.rightRotation_sad_params          # 
+            self.leftRotation = self.leftRotation_sad_params            # 
+       
         elif(self.emotion == EMOTIONS["rage"]):                         # Rage
-            self.rightY = self.rightY_rage_params                       # 20
-            self.leftY = self.leftY_rage_params                         # 20
-            self.rightRotation = self.rightRotation_rage_params         # 140
-            self.leftRotation = self.leftRotation_rage_params           # 160
+            self.rightY = self.rightY_rage_params                       # 
+            self.leftY = self.leftY_rage_params                         # 
+            self.rightRotation = self.rightRotation_rage_params         # 
+            self.leftRotation = self.leftRotation_rage_params           # 
+       
         elif(self.emotion == EMOTIONS["scared"]):                       # Scared
-            self.rightY = self.rightY_scared_params                     # 130
-            self.leftY = self.leftY_scared_params                       # 105
-            self.rightRotation = self.rightRotation_scared_params       # 75
-            self.leftRotation = self.leftRotation_scared_params         # 120
+            self.rightY = self.rightY_scared_params                     # 
+            self.leftY = self.leftY_scared_params                       # 
+            self.rightRotation = self.rightRotation_scared_params       # 
+            self.leftRotation = self.leftRotation_scared_params         # 
+
+        elif(self.emotion == EMOTIONS["doubt"]):                       # doubt
+            self.rightY = self.rightY_doubt_params                     # 
+            self.leftY = self.leftY_doubt_params                       # 
+            self.rightRotation = self.rightRotation_doubt_params       # 
+            self.leftRotation = self.leftRotation_doubt_params         # 
+
+        elif(self.emotion == EMOTIONS["sleepy"]):                       # sleepy
+            self.rightY = self.rightY_sleepy_params                     # 
+            self.leftY = self.leftY_sleepy_params                       # 
+            self.rightRotation = self.rightRotation_sleepy_params       # 
+            self.leftRotation = self.leftRotation_sleepy_params         # 
 
     def getEyebrown_st(self, msg):
         self.data = msg.data
@@ -94,6 +113,16 @@ class eyebrownEnable():
         self.leftY_scared_params = rospy.get_param("butia_emotions/eyebrown/scared/leftY")
         self.rightRotation_scared_params = rospy.get_param("butia_emotions/eyebrown/scared/rightRotation")
         self.leftRotation_scared_params = rospy.get_param("butia_emotions/eyebrown/scared/leftRotation")
+
+        self.rightY_doubt_params = rospy.get_param("butia_emotions/eyebrown/doubt/rightY")
+        self.leftY_doubt_params = rospy.get_param("butia_emotions/eyebrown/doubt/leftY")
+        self.rightRotation_doubt_params = rospy.get_param("butia_emotions/eyebrown/doubt/rightRotation")
+        self.leftRotation_doubt_params = rospy.get_param("butia_emotions/eyebrown/doubt/leftRotation")
+
+        self.rightY_sleepy_params = rospy.get_param("butia_emotions/eyebrown/sleepy/rightY")
+        self.leftY_sleepy_params = rospy.get_param("butia_emotions/eyebrown/sleepy/leftY")
+        self.rightRotation_sleepy_params = rospy.get_param("butia_emotions/eyebrown/sleepy/rightRotation")
+        self.leftRotation_sleepy_params = rospy.get_param("butia_emotions/eyebrown/sleepy/leftRotation")
 
 if __name__ == '__main__':
     try:

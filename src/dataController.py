@@ -12,17 +12,16 @@ MOTORS_IDX = {
     "EyebrowLeftHeight": 1,
     "EyebrowRightAngle": 2,
     "EyebrowLeftAngle": 3,
-    "EyelidRightUp": 4,
-    "EyelidLeftUp": 5,
-    "EyelidRightDown": 6,
-    "EyelidLeftDown": 7,
-    "EyeHorizontal": 8,
-    "EyeVertical": 9,
-    "Mouth": 10,
-    "NeckHorizontal": 11,
-    "NeckVertical": 12,
-    "Pan": 13,
-    "Tilt": 14,
+    "EyelidRight": 4,
+    "EyelidLeft": 5,
+    "EyeHorizontal": 6,
+    "EyeVertical": 7,
+    "JawLeft": 8,
+    "JawRight":9,
+    "NeckHorizontal": 10,
+    "NeckVertical": 11,
+    "Pan": 12,
+    "Tilt": 13
 }
 
 class dataflowEnable():
@@ -40,8 +39,8 @@ class dataflowEnable():
         try:
             self.neck_port = DxlCommProtocol2("/dev/ttyNECK")
 
-            self.neckHorizontal = JointProtocol2(62)
-            self.neckVertical = JointProtocol2(61)
+            self.neckHorizontal = JointProtocol2(61)
+            self.neckVertical = JointProtocol2(62)
             self.panJoint = JointProtocol2(8)
             self.tiltJoint = JointProtocol2(9)
 
@@ -67,17 +66,16 @@ class dataflowEnable():
         # Define the output vector
         self.motors = [0] * len(MOTORS_IDX.keys())
 
-        self.motors[MOTORS_IDX["EyebrowRightHeight"]] = 20
-        self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = 20
-        self.motors[MOTORS_IDX["EyebrowRightAngle"]] = 50
-        self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = 50
-        self.motors[MOTORS_IDX["EyelidRightUp"]] = 20
-        self.motors[MOTORS_IDX["EyelidLeftUp"]] = 20
-        self.motors[MOTORS_IDX["EyelidRightDown"]] = 20
-        self.motors[MOTORS_IDX["EyelidLeftDown"]] = 20
-        self.motors[MOTORS_IDX["EyeHorizontal"]] = 40
-        self.motors[MOTORS_IDX["EyeVertical"]] = 85
-        self.motors[MOTORS_IDX["Mouth"]] = 100
+        self.motors[MOTORS_IDX["EyebrowRightHeight"]] = rospy.get_param("butia_emotions/eyebrown/standard/rightY")
+        self.motors[MOTORS_IDX["EyebrowLeftHeight"]] = rospy.get_param("butia_emotions/eyebrown/standard/leftY")
+        self.motors[MOTORS_IDX["EyebrowRightAngle"]] = rospy.get_param("butia_emotions/eyebrown/standard/rightRotation")
+        self.motors[MOTORS_IDX["EyebrowLeftAngle"]] = rospy.get_param("butia_emotions/eyebrown/standard/leftRotation")
+        self.motors[MOTORS_IDX["EyelidRight"]] = rospy.get_param("butia_emotions/eyelid/standard/right")
+        self.motors[MOTORS_IDX["EyelidLeft"]] = rospy.get_param("butia_emotions/eyelid/standard/left")
+        self.motors[MOTORS_IDX["EyeHorizontal"]] = rospy.get_param("butia_emotions/eyes/standard/horizontal")
+        self.motors[MOTORS_IDX["EyeVertical"]] = rospy.get_param("butia_emotions/eyes/standard/vertical")
+        self.motors[MOTORS_IDX["JawLeft"]] = rospy.get_param("butia_emotions/jaw/standard/left")
+        self.motors[MOTORS_IDX["JawRight"]] = rospy.get_param("butia_emotions/jaw/standard/right")
         self.motors[MOTORS_IDX["NeckHorizontal"]] = np.pi
         self.motors[MOTORS_IDX["NeckVertical"]] = np.pi
         self.motors[MOTORS_IDX["Pan"]] = np.pi
@@ -121,17 +119,16 @@ class dataflowEnable():
 
         while not rospy.is_shutdown():
             if not self.pause: 
-                self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRightUp"]]))
-                self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeftUp"]]))
-                self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyelidRightDown"]]))
-                self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyelidLeftDown"]]))
-                self.joint.writeValue(10, int(self.motors[MOTORS_IDX["Mouth"]]))
+                self.joint.writeValue(4, int(self.motors[MOTORS_IDX["EyelidRight"]]))
+                self.joint.writeValue(5, int(self.motors[MOTORS_IDX["EyelidLeft"]]))
+                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["JawLeft"]])) #mouth
+                self.joint.writeValue(9, int(self.motors[MOTORS_IDX["JawRight"]])) #mouth
                 self.joint.writeValue(0, int(self.motors[MOTORS_IDX["EyebrowRightHeight"]]))
                 self.joint.writeValue(1, int(self.motors[MOTORS_IDX["EyebrowLeftHeight"]]))
                 self.joint.writeValue(2, int(self.motors[MOTORS_IDX["EyebrowRightAngle"]]))
                 self.joint.writeValue(3, int(self.motors[MOTORS_IDX["EyebrowLeftAngle"]]))
-                self.joint.writeValue(8, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
-                self.joint.writeValue(9, int(self.motors[MOTORS_IDX["EyeVertical"]]))
+                self.joint.writeValue(6, int(self.motors[MOTORS_IDX["EyeHorizontal"]]))
+                self.joint.writeValue(7, int(self.motors[MOTORS_IDX["EyeVertical"]]))
                 self.neckHorizontal.sendGoalAngle(self.motors[MOTORS_IDX["NeckHorizontal"]])
                 self.neckVertical.sendGoalAngle(self.motors[MOTORS_IDX["NeckVertical"]])
                 self.panJoint.sendGoalAngle(self.motors[MOTORS_IDX["Pan"]])
@@ -184,7 +181,8 @@ class dataflowEnable():
         data = msg.data
         #self.motors[0] = int(0.3059*self.data[0])
         #self.motors[10] = abs(100-data[0])
-        self.motors[MOTORS_IDX["Mouth"]] = data[1]
+        self.motors[MOTORS_IDX["JawLeft"]] = data[0]
+        self.motors[MOTORS_IDX["JawRight"]] = data[1]
         #self.motors[1] = data[1]
 
     def getEye(self, msg):
@@ -194,10 +192,8 @@ class dataflowEnable():
     
     def getEyelid(self, msg):
         data = msg.data
-        self.motors[MOTORS_IDX["EyelidRightUp"]] = data[0]
-        self.motors[MOTORS_IDX["EyelidLeftUp"]] = data[1]
-        self.motors[MOTORS_IDX["EyelidRightDown"]] = data[2]
-        self.motors[MOTORS_IDX["EyelidLeftDown"]] = data[3]
+        self.motors[MOTORS_IDX["EyelidRight"]] = data[0]
+        self.motors[MOTORS_IDX["EyelidLeft"]] = data[1]
 
     def getEyebrown(self, msg):
         data = msg.data

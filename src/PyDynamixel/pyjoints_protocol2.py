@@ -4,6 +4,10 @@ from math import pi
 
 import dynamixel_sdk as dxl
 
+#import sys
+#sys.path.append('/home/rich/catkin_ws/src/butia_face/src/PyDynamixel/dynamixel')
+#import dynamixel_functions as dxl
+
 ADDR_MX_TORQUE_ENABLE = 64  
 ADDR_MX_PRESENT_POSITION = 132 
 ADDR_MX_PRESENT_VELOCITY = 128 
