@@ -5,8 +5,8 @@ butia_emotions:
     standard:
       rightY: 50
       leftY: 50
-      rightRotation: 90
-      leftRotation: 90
+      rightRotation: 130
+      leftRotation: 150
       
     happy:
       rightY: 60
@@ -15,34 +15,34 @@ butia_emotions:
       leftRotation: 80
 
     sad:
-      rightY: 80
-      leftY: 80
-      rightRotation: 70
-      leftRotation: 70 
+      rightY: 60
+      leftY: 50
+      rightRotation: 170
+      leftRotation: 120 
 
     rage:
       rightY: 30
       leftY: 50
-      rightRotation: 115
-      leftRotation: 125
+      rightRotation: 110
+      leftRotation: 172
 
     scared:
-      rightY: 0
+      rightY: 90
       leftY: 10
-      rightRotation: 80
-      leftRotation: 100
+      rightRotation: 160
+      leftRotation: 130
 
     doubt:
-      rightY: 10
+      rightY: 90
       leftY: 80
-      rightRotation: 115
-      leftRotation: 90
+      rightRotation: 140
+      leftRotation: 165
 
     sleepy:
       rightY: 100
-      leftY: 90
-      rightRotation: 80
-      leftRotation: 90
+      leftY: 0
+      rightRotation: 130
+      leftRotation: 150
     
   eyelid:
 
@@ -55,8 +55,8 @@ butia_emotions:
     happy:
       h: 75
       frequency: 0
-      right: 50
-      left: 50
+      right: 10
+      left: 20
 
     sad:
       h: 60
@@ -73,8 +73,8 @@ butia_emotions:
     scared:
       h: 60
       frequency: 0
-      right: 90
-      left: 60
+      right: 0
+      left: 10
     
     doubt:
       h: 80
@@ -85,8 +85,8 @@ butia_emotions:
     sleepy:
       h: 100
       frequency: 0
-      right: 120
-      left: 110
+      right: 100
+      left: 100
 
   neck:
 
@@ -121,59 +121,59 @@ butia_emotions:
   eyes:
 
     standard:
-      horizontal: 65
-      vertical: 43
+      horizontal: 50
+      vertical: 66
 
     happy:
-      horizontal: 65
-      vertical: 57
+      horizontal: 50
+      vertical: 66
 
     sad:
-      horizontal: 65
-      vertical: 10
+      horizontal: 50
+      vertical: 45
 
     rage:
-      horizontal: 65
-      vertical: 57
+      horizontal: 50
+      vertical: 50
 
     scared:
-      horizontal: 65
-      vertical: 57
+      horizontal: 50
+      vertical: 50
     
     doubt:
-      horizontal: 65
-      vertical: 43
+      horizontal: 50
+      vertical: 88
     
     sleepy:
       horizontal: 65
-      vertical: 43
+      vertical: 50
 
   jaw:
   
     standard:
-      left: 118
-      right: 126
+      left: 112
+      right: 112
 
     happy:
       left: 108
-      right: 116
+      right: 108
 
     sad:
       left: 118
-      right: 126
+      right: 118
 
     rage:
       left: 118
-      right: 126
+      right: 118
 
     scared:
       left: 108
-      right: 116
+      right: 108
     
     doubt:
       left: 118
-      right: 126
+      right: 118
     
     sleepy:
       left: 118
-      right: 126
+      right: 118

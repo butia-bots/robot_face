@@ -28,30 +28,30 @@ void setup() {
   motor[EYEBROW_HEIGHT_RIGHT] = new percentualMotor();
  // motor[EYEBROW_HEIGHT_RIGHT]->reversed=1;
   motor[EYEBROW_HEIGHT_LEFT] = new percentualMotor();
-  motor[EYEBROW_HEIGHT_RIGHT]->setMotorDefinitions(50, 15, 140, 4); //EDITAR PINS CONFORME NECESS�RIO
-  motor[EYEBROW_HEIGHT_LEFT]->setMotorDefinitions(50, 30, 125, 8); 
+  motor[EYEBROW_HEIGHT_RIGHT]->setMotorDefinitions(60, 30, 148, 4); //EDITAR PINS CONFORME NECESS�RIO
+  motor[EYEBROW_HEIGHT_LEFT]->setMotorDefinitions(50, 10, 150, 3); 
 
   motor[EYEBROW_ANGLE_RIGHT] = new rawangleMotor();
   motor[EYEBROW_ANGLE_LEFT] = new rawangleMotor();
-  motor[EYEBROW_ANGLE_RIGHT]->setMotorDefinitions(90, 10, 170, 5); 
-  motor[EYEBROW_ANGLE_LEFT]->setMotorDefinitions(90, 10, 170, 9); 
+  motor[EYEBROW_ANGLE_RIGHT]->setMotorDefinitions(130, 110, 170, 5); 
+  motor[EYEBROW_ANGLE_LEFT]->setMotorDefinitions(150, 120, 172, 6); 
 
 
   motor[EYELID_RIGHT] = new percentualMotor();
   motor[EYELID_RIGHT]->reversed=1;
   motor[EYELID_LEFT] = new percentualMotor();
-  motor[EYELID_RIGHT]->setMotorDefinitions(100, 20, 140, 3);
-  //motor[EYELID_LEFT]->setMotorDefinitions(50, 63, 135, 2);
+  motor[EYELID_RIGHT]->setMotorDefinitions(0, 0, 100, 8);
+  //motor[EYELID_LEFT]->setMotorDefinitions(12, 10, 100, 10);
 
   motor[EYE_HORIZONTAL] = new percentualMotor(); // precisam ser percentuais pela logica do controle da direção do olhar
   motor[EYE_VERTICAL] = new percentualMotor();
-  motor[EYE_HORIZONTAL]->setMotorDefinitions(65, 10, 140, 10); 
-  motor[EYE_VERTICAL]->setMotorDefinitions(43, 120, 155, 11);
+  motor[EYE_HORIZONTAL]->setMotorDefinitions(50, 0, 120, 2); 
+  motor[EYE_VERTICAL]->setMotorDefinitions(50, 80, 125, 7);
   
   motor[JAW_LEFT] = new rawangleMotor();
   motor[JAW_RIGHT] = new rawangleMotor();
-  motor[JAW_LEFT]->setMotorDefinitions(108, 118, 118, 12);//
-  motor[JAW_RIGHT]->setMotorDefinitions(116, 126, 126, 13);//
+  motor[JAW_LEFT]->setMotorDefinitions(112, 108, 118, 9);//
+  motor[JAW_RIGHT]->setMotorDefinitions(112, 108, 118, 12);//
 }
 
 int angles2;
