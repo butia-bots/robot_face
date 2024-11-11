@@ -39,8 +39,8 @@ class dataflowEnable():
         try:
             self.neck_port = DxlCommProtocol2("/dev/ttyNECK")
 
-            self.neckHorizontal = JointProtocol2(61)
-            self.neckVertical = JointProtocol2(62)
+            self.neckHorizontal = JointProtocol2(62)
+            self.neckVertical = JointProtocol2(61)
             self.panJoint = JointProtocol2(8)
             self.tiltJoint = JointProtocol2(9)
 
