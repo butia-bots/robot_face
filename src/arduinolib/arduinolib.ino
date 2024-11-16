@@ -50,8 +50,8 @@ void setup() {
   
   motor[JAW_LEFT] = new rawangleMotor();
   motor[JAW_RIGHT] = new rawangleMotor();
-  motor[JAW_LEFT]->setMotorDefinitions(112, 97, 125, 11);//
-  motor[JAW_RIGHT]->setMotorDefinitions(112, 100, 80, 12);//
+  motor[JAW_LEFT]->setMotorDefinitions(125, 97, 125, 11);//
+  motor[JAW_RIGHT]->setMotorDefinitions(80, 100, 80, 12);//
 }
 
 int angles2;
