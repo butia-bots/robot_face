@@ -31,8 +31,8 @@ class dataflowEnable():
         rospy.init_node('dataController', anonymous=False)
         rate = rospy.Rate(100) # 100hz
 
-        self.min_horizontal = 120
-        self.max_horizontal = 240
+        self.min_horizontal = 100
+        self.max_horizontal = 260
         self.min_vertical = 150
         self.max_vertical = 190
 
