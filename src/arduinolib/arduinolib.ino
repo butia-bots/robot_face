@@ -4,7 +4,7 @@
 #include <Servo.h>
 
 #define ID 128
-#define BAUDRATE 1000000
+#define BAUDRATE 9600
 
 enum motors : byte {
   EYEBROW_HEIGHT_RIGHT, EYEBROW_HEIGHT_LEFT, 
@@ -38,10 +38,10 @@ void setup() {
 
 
   motor[EYELID_RIGHT] = new percentualMotor();
-  motor[EYELID_RIGHT]->reversed=1;
+  //motor[EYELID_RIGHT]->reversed=1;
   motor[EYELID_LEFT] = new percentualMotor();
   motor[EYELID_RIGHT]->setMotorDefinitions(0, 0, 100, 8);
-  //motor[EYELID_LEFT]->setMotorDefinitions(12, 10, 100, 10);
+  motor[EYELID_LEFT]->setMotorDefinitions(12, 10, 100, 10);
 
   motor[EYE_HORIZONTAL] = new percentualMotor(); // precisam ser percentuais pela logica do controle da direção do olhar
   motor[EYE_VERTICAL] = new percentualMotor();
