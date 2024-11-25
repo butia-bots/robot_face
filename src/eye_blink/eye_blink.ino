@@ -1,24 +1,26 @@
-#import <Servo.h>
+#include <Servo.h>
 
 Servo EYELID_RIGHT;
 Servo EYELID_LEFT;
 
 int close_L = 100;
-int open_L = 10;
+int open_L = 20;
 int close_R = 100;
 int open_R = 0;
 
   void blink(){
 
+    EYELID_RIGHT.write(close_R);
+    EYELID_LEFT.write(close_L);
+
+    delay(200);
+    
     EYELID_RIGHT.write(open_R);
     EYELID_LEFT.write(open_L);
 
     delay(200);
 
-    EYELID_RIGHT.write(close_R);
-    EYELID_LEFT.write(close_L);
 
-    delay(200);
   }
 
 void setup() {
@@ -30,6 +32,9 @@ void setup() {
 
 void loop() {
 
+  delay(1500);
+
   blink();
+
      
 }
