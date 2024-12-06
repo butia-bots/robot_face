@@ -32,11 +32,11 @@ void setup() {
   EYEBROW_HEIGHT_RIGHT.write(70);
   EYEBROW_HEIGHT_LEFT.write(70);
   EYEBROW_ANGLE_RIGHT.write(130);
-  EYEBROW_ANGLE_LEFT.write(150);
-  EYELID_RIGHT.write(10);
+  EYEBROW_ANGLE_LEFT.write(140);
+  EYELID_RIGHT.write(0);
   EYELID_LEFT.write(20);
   EYE_HORIZONTAL.write(60);
-  EYE_VERTICAL.write(102);
+  EYE_VERTICAL.write(110);
   JAW_LEFT.write(125);
   JAW_RIGHT.write(80);
 }

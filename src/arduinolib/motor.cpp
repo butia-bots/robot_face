@@ -38,10 +38,10 @@ void percentualMotor::goTo(unsigned char angle){
   int new_angle = map(angle, 0, 100, reversed==0 ? limitAngle[0] : limitAngle[1], reversed==0 ? limitAngle[1] : limitAngle[0]);
   new_angle = checkRange(new_angle);
 
-  Serial.print("ANGLE TO GO: ");
-  Serial.println(new_angle);
-  //servo.write(new_angle);
-  fadeWrite(servo, new_angle, 1);
+  // Serial.print("ANGLE TO GO: ");
+  // Serial.println(new_angle);
+  servo.write(new_angle);
+  //fadeWrite(servo, new_angle, 1);
 }
 
 
@@ -51,8 +51,8 @@ rawangleMotor::rawangleMotor() {}
 
 void rawangleMotor::goTo(unsigned char angle){
   int new_angle=checkRange(angle);
-  Serial.print("ANGLE TO GO: ");
-  Serial.println(new_angle);
-  //servo.write(new_angle);
-  fadeWrite(servo, new_angle, 1);
+  // Serial.print("ANGLE TO GO: ");
+  // Serial.println(new_angle);
+  servo.write(new_angle);
+  // fadeWrite(servo, new_angle, 1);
 }

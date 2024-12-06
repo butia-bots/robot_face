@@ -1,21 +1,21 @@
-#import <Servo.h>
+#include <Servo.h>
 
 Servo JAW_RIGHT;
 Servo JAW_LEFT;
 Servo EYELID_RIGHT;
 Servo EYELID_LEFT;
 
-int close_L = 100;
-int open_L = 20;
-int close_R = 100;
-int open_R = 0;
+int close_EL = 100;
+int open_EL = 20;
+int close_ER = 100;
+int open_ER = 0;
 
-int close_L = 97;
-int open_L = 125;
-int close_R = 100;
-int open_R = 80;
+int close_L = 94; //MAX 100
+int open_L = 85; // diminui p/ abrir +
+int close_R = 92; //
+int open_R = 105; // aumenta  p/ abrir+
 
-  void fake_jaw(){
+  void fakejaw(){
 
     JAW_RIGHT.write(open_R);
     JAW_LEFT.write(open_L);
@@ -31,13 +31,13 @@ int open_R = 80;
 
     delay(1500);
 
-    EYELID_RIGHT.write(close_R);
-    EYELID_LEFT.write(close_L);
+    EYELID_RIGHT.write(close_ER);
+    EYELID_LEFT.write(close_EL);
 
     delay(200);
     
-    EYELID_RIGHT.write(open_R);
-    EYELID_LEFT.write(open_L);
+    EYELID_RIGHT.write(open_ER);
+    EYELID_LEFT.write(open_EL);
 
 
   }
@@ -46,13 +46,15 @@ int open_R = 80;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  EYELID_RIGHT.attach(11);
-  EYELID_LEFT.attach(12);
+  JAW_RIGHT.attach(11);
+  JAW_LEFT.attach(12);
+  EYELID_RIGHT.attach(8);
+  EYELID_LEFT.attach(10);
 }
 
 void loop() {
 
-  fake_jaw();
+  fakejaw();
   blink();
      
 }
